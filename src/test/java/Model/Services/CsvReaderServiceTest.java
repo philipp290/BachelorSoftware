@@ -13,7 +13,7 @@ class CsvReaderServiceTest {
     @Test
     public void readPillarTest1(){
         CsvReaderService crs = new CsvReaderService();
-        ArrayList<Pillar> testInstance = crs.readPillars("/TestingData/pillarReadTest1.csv");
+        ArrayList<Pillar> testInstance = crs.readPillarsFromFile("Data/TestingData/pillarReadTest1.csv");
 
         Assertions.assertEquals(testInstance.get(0).getLatitude(),10);
         Assertions.assertEquals(testInstance.get(0).getLongitude(),10);
@@ -33,11 +33,41 @@ class CsvReaderServiceTest {
     }
 
     @Test
+    public void readPillarFromCacheTest(){
+        CsvReaderService crs = new CsvReaderService();
+        ArrayList<Pillar> testingInstance = crs.readPillarsFromCache("pillarCacheWriterTest1");
+        Pillar pillar1 = testingInstance.get(0);
+        Pillar pillar2 = testingInstance.get(1);
+        Pillar pillar3 = testingInstance.get(2);
+        Pillar pillar4 = testingInstance.get(3);
+
+        Assertions.assertEquals(pillar1.getPillarID(),1);
+        Assertions.assertEquals(pillar1.getLatitude(),10);
+        Assertions.assertEquals(pillar1.getLongitude(),10);
+        Assertions.assertEquals(pillar1.getShadow(),Shadow.HOCH);
+
+        Assertions.assertEquals(pillar2.getPillarID(),2);
+        Assertions.assertEquals(pillar2.getLatitude(),20);
+        Assertions.assertEquals(pillar2.getLongitude(),20);
+        Assertions.assertEquals(pillar2.getShadow(),Shadow.MITTEL);
+
+        Assertions.assertEquals(pillar3.getPillarID(),3);
+        Assertions.assertEquals(pillar3.getLatitude(),30);
+        Assertions.assertEquals(pillar3.getLongitude(),30);
+        Assertions.assertEquals(pillar3.getShadow(),Shadow.NIEDRIG);
+
+        Assertions.assertEquals(pillar4.getPillarID(),4);
+        Assertions.assertEquals(pillar4.getLatitude(),40);
+        Assertions.assertEquals(pillar4.getLongitude(),40);
+        Assertions.assertEquals(pillar4.getShadow(),Shadow.KEIN);
+    }
+
+    @Test
     public void readPersonTest1(){
         CsvReaderService crs = new CsvReaderService();
 
-        ArrayList<Pillar> testPillars = crs.readPillars("/TestingData/pillarReadTest1.csv");
-        ArrayList<Person> testPersons = crs.readPerson("/TestingData/personReadTest1.csv",testPillars,20);
+        ArrayList<Pillar> testPillars = crs.readPillarsFromFile("Data/TestingData/pillarReadTest1.csv");
+        ArrayList<Person> testPersons = crs.readPerson("Data/TestingData/personReadTest1.csv",testPillars,20);
 
         Person person100 = testPersons.get(0);
         Person person101 = testPersons.get(1);
@@ -110,7 +140,7 @@ class CsvReaderServiceTest {
         referenceInstancce.add(30);
 
         CsvReaderService crs = new CsvReaderService();
-        ArrayList<Integer> testingInstance = crs.readIntegerList("/TestingData/integerReadTest.csv");
+        ArrayList<Integer> testingInstance = crs.readIntegerList("Data/TestingData/integerReadTest.csv");
         Assertions.assertEquals(testingInstance, referenceInstancce);
     }
 }

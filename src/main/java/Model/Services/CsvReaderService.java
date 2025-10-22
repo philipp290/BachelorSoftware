@@ -6,11 +6,13 @@ import Model.Components.Shadow;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.HashSet;
+
 
 public class CsvReaderService {
 
@@ -19,9 +21,9 @@ public class CsvReaderService {
      * @param inputFile input File
      * @return Array Liste aller gelesener Säulen
      */
-    public ArrayList<Pillar> readPillars(String inputFile){
+    public ArrayList<Pillar> readPillarsFromFile(String inputFile){
         ArrayList<Pillar> resultPillars = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(inputFile), StandardCharsets.UTF_8))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
             reader.readLine();
             String line;
             int id = 0;
@@ -55,6 +57,46 @@ public class CsvReaderService {
     }
 
     /**
+     * Methode um Säulen Objekte aus CSV zu lesen
+     * @param cacheFileName input File
+     * @return Array Liste aller gelesener Säulen
+     */
+    public ArrayList<Pillar> readPillarsFromCache(String cacheFileName){
+        ArrayList<Pillar> resultPillars = new ArrayList<>();
+        Path cacheFile = Paths.get("Data","Cache","SolutionFiles", cacheFileName+".csv");
+        try (BufferedReader reader = Files.newBufferedReader(cacheFile, StandardCharsets.UTF_8)) {
+            reader.readLine();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] components = line.split(",");
+                components[1]=components[1].replace("\"", "");
+                int id = Integer.parseInt(components[0]);
+                double longitude = Double.parseDouble(components[1]);
+                double latitude = Double.parseDouble(components[2]);
+                Shadow shadow;
+                switch (components[3]) {
+                    case "hoch":
+                        shadow = Shadow.HOCH;
+                        break;
+                    case "mittel":
+                        shadow = Shadow.MITTEL;
+                        break;
+                    case "niedrig":
+                        shadow = Shadow.NIEDRIG;
+                        break;
+                    default:
+                        shadow = Shadow.KEIN;
+                        break;
+                }
+                resultPillars.add(new Pillar(id, longitude, latitude, shadow));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultPillars;
+    }
+
+    /**
      * Methode die Personen Objekte aus CSV Datei liest
      * @param inputFile input File
      * @param pillars Säulen auf die gemappt werden soll
@@ -63,7 +105,7 @@ public class CsvReaderService {
      */
     public ArrayList<Person> readPerson(String inputFile, ArrayList<Pillar> pillars, int dist){
         ArrayList<Person> resultPersons = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(inputFile), StandardCharsets.UTF_8))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
             reader.readLine();
             String line;
             int id = 0;
@@ -133,7 +175,7 @@ public class CsvReaderService {
      */
     public ArrayList<Integer> readIntegerList (String inputFile){
         ArrayList<Integer> result = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(inputFile), StandardCharsets.UTF_8))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 result.add(Integer.parseInt(line));

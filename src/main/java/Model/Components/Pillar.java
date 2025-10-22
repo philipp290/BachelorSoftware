@@ -52,6 +52,25 @@ public class Pillar {
         }
         return false;
     }
+    // equals() überschreiben
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj){ return true;}
+        if (obj == null || getClass() != obj.getClass()){ return false;}
+        Pillar other = (Pillar) obj;
+        if(this.pillarID==other.getPillarID()){
+            if(this.longitude==other.getLongitude()){
+                if(this.latitude==other.getLatitude()){
+                    if(this.shadow.equals(other.getShadow())){
+                        if(this.peopleReached.equals(other.peopleReached)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     //Methode die die Distanz unserer Säule zu einer GPS Position berechnet
     public double distanceToHaversine(double lon2, double lat2){
