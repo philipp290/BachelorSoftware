@@ -13,6 +13,8 @@ public class Session {
     private ArrayList<Pillar> pillars;
     private ArrayList<Person> people;
 
+    private int reachingDistance = 20;
+
     private Session() {}
 
     public static Session getInstance() {
@@ -26,4 +28,6 @@ public class Session {
     public void setPillars(ArrayList<Pillar> pillars) {this.pillars = pillars;}
     public ArrayList<Person> getPeople() {return people;}
     public void setPeople(ArrayList<Person> people) {this.people = people;}
+    public int getReachingDistance() {return reachingDistance;}
+    public void setReachingDistance(int reachingDistance) {this.reachingDistance = reachingDistance;}
 }

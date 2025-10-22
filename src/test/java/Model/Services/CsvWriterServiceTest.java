@@ -23,10 +23,10 @@ class CsvWriterServiceTest {
         pillars.add(pillar4);
 
         CsvWriterService cws = new CsvWriterService();
-        cws.writePillarsToFile(pillars,"Data/TestingData/pillarWriterTest1.csv");
+        cws.writePillarsToFile(pillars,"Data/TestingData/WriteTest/pillarWriterTest1.csv");
 
         CsvReaderService crs = new CsvReaderService();
-        ArrayList<Pillar> testingPillars = crs.readPillarsFromFile("Data/TestingData/pillarWriterTest1.csv");
+        ArrayList<Pillar> testingPillars = crs.readPillarsFromFile("Data/TestingData/WriteTest/pillarWriterTest1.csv");
 
         Assertions.assertEquals(pillars,testingPillars);
     }
@@ -63,10 +63,10 @@ class CsvWriterServiceTest {
         referenceInstance.add(-4);
 
         CsvWriterService cws = new CsvWriterService();
-        cws.writeIntegerList(referenceInstance, "Data/TestingData/integerWriteTest1.csv");
+        cws.writeIntegerList(referenceInstance, "Data/TestingData/WriteTest/integerWriteTest1.csv");
 
         CsvReaderService crs = new CsvReaderService();
-        ArrayList<Integer> testingInstance = crs.readIntegerList("Data/TestingData/integerWriteTest1.csv");
+        ArrayList<Integer> testingInstance = crs.readIntegerList("Data/TestingData/WriteTest/integerWriteTest1.csv");
 
         Assertions.assertEquals(referenceInstance,testingInstance);
     }
