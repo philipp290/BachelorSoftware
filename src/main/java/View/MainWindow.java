@@ -1,5 +1,6 @@
 package View;
 
+import Model.Components.CsvEditorController;
 import View.Editor.CsvEditorWindow;
 
 import javax.swing.*;
@@ -20,8 +21,9 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SwingUtilities.invokeLater(() -> {
-                    CsvEditorWindow viewer = new CsvEditorWindow();
-                    viewer.setVisible(true);
+                    CsvEditorWindow editView = new CsvEditorWindow();
+                    new CsvEditorController(editView);
+                    editView.setVisible(true);
                 });
             }
         });

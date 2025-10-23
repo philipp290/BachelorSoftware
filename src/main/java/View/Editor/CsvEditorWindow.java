@@ -1,5 +1,6 @@
 package View.Editor;
 
+import Model.Components.CsvEditorController;
 import Model.Services.CsvUpdateService;
 
 import javax.swing.*;
@@ -12,13 +13,29 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class CsvEditorWindow extends JFrame {
-    private int colCount = 0;
-    private JTextField pathField;
+   //--------------------------------------------UI-Elemente-------------------
+    private final JTextField browseField = new JTextField();
+    private final JButton browseButton = new JButton("Datei suchen");
+    private final JButton loadButton = new JButton("CSV laden");
     private JTable table;
     private DefaultTableModel tableModel;
+    private final JTextField deleteCol = new JTextField();
+    private final JButton deleteButton = new JButton("Löschen");
+    private final JTextField switchCol1 = new JTextField();
+    private final JTextField switchCol2 = new JTextField();
+    private final JButton switchButton = new JButton("Tauschen");
+    private final JTextField saveFile = new JTextField();
+    private final JButton saveFileBrowseButton = new JButton("Zielordner");
+    private final JButton saveButton = new JButton("Speichern");
+
+    //------------------------------------------------------Function-Variables-------------
+    private int colCount = 0;
     private String displayedFile = "";
     private String cacheFile1 = "Data/Cache/EditorCache/temporary1.csv";
     private String cacheFile2 = "Data/Cache/EditorCache/temporary2.csv";
+
+
+
 
     public CsvEditorWindow() {
         setTitle("CSV-Editor");
@@ -31,147 +48,60 @@ public class CsvEditorWindow extends JFrame {
 
     private void initUI() {
         getContentPane().setLayout(null);
+        //----------------------------------TOP--------------------
+        browseField.setBounds(150,4,500,40);
+        browseField.setEditable(true);
+        getContentPane().add(browseField);
 
-        pathField = new JTextField();
-        pathField.setBounds(150,4,500,40);
-        pathField.setEditable(true);
-
-        JButton browseButton = new JButton("Datei suchen");
         browseButton.setBounds(0,3,150,40);
-
-        JButton loadButton = new JButton("CSV laden");
-        loadButton.setBounds(650,3,150,40);
-
         getContentPane().add(browseButton);
-        getContentPane().add(pathField);
+
+        loadButton.setBounds(650,3,150,40);
         getContentPane().add(loadButton);
 
+        //----------------------------------CENTER--------------------
         tableModel = new DefaultTableModel();
         table = new JTable(tableModel);
         JScrollPane tableScrollPane = new JScrollPane(table);
         tableScrollPane.setBounds(0,50,800,200);
-
-        browseButton.addActionListener((ActionEvent e) -> {
-            File startDir = new File("Data");
-            JFileChooser fileChooser = new JFileChooser(startDir);
-            int result = fileChooser.showOpenDialog(this);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = fileChooser.getSelectedFile();
-                pathField.setText(selectedFile.getAbsolutePath());
-            }
-        });
-
-        loadButton.addActionListener((ActionEvent e) -> {
-            String filePath = pathField.getText();
-            if (!filePath.isEmpty()) {
-                loadCSVToTable(filePath);
-                displayedFile=filePath;
-            } else {
-                JOptionPane.showMessageDialog(this, "Es wurde noch keine Datei ausgewählt", "Fehler", JOptionPane.ERROR_MESSAGE);
-            }
-        });
         getContentPane().add(tableScrollPane);
 
+        //-----------------------------BOTTOM-LEFT--------------------
         JLabel deleteLabel = new JLabel("Lösche folgende Splate: ");
         deleteLabel.setBounds(10,270,160,40);
-
-        JTextField deleteCol = new JTextField();
-        deleteCol.setBounds(180,270,40,40);
-
-        JButton deleteButton = new JButton("Löschen");
-        deleteButton.setBounds(0,320, 220,40);
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(!deleteCol.getText().isEmpty()||(Integer.parseInt(deleteCol.getText()) < 0)) {
-                    String cacheFile = "";
-                    if (!displayedFile.equals(cacheFile1)) {
-                        cacheFile = cacheFile1;
-                    } else {
-                        cacheFile = cacheFile2;
-                    }
-                    CsvUpdateService cus = new CsvUpdateService();
-                    cus.deleteColumn(displayedFile, cacheFile, Integer.parseInt(deleteCol.getText()));
-                    loadCSVToTable(cacheFile);
-                    deleteCol.setText("");
-                    displayedFile = cacheFile;
-                }else{
-                    JOptionPane.showMessageDialog(CsvEditorWindow.this, "Es wurde eine invalide/keine Spalte zum löschen ausgewählt", "Fehler", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-
         getContentPane().add(deleteLabel);
+
+        deleteCol.setBounds(180,270,40,40);
         getContentPane().add(deleteCol);
+
+        deleteButton.setBounds(0,320, 220,40);
         getContentPane().add(deleteButton);
 
+        //-----------------------------BOTTOM-CENTER--------------------
         JLabel switchLabel = new JLabel("Tausch-Spalten: ");
         switchLabel.setBounds(300,270,110,40);
-
-        JTextField switchCol1 = new JTextField();
-        switchCol1.setBounds(420,270,40,40);
-
-        JTextField switchCol2 = new JTextField();
-        switchCol2.setBounds(470,270,40,40);
-
-        JButton switchButton = new JButton("Tauschen");
-        switchButton.setBounds(290,320, 220,40);
-        switchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String cacheFile = "";
-                if(!displayedFile.equals(cacheFile1)){
-                    cacheFile=cacheFile1;
-                }else{
-                    cacheFile=cacheFile2;
-                }
-                CsvUpdateService cus = new CsvUpdateService();
-                cus.switchColumns(displayedFile,cacheFile,Integer.parseInt(switchCol1.getText()),Integer.parseInt(switchCol2.getText()));
-                loadCSVToTable(cacheFile);
-                switchCol1.setText("");
-                switchCol2.setText("");
-                displayedFile=cacheFile;
-            }
-        });
-
-
         getContentPane().add(switchLabel);
+
+        switchCol1.setBounds(420,270,40,40);
         getContentPane().add(switchCol1);
+
+        switchCol2.setBounds(470,270,40,40);
         getContentPane().add(switchCol2);
+
+        switchButton.setBounds(290,320, 220,40);
         getContentPane().add(switchButton);
 
-        JTextField safeFile = new JTextField();
-        safeFile.setBounds(580, 270, 100,40);
+        //-----------------------------BOTTOM-RIGHT--------------------
+        saveFile.setBounds(580, 270, 100,40);
+        getContentPane().add(saveFile);
 
-        JButton safeFileSearch = new JButton("Datei suchen");
-        safeFileSearch.setBounds(690, 270, 110,40);
-        safeFileSearch.addActionListener((ActionEvent e) -> {
-            File startDir = new File("data");
-            JFileChooser fileChooser = new JFileChooser(startDir);
-            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            int result = fileChooser.showOpenDialog(this);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = fileChooser.getSelectedFile();
-                safeFile.setText(selectedFile.getAbsolutePath());
-            }
-        });
+        saveFileBrowseButton.setBounds(690, 270, 110,40);
+        getContentPane().add(saveFileBrowseButton);
 
-        JButton safeButton = new JButton("Speichern");
-        safeButton.setBounds(580,320, 220,40);
-        safeButton.addActionListener((ActionEvent e) -> {
-            if(!safeFile.getText().isEmpty()) {
-                CsvUpdateService cus = new CsvUpdateService();
-                cus.copyCSV(displayedFile, safeFile.getText() + "\\editedCsvFile.csv");
-                safeFile.setText("");
-            }else{
-                JOptionPane.showMessageDialog(this, "Es wurde noch keine Datei ausgewählt", "Fehler", JOptionPane.ERROR_MESSAGE);
-            }
-        });
+        saveButton.setBounds(580,320, 220,40);
+        getContentPane().add(saveButton);
 
-        getContentPane().add(safeFile);
-        getContentPane().add(safeFileSearch);
-        getContentPane().add(safeButton);
-
+        //-----------------------------BOTTOM-LINE-WORK--------------------
         JSeparator lineOne = new JSeparator(SwingConstants.VERTICAL);
         lineOne.setBounds(255,250,2,150);
         getContentPane().add(lineOne);
@@ -181,33 +111,41 @@ public class CsvEditorWindow extends JFrame {
         getContentPane().add(lineTwo);
     }
 
-    private void loadCSVToTable(String filePath) {
-        tableModel.setRowCount(0);
-        tableModel.setColumnCount(0);
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            int rowCount = 0;
-            while ((line = reader.readLine()) != null && rowCount < 20) {
-                String[] values = line.split(",");
-                if (rowCount == 0) {
-                    for (String col : values) {
-                        tableModel.addColumn(col.trim());
-                    }
-                } else {
-                    tableModel.addRow(values);
-                }
-                rowCount++;
-            }
-            this.colCount= line.split(",").length;
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Fehler beim Datei-Lesen", "Fehler", JOptionPane.ERROR_MESSAGE);
-        }
-    }
 
+    //------------------------CsvEditorController-Export---------------------------------------
+
+    public void addBrowseListener(ActionListener l){ browseButton.addActionListener(l); }
+    public void addLoadListener(ActionListener l){ loadButton.addActionListener(l); }
+    public void addDeleteListener(ActionListener l){ deleteButton.addActionListener(l); }
+    public void addSwitchListener(ActionListener l){ switchButton.addActionListener(l); }
+    public void addSaveBrowseListener(ActionListener l){ saveFileBrowseButton.addActionListener(l); }
+    public void addSaveListener(ActionListener l){ saveButton.addActionListener(l); }
+
+    public String getPathText(){ return browseField.getText().trim(); }
+    public void setPathText(String t){ browseField.setText(t); }
+
+    public String getDeleteCol(){ return deleteCol.getText().trim(); }
+    public void clearDeleteCol(){ deleteCol.setText(""); }
+
+    public String getSwapCol1(){ return switchCol1.getText().trim(); }
+    public String getSwapCol2(){ return switchCol2.getText().trim(); }
+    public void clearSwapCols(){ switchCol1.setText(""); switchCol2.setText(""); }
+
+    public String getSaveFile(){ return saveFile.getText().trim(); }
+    public void setSaveFile(String t){ saveFile.setText(t); }
+
+    public DefaultTableModel getTableModel(){return tableModel;}
+
+    public void showError(String msg){ JOptionPane.showMessageDialog(this, msg, "Fehler", JOptionPane.ERROR_MESSAGE); }
+
+
+
+    //--------------------------------------------------------DEBUGGING---------------
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             CsvEditorWindow viewer = new CsvEditorWindow();
+            new CsvEditorController(viewer);
             viewer.setVisible(true);
         });
     }
