@@ -13,7 +13,7 @@ public class Encounter {
     //Boolean um zu checken, ob eine Begegnung geendet hat
     private boolean encounterEnded = false;
     //-----------------------------------------------------------------------Constructor------------
-    Encounter(int entcoID, int persID, int pillID){
+    public Encounter(int entcoID, int persID, int pillID){
         this.encounterID=entcoID;
         this.personID=persID;
         this.pillarID=pillID;

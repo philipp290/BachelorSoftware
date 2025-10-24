@@ -1,4 +1,4 @@
-package Model.Components;
+package Controller.Editor;
 
 import Model.Services.CsvUpdateService;
 import View.Editor.CsvEditorWindow;

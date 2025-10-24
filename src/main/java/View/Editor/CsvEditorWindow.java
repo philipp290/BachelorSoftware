@@ -1,16 +1,10 @@
 package View.Editor;
 
-import Model.Components.CsvEditorController;
-import Model.Services.CsvUpdateService;
+import Controller.Editor.CsvEditorController;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 
 public class CsvEditorWindow extends JFrame {
    //--------------------------------------------UI-Elemente-------------------

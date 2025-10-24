@@ -1,6 +1,6 @@
 package View;
 
-import Model.Components.CsvEditorController;
+import Controller.Editor.CsvEditorController;
 import View.Editor.CsvEditorWindow;
 
 import javax.swing.*;
