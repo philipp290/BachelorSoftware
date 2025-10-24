@@ -1,5 +1,6 @@
 package View.Analysis;
 
+import Controller.Analysis.CsvAnalysisController;
 import Model.Components.Pillar;
 import Model.Services.CsvAnalysisService;
 import Model.Services.CsvReaderService;
@@ -12,11 +13,25 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class CsvAnalysisWindow extends JFrame {
+    private final JLabel personHeader = new JLabel("Personen CSV");
+    private final JTextField pathFieldOne = new JTextField();
+    private final JButton browseButtonOne = new JButton("Datei suchen");
+    private final JLabel pillarHeader = new JLabel("Säulen CSV");
+    private final JTextField pathFieldTwo = new JTextField();
+    private final JButton browseButtonTwo = new JButton("Datei suchen");
+    private final JLabel textPartOne = new JLabel("Erreichbarkeits-Radius:                                  m");
+    private final JTextField distanceField = new JTextField();
+    private final JButton analyseReachabilityButton = new JButton("Analysiere Erreichbarekeit");
+    private final JButton analyseEncounterLengthButton = new JButton("Analysiere Verweildauer");
+
+
     public CsvAnalysisWindow() {
         setTitle("CSV Analysis");
         setSize(400, 420);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        //setResizable(false);
+        //setMaximizedBounds(this.getBounds());
 
         initUI();
     }
@@ -24,118 +39,77 @@ public class CsvAnalysisWindow extends JFrame {
     private void initUI() {
         getContentPane().setLayout(null);
 
-        JLabel personHeader = new JLabel("Personen CSV");
+        //-------------PERSON-SPECIFICATION---------------------------------------------
         personHeader.setBounds(20,20,120,20);
         personHeader.setFont(personHeader.getFont().deriveFont(15f));
-
-        JTextField pathFieldOne = new JTextField();
-        pathFieldOne.setText("Data/TestingData/AnalysisTest/reachabilityTestPeople.csv");
-        pathFieldOne.setBounds(160, 40, 200, 40);
-        pathFieldOne.setEditable(true);
-
-        JButton browseButtonOne = new JButton("Datei suchen");
-        browseButtonOne.setBounds(20, 40, 120, 40);
-
-        getContentPane().add(browseButtonOne);
-        getContentPane().add(pathFieldOne);
         getContentPane().add(personHeader);
 
-        JLabel pillarHeader = new JLabel("Säulen CSV");
+        pathFieldOne.setBounds(160, 40, 200, 40);
+        pathFieldOne.setEditable(true);
+        pathFieldOne.setText("Data/TestingData/AnalysisTest/reachabilityTestPeople.csv");
+        getContentPane().add(pathFieldOne);
+
+        browseButtonOne.setBounds(20, 40, 120, 40);
+        getContentPane().add(browseButtonOne);
+
+        //-------------PILLAR-SPECIFICATION---------------------------------------------
         pillarHeader.setBounds(20,100,120,20);
         pillarHeader.setFont(pillarHeader.getFont().deriveFont(15f));
-
-        JTextField pathFieldTwo = new JTextField();
-        //Debugging
-        pathFieldTwo.setText("Data/TestingData/ReadTest/pillarReadTest1.csv");
-        pathFieldTwo.setBounds(160, 120, 200, 40);
-        pathFieldTwo.setEditable(true);
-
-        JButton browseButtonTwo = new JButton("Datei suchen");
-        browseButtonTwo.setBounds(20, 120, 120, 40);
-
-        getContentPane().add(browseButtonTwo);
-        getContentPane().add(pathFieldTwo);
         getContentPane().add(pillarHeader);
 
-        JLabel textPartOne = new JLabel("Erreichbarkeits-Radius:                                  m");
+        pathFieldTwo.setBounds(160, 120, 200, 40);
+        pathFieldTwo.setEditable(true);
+        pathFieldTwo.setText("Data/TestingData/ReadTest/pillarReadTest1.csv");
+        getContentPane().add(pathFieldTwo);
+
+        browseButtonTwo.setBounds(20, 120, 120, 40);
+        getContentPane().add(browseButtonTwo);
+
+        //-------------DISTANCE-SPECIFICATION---------------------------------------------
         textPartOne.setBounds(20,180,360,40);
         textPartOne.setFont(textPartOne.getFont().deriveFont(15f));
         getContentPane().add(textPartOne);
 
-
-        JTextField distanceField = new JTextField();
-        distanceField.setText("20");
         distanceField.setBounds(240, 180, 80, 40);
         distanceField.setEditable(true);
+        distanceField.setText("20");
         getContentPane().add(distanceField);
 
-        browseButtonOne.addActionListener((ActionEvent e) -> {
-            File startDir = new File("data");
-            JFileChooser fileChooser = new JFileChooser(startDir);
-            int result = fileChooser.showOpenDialog(this);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = fileChooser.getSelectedFile();
-                pathFieldOne.setText(selectedFile.getAbsolutePath());
-            }
-        });
-
-        browseButtonTwo.addActionListener((ActionEvent e) -> {
-            File startDir = new File("data");
-            JFileChooser fileChooser = new JFileChooser(startDir);
-            int result = fileChooser.showOpenDialog(this);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = fileChooser.getSelectedFile();
-                pathFieldTwo.setText(selectedFile.getAbsolutePath());
-            }
-        });
-
-        JButton analyseReachabilityButton = new JButton("Analysiere Erreichbarekeit");
+        //-------------REACHABILITY-ANALYSIS---------------------------------------------
         analyseReachabilityButton.setBounds(20, 260, 340,40);
-
-        analyseReachabilityButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CsvAnalysisService cas = new CsvAnalysisService();
-                double[] reachability = cas.reachabilityAnalysis(pathFieldOne.getText(),pathFieldTwo.getText(), Integer.parseInt(distanceField.getText()));
-                SwingUtilities.invokeLater(() -> {
-                    CsvAnalysisReachabilityWindow viewer = new CsvAnalysisReachabilityWindow(reachability);
-                    viewer.setVisible(true);
-                });
-            }
-        });
-
         getContentPane().add(analyseReachabilityButton);
 
-        JButton analyseEncounterLengthButton = new JButton("Analysiere Verweildauer");
+        //-------------ENCOUNTER-LENGTH-ANALYSIS---------------------------------------------
         analyseEncounterLengthButton.setBounds(20, 320, 340,40);
-
-        analyseEncounterLengthButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CsvReaderService crs = new CsvReaderService();
-                ArrayList<Pillar> pillars = crs.readPillarsFromFile(pathFieldTwo.getText());
-                CsvAnalysisService cas = new CsvAnalysisService();
-                double[] encounterdata = cas.encounterLengthAnalysis(pathFieldOne.getText(),pillars, Integer.valueOf(distanceField.getText()));
-                SwingUtilities.invokeLater(() -> {
-                    CsvAnalysisEncounterLengthWindow viewer = new CsvAnalysisEncounterLengthWindow(encounterdata);
-                    viewer.setVisible(true);
-                });
-            }
-        });
-
         getContentPane().add(analyseEncounterLengthButton);
 
+        //-------------LINE-WORK---------------------------------------------
         JPanel thickLine = new JPanel();
         thickLine.setBackground(Color.BLACK);
         thickLine.setBounds(10, 237, 368, 2);
         getContentPane().add(thickLine);
-    }
 
+    }
+    //--------------------EXPORT-FÜR-CsvAnaylsisController-------------
+    public void addBrowseOneListener(ActionListener l){ browseButtonOne.addActionListener(l); }
+    public void addBrowseTwoListener(ActionListener l){ browseButtonTwo.addActionListener(l); }
+    public void addReachabilityListener(ActionListener l){ analyseReachabilityButton.addActionListener(l); }
+    public void addEncounterLengthListener(ActionListener l){ analyseEncounterLengthButton.addActionListener(l); }
+
+    public void setPathFieldOne(String msg){pathFieldOne.setText(msg);}
+    public String getPathFieldOne(){return pathFieldOne.getText();}
+    public void setPathFieldTwo(String msg){pathFieldTwo.setText(msg);}
+    public String getPathFieldTwo(){return pathFieldTwo.getText();}
+    public String getDistance(){return distanceField.getText();}
+
+    public void showError(String msg){ JOptionPane.showMessageDialog(this, msg, "Fehler", JOptionPane.ERROR_MESSAGE); }
+
+    //---------------------------DEBUGGING-----------------------------
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             CsvAnalysisWindow viewer = new CsvAnalysisWindow();
+            new CsvAnalysisController(viewer);
             viewer.setVisible(true);
-
         });
     }
 }

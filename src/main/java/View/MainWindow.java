@@ -1,6 +1,8 @@
 package View;
 
+import Controller.Analysis.CsvAnalysisController;
 import Controller.Editor.CsvEditorController;
+import View.Analysis.CsvAnalysisWindow;
 import View.Editor.CsvEditorWindow;
 
 import javax.swing.*;
@@ -35,8 +37,9 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SwingUtilities.invokeLater(() -> {
-                    //org.example.View.CsvAnalysis viewer = new org.example.View.CsvAnalysis();
-                    //viewer.setVisible(true);
+                    CsvAnalysisWindow viewer = new CsvAnalysisWindow();
+                    new CsvAnalysisController(viewer);
+                    viewer.setVisible(true);
 
                 });
             }
