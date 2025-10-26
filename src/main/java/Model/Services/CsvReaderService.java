@@ -112,13 +112,13 @@ public class CsvReaderService {
             while ((line = reader.readLine()) != null) {
                 String[] components = line.split(",");
                 Person lookingAt = findPerson(Integer.parseInt(components[1]),resultPersons);
-                if(lookingAt==null){
+                if(lookingAt == null){
                     lookingAt = new Person(Integer.parseInt(components[1]),id,new BitSet());
                     resultPersons.add(lookingAt);
                     id++;
                 }
                 ArrayList<Pillar> isNearOf = findPassing(Double.parseDouble(components[2]),Double.parseDouble(components[3]),pillars, dist);
-                if(isNearOf!=null){
+                if(isNearOf != null){
                     for(Pillar p : isNearOf) {
                         p.getPeopleReached().set(lookingAt.getInternalID());
                         lookingAt.getPillarsPassed().set(p.getPillarID());
@@ -149,7 +149,7 @@ public class CsvReaderService {
     private static ArrayList<Pillar> findPassing(double lon, double lat, ArrayList<Pillar> pillars, int dist){
         ArrayList<Pillar> result = new ArrayList<>();
         for(Pillar p: pillars){
-            if(p.distanceTo(lon,lat)<=dist){
+            if(p.distanceTo(lon,lat) <= dist){
                 result.add(p);
             }
         }
@@ -162,12 +162,13 @@ public class CsvReaderService {
     //Analog zu 1.2 mit PillarPosition
     private static Pillar findPillar(int id, ArrayList<Pillar> pp){
         for(Pillar p:pp){
-            if(id==p.getPillarID()){
+            if(id == p.getPillarID()){
                 return p;
             }
         }
         return null;
     }
+
     /**
      * Methode um Integer Liste aus CSV zu lesen
      * @param inputFile Input File

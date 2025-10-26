@@ -33,6 +33,44 @@ class CsvReaderServiceTest {
     }
 
     @Test
+    public void readPillarTest2(){
+        CsvReaderService crs = new CsvReaderService();
+        ArrayList<Pillar> testInstance = crs.readPillarsFromFile("Data/TestingData/ReadTest/pillarReadTest2.csv");
+
+        Assertions.assertEquals(testInstance.get(0).getLatitude(),10);
+        Assertions.assertEquals(testInstance.get(0).getLongitude(),10);
+        Assertions.assertEquals(testInstance.get(0).getShadow(), Shadow.KEIN);
+
+        Assertions.assertEquals(testInstance.get(1).getLatitude(),20);
+        Assertions.assertEquals(testInstance.get(1).getLongitude(),20);
+        Assertions.assertEquals(testInstance.get(1).getShadow(),Shadow.MITTEL);
+
+        Assertions.assertEquals(testInstance.get(2).getLatitude(),30);
+        Assertions.assertEquals(testInstance.get(2).getLongitude(),30);
+        Assertions.assertEquals(testInstance.get(2).getShadow(),Shadow.NIEDRIG);
+
+        Assertions.assertEquals(testInstance.get(3).getLatitude(),40);
+        Assertions.assertEquals(testInstance.get(3).getLongitude(),40);
+        Assertions.assertEquals(testInstance.get(3).getShadow(),Shadow.HOCH);
+
+        Assertions.assertEquals(testInstance.get(4).getLatitude(),50);
+        Assertions.assertEquals(testInstance.get(4).getLongitude(),50);
+        Assertions.assertEquals(testInstance.get(4).getShadow(),Shadow.HOCH);
+
+        Assertions.assertEquals(testInstance.get(5).getLatitude(),60);
+        Assertions.assertEquals(testInstance.get(5).getLongitude(),60);
+        Assertions.assertEquals(testInstance.get(5).getShadow(),Shadow.NIEDRIG);
+
+        Assertions.assertEquals(testInstance.get(6).getLatitude(),70);
+        Assertions.assertEquals(testInstance.get(6).getLongitude(),70);
+        Assertions.assertEquals(testInstance.get(6).getShadow(),Shadow.KEIN);
+
+        Assertions.assertEquals(testInstance.get(7).getLatitude(),80);
+        Assertions.assertEquals(testInstance.get(7).getLongitude(),80);
+        Assertions.assertEquals(testInstance.get(7).getShadow(),Shadow.NIEDRIG);
+    }
+
+    @Test
     public void readPillarFromCacheTest(){
         CsvReaderService crs = new CsvReaderService();
         ArrayList<Pillar> testingInstance = crs.readPillarsFromCache("pillarCacheWriterTest1");
@@ -129,6 +167,7 @@ class CsvReaderServiceTest {
         Assertions.assertTrue(pillar4.getPeopleReached().get(0));
         Assertions.assertTrue(pillar4.getPeopleReached().get(5));
     }
+
 
     @Test
     void integerReadTest(){
