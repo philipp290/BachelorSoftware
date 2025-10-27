@@ -46,6 +46,9 @@ public class AlgorithmInputWindow extends JFrame {
     private final JButton startButton = new JButton("Start");
 
     public AlgorithmInputWindow() {
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/emergencityIcon.png"));
+        setIconImage(icon);
+
         setTitle("Algorithm Start");
         setSize(400, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

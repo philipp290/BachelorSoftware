@@ -4,6 +4,7 @@ import Controller.Editor.CsvEditorController;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class CsvEditorWindow extends JFrame {
@@ -32,6 +33,9 @@ public class CsvEditorWindow extends JFrame {
 
 
     public CsvEditorWindow() {
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/emergencityIcon.png"));
+        setIconImage(icon);
+
         setTitle("CSV-Editor");
         setSize(800, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

@@ -26,12 +26,13 @@ public class CsvAnalysisWindow extends JFrame {
 
 
     public CsvAnalysisWindow() {
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/emergencityIcon.png"));
+        setIconImage(icon);
+
         setTitle("CSV Analysis");
         setSize(400, 420);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        //setResizable(false);
-        //setMaximizedBounds(this.getBounds());
 
         initUI();
     }

@@ -1,4 +1,4 @@
-package View;
+package View.ExportUnity;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +18,9 @@ public class ExportUnityWindow extends JFrame{
 
 
         public ExportUnityWindow() {
+            Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/emergencityIcon.png"));
+            setIconImage(icon);
+
             setTitle("Unity-Export");
             setSize(400, 310);
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

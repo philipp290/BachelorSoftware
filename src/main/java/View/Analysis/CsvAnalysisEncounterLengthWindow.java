@@ -23,6 +23,9 @@ public class CsvAnalysisEncounterLengthWindow extends JFrame {
         this.median=Math.round(this.median * 100.0) / 100.0;
         this.average=Math.round(this.average * 100.0) / 100.0;
 
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/emergencityIcon.png"));
+        setIconImage(icon);
+
         setTitle("Verweildauer-Auswertung");
         setSize(310, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

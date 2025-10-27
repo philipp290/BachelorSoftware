@@ -13,6 +13,9 @@ public class CsvAnalysisEncounterLengthDetailWindow extends JFrame {
     public CsvAnalysisEncounterLengthDetailWindow(ArrayList<Integer> input) {
         this.values=input;
 
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/emergencityIcon.png"));
+        setIconImage(icon);
+
         setTitle("Verweildauer-Details");
         setSize(310, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

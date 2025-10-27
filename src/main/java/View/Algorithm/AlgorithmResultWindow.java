@@ -25,6 +25,9 @@ public class AlgorithmResultWindow extends JFrame {
     public AlgorithmResultWindow(ArrayList<Pillar> input) {
         this.values=input;
 
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/emergencityIcon.png"));
+        setIconImage(icon);
+
         setTitle("Algorithm Result");
         setSize(800, 510);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

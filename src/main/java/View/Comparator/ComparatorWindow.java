@@ -38,6 +38,9 @@ public class ComparatorWindow extends JFrame{
 
 
     public ComparatorWindow() {
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/emergencityIcon.png"));
+        setIconImage(icon);
+
         setTitle("Solution-Comparator");
         setSize(400, 540);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

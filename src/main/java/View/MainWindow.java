@@ -5,7 +5,10 @@ import Controller.Analysis.CsvAnalysisController;
 import Controller.Editor.CsvEditorController;
 import View.Algorithm.AlgorithmInputWindow;
 import View.Analysis.CsvAnalysisWindow;
+import View.Comparator.ComparatorWindow;
 import View.Editor.CsvEditorWindow;
+import View.ExportUnity.ExportUnityWindow;
+import View.Lighthouse.LighthouseWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -86,19 +89,28 @@ public class MainWindow extends JFrame {
         openCompareButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                SwingUtilities.invokeLater(() -> {
+                    ComparatorWindow viewer = new ComparatorWindow();
+                    viewer.setVisible(true);
+                });
             }
         });
         openExportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                SwingUtilities.invokeLater(() -> {
+                    ExportUnityWindow viewer = new ExportUnityWindow();
+                    viewer.setVisible(true);
+                });
             }
         });
         openAddOnButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                SwingUtilities.invokeLater(() -> {
+                    LighthouseWindow viewer = new LighthouseWindow();
+                    viewer.setVisible(true);
+                });
             }
         });
     }

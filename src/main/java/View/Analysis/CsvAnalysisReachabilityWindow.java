@@ -13,6 +13,9 @@ public class CsvAnalysisReachabilityWindow extends JFrame {
         this.wholeAbs = (int) input[1];
         this.reachedRel = input[2];
 
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/emergencityIcon.png"));
+        setIconImage(icon);
+
         setTitle("Erreichbarkeits-Auswertung");
         setSize(340, 200);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
