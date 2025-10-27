@@ -1,5 +1,6 @@
 package View.Algorithm;
 
+import Controller.Algorithm.AlgorithmInputController;
 import Model.Algorithms.Algorithm;
 import Model.Algorithms.LogikAlgorithm;
 import Model.Components.Person;
@@ -234,67 +235,40 @@ public class AlgorithmInputWindow extends JFrame {
         startButton.setFont(textPartOne.getFont().deriveFont(18f));
         getContentPane().add(startButton);
 
-        //----------------------------------BUTTON-FUNCTION----------------------
-        browseButtonOne.addActionListener((ActionEvent e) -> {
-            File startDir = new File("Data");
-            JFileChooser fileChooser = new JFileChooser(startDir);
-            int result = fileChooser.showOpenDialog(this);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = fileChooser.getSelectedFile();
-                pathFieldOne.setText(selectedFile.getAbsolutePath());
-            }
-        });
-
-        browseButtonTwo.addActionListener((ActionEvent e) -> {
-            File startDir = new File("Data");
-            JFileChooser fileChooser = new JFileChooser(startDir);
-            int result = fileChooser.showOpenDialog(this);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = fileChooser.getSelectedFile();
-                pathFieldTwo.setText(selectedFile.getAbsolutePath());
-            }
-        });
-
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CsvReaderService crs = new CsvReaderService();
-                ArrayList<Pillar> pillars = crs.readPillarsFromFile(pathFieldTwo.getText());
-                ArrayList<Person> people = crs.readPerson(pathFieldOne.getText(),pillars,Integer.parseInt(distanceField.getText()));
-
-                boolean abs_rel = true;
-                if(cRelativ.isSelected()){
-                    abs_rel = false;
-                }
-                int goal = Integer.parseInt(pillarCount.getText());
-                if(cRelativ.isSelected()){
-                    goal = Integer.parseInt(coveragePerc.getText());
-                }
-
-                Algorithm a = new Algorithm() {
-                    @Override
-                    public ArrayList<Pillar> execute(ArrayList<Pillar> pillars, ArrayList<Person> people, boolean ABS_REL, int goal) {
-                        return null;
-                    }
-                };
-
-                if(cLogik.isSelected()){
-                    a = new LogikAlgorithm();
-                }
-                ArrayList<Pillar> result = a.execute(pillars,people,abs_rel,goal);
-
-                SwingUtilities.invokeLater(() -> {
-                    AlgorithmResultWindow viewer = new AlgorithmResultWindow(result);
-                    viewer.setVisible(true);
-                });
-
-            }
-        });
     }
 
+
+
+    //--------------------EXPORT-FÜR-CsvAnaylsisController-------------
+    public void addBrowseOneListener(ActionListener l){ browseButtonOne.addActionListener(l); }
+    public void addBrowseTwoListener(ActionListener l){ browseButtonTwo.addActionListener(l); }
+    public void addStartListener(ActionListener l){ startButton.addActionListener(l); }
+
+    public String getPathFieldOne(){return pathFieldOne.getText();}
+    public void setPathFieldOne(String msg){pathFieldOne.setText(msg);}
+
+    public String getPathFieldTwo(){return pathFieldTwo.getText();}
+    public void setPathFieldTwo(String msg){pathFieldTwo.setText(msg);}
+
+    public String getDistance(){return distanceField.getText();}
+
+    public boolean getCRelativ(){return cRelativ.isSelected();}
+    public boolean getCAbsolut(){return cAbsolut.isSelected();}
+
+    public String getPillarCount(){return pillarCount.getText();}
+    public String getCoverage(){return coveragePerc.getText();}
+
+    public boolean getCLogik(){return cLogik.isSelected();}
+    public boolean getCLatticeSearch(){return cMeta.isSelected();}
+    public boolean getCLineareOptimierung(){return cLineareOptimierung.isSelected();}
+
+    public void showError(String msg){ JOptionPane.showMessageDialog(this, msg, "Fehler", JOptionPane.ERROR_MESSAGE); }
+
+    //--------------------------DEBUGGING--------------------------
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             AlgorithmInputWindow viewer = new AlgorithmInputWindow();
+            new AlgorithmInputController(viewer);
             viewer.setVisible(true);
         });
     }

@@ -1,0 +1,88 @@
+package Controller.Algorithm;
+
+import Model.Algorithms.Algorithm;
+import Model.Algorithms.LogikAlgorithm;
+import Model.Components.Person;
+import Model.Components.Pillar;
+import Model.Services.CsvReaderService;
+import View.Algorithm.AlgorithmInputWindow;
+import View.Algorithm.AlgorithmResultWindow;
+import View.Analysis.CsvAnalysisWindow;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
+
+public class AlgorithmInputController {
+    private final AlgorithmInputWindow view;
+    private Algorithm a;
+    private final CsvReaderService crs;
+
+    public AlgorithmInputController(AlgorithmInputWindow view) {
+        this.view = view;
+        this.crs = new CsvReaderService();
+        wire();
+    }
+
+    private void wire(){
+        view.addBrowseOneListener((ActionEvent e) -> {
+            File startDir = new File("Data");
+            JFileChooser fileChooser = new JFileChooser(startDir);
+            int result = fileChooser.showOpenDialog(view);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                view.setPathFieldOne(selectedFile.getAbsolutePath());
+            }
+        });
+
+        view.addBrowseTwoListener((ActionEvent e) -> {
+            File startDir = new File("Data");
+            JFileChooser fileChooser = new JFileChooser(startDir);
+            int result = fileChooser.showOpenDialog(view);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                view.setPathFieldTwo(selectedFile.getAbsolutePath());
+            }
+        });
+
+        view.addStartListener((ActionEvent e) -> {
+            if(view.getPathFieldOne().isEmpty()){view.showError("Personen nicht spezifiziert");}
+            else if(view.getPathFieldTwo().isEmpty()){view.showError("Säulen nicht spezifiziert");}
+            else if(view.getDistance().isEmpty()){view.showError("Distanz nicht spezifiziert");}
+            else if(!view.getCRelativ()&&!view.getCAbsolut()){view.showError("Absolut/Relativ nicht spezifiziert");}
+            else if(view.getCAbsolut()&&view.getPillarCount().isEmpty()){view.showError("Säulenanzahl nicht spezifiziert");}
+            else if(view.getCRelativ()&&view.getCoverage().isEmpty()){view.showError("Abdeckungs-Quote nicht spezifiziert");}
+            else if(!view.getCLogik()&&!view.getCLatticeSearch()&&!view.getCLineareOptimierung()){view.showError("Algorithmus nicht spezifiziert");}
+            else {
+                ArrayList<Pillar> pillars = crs.readPillarsFromFile(view.getPathFieldTwo());
+                ArrayList<Person> people = crs.readPerson(view.getPathFieldOne(), pillars, Integer.parseInt(view.getDistance()));
+
+                boolean abs_rel = true;
+                int goal = 0;
+                if (view.getCRelativ()) {
+                    abs_rel = false;
+                    goal = Integer.parseInt(view.getCoverage());
+                } else if (view.getCAbsolut()) {
+                    goal = Integer.parseInt(view.getPillarCount());
+                }
+                Algorithm a = new Algorithm() {
+                    @Override
+                    public ArrayList<Pillar> execute(ArrayList<Pillar> pillars, ArrayList<Person> people, boolean ABS_REL, int goal) {
+                        return null;
+                    }
+                };
+                if (view.getCLogik()) {
+                    a = new LogikAlgorithm();
+                }
+                ArrayList<Pillar> result = a.execute(pillars, people, abs_rel, goal);
+
+                SwingUtilities.invokeLater(() -> {
+                    AlgorithmResultWindow viewer = new AlgorithmResultWindow(result);
+                    viewer.setVisible(true);
+                });
+            }
+        });
+    }
+}
