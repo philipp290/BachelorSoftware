@@ -1,10 +1,13 @@
 package View.Comparator;
 
+import Controller.Comparator.ComparatorController;
 import Controller.Editor.CsvEditorController;
 import View.Editor.CsvEditorWindow;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ComparatorWindow extends JFrame{
     private final JLabel solutionLabelOne = new JLabel("Lösungs-Säulen 1 CSV");
@@ -57,6 +60,7 @@ public class ComparatorWindow extends JFrame{
         getContentPane().add(browseButtonOne);
         solutionTextFieldOne.setBounds(160,40,200,40);
         solutionTextFieldOne.setEditable(true);
+        solutionTextFieldOne.setText("Data/TestingData/ReadTest/pillarReadTest1.csv");
         getContentPane().add(solutionTextFieldOne);
 
         solutionLabelTwo.setBounds(20,100,200,20);
@@ -65,6 +69,7 @@ public class ComparatorWindow extends JFrame{
         getContentPane().add(browseButtonTwo);
         solutionTextFieldTwo.setBounds(160,120,200,40);
         solutionTextFieldTwo.setEditable(true);
+        solutionTextFieldTwo.setText("Data/TestingData/ReadTest/pillarReadTest2.csv");
         getContentPane().add(solutionTextFieldTwo);
 
         seperationLineOne.setBounds(20,180,340,1);
@@ -77,6 +82,7 @@ public class ComparatorWindow extends JFrame{
         getContentPane().add(browseButtonThree);
         personTextField.setBounds(160,220,200,40);
         personTextField.setEditable(true);
+        personTextField.setText("Data/TestingData/AlgorithmTest/LogikAlgorithmTest/logikAlgorithmTest2.csv");
         getContentPane().add(personTextField);
 
         seperationLineTwo.setBounds(20,280,340,1);
@@ -86,6 +92,7 @@ public class ComparatorWindow extends JFrame{
         distanceLabel.setBounds(20,300,340,20);
         getContentPane().add(distanceLabel);
         distanceTextField.setBounds(250,300,80,20);
+        distanceTextField.setText("20");
         getContentPane().add(distanceTextField);
 
         seperationLineThree.setBounds(20,340,340,1);
@@ -106,12 +113,28 @@ public class ComparatorWindow extends JFrame{
         startButton.setBounds(60,420,260,50);
         getContentPane().add(startButton);
     }
+    //---------------------CONTROLLER-EXPORT------------------------------
+    public void addBrowserOneFunction(ActionListener a){this.browseButtonOne.addActionListener(a);}
+    public void addBrowserTwoFunction(ActionListener a){this.browseButtonTwo.addActionListener(a);}
+    public void addBrowserThreeFunction(ActionListener a){this.browseButtonThree.addActionListener(a);}
+    public void addStartFunction(ActionListener a){this.startButton.addActionListener(a);}
+
+    public String getSolutionOne(){return this.solutionTextFieldOne.getText();}
+    public void setSolutionOne(String msg){this.solutionTextFieldOne.setText(msg);}
+
+    public String getSolutionTwo(){return this.solutionTextFieldTwo.getText();}
+    public void setSolutionTwo(String msg){this.solutionTextFieldTwo.setText(msg);}
+
+    public String getPeople(){return this.personTextField.getText();}
+    public void setPeople(String msg){this.personTextField.setText(msg);}
+
+    public String getDistance(){return this.distanceTextField.getText();}
 
     //--------------------------------------------------------DEBUGGING---------------
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             ComparatorWindow viewer = new ComparatorWindow();
-            //new CsvEditorController(viewer);
+            new ComparatorController(viewer);
             viewer.setVisible(true);
         });
     }
