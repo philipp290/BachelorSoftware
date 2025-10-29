@@ -60,7 +60,7 @@ public class ComparatorWindow extends JFrame{
         getContentPane().add(browseButtonOne);
         solutionTextFieldOne.setBounds(160,40,200,40);
         solutionTextFieldOne.setEditable(true);
-        solutionTextFieldOne.setText("Data/TestingData/ReadTest/pillarReadTest1.csv");
+        solutionTextFieldOne.setText("Data/TestingData/ReadTest/compareTest1.csv");
         getContentPane().add(solutionTextFieldOne);
 
         solutionLabelTwo.setBounds(20,100,200,20);
@@ -69,7 +69,7 @@ public class ComparatorWindow extends JFrame{
         getContentPane().add(browseButtonTwo);
         solutionTextFieldTwo.setBounds(160,120,200,40);
         solutionTextFieldTwo.setEditable(true);
-        solutionTextFieldTwo.setText("Data/TestingData/ReadTest/pillarReadTest2.csv");
+        solutionTextFieldTwo.setText("Data/TestingData/ReadTest/compareTest2.csv");
         getContentPane().add(solutionTextFieldTwo);
 
         seperationLineOne.setBounds(20,180,340,1);

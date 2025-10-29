@@ -1,0 +1,272 @@
+package Model.Algorithms.LatticeAlgorithms.Absolut;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.BitSet;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class BitSetValidatorTest {
+    @Test
+    void validateScoreTest(){
+        //Welche Säule hat welches Gewicht?
+        ArrayList<Integer> pillarScore = new ArrayList<>();
+        pillarScore.add(2);     //Säule1
+        pillarScore.add(0);     //Säule2
+        pillarScore.add(1);     //...
+        pillarScore.add(-1);
+        pillarScore.add(-1);
+        pillarScore.add(1);
+        pillarScore.add(2);
+        pillarScore.add(1);
+
+        BitSetValidator bsV = new BitSetValidator();
+        BitSet testInstance = new BitSet(8);
+        testInstance.set(0);
+        testInstance.set(1);
+        testInstance.set(7);
+        testInstance.set(8);
+        int score = bsV.validateScore(testInstance,pillarScore);
+        Assertions.assertEquals(score,3);
+    }
+
+    @Test
+    void validateAbsTest(){
+        //Welche Säule deckt welche Person ab?
+        ArrayList<BitSet> pillarCoverage = new ArrayList<>();
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b10111001}));  //Säule 1
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b01001010}));  //Säule 2
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b11000001}));  // ...
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b00010011}));
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b10101100}));
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b01010100}));
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b00101011}));
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b00001110}));
+
+        BitSetValidator bsV = new BitSetValidator();
+        BitSet testInstance = new BitSet(8);
+        testInstance.set(1);
+        testInstance.set(5);
+        testInstance.set(7);
+        testInstance.set(8);
+        int score = bsV.validateAbs(testInstance,pillarCoverage);
+        Assertions.assertEquals(score,5);
+    }
+
+    @Test
+    void newOptimumTestFalse(){
+        //Welche Säule deckt welche Person ab?
+        ArrayList<BitSet> pillarCoverage = new ArrayList<>();
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b10111001}));  //Säule 1
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b01001010}));  //Säule 2
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b11000001}));  // ...
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b00010011}));
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b10101100}));
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b01010100}));
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b00101011}));
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b00001110}));
+
+        //Welche Säule hat welches Gewicht?
+        ArrayList<Integer> pillarScore = new ArrayList<>();
+        pillarScore.add(2);     //Säule1
+        pillarScore.add(0);     //Säule2
+        pillarScore.add(1);     //...
+        pillarScore.add(-1);
+        pillarScore.add(-1);
+        pillarScore.add(1);
+        pillarScore.add(2);
+        pillarScore.add(1);
+
+        BitSet candidateBitSet = new BitSet(8);
+        candidateBitSet.set(0);
+        candidateBitSet.set(5);
+        candidateBitSet.set(7);
+        candidateBitSet.set(8);
+        Tabu_Plus_BitSet candidate = new Tabu_Plus_BitSet(new TabuElement(-1,-1,-1), candidateBitSet);
+
+        BitSet currentOptimum = new BitSet(8);
+        currentOptimum.set(0);
+        currentOptimum.set(2);
+        currentOptimum.set(7);
+        currentOptimum.set(8);
+
+        BitSetValidator bsV = new BitSetValidator();
+        boolean newOptimum = !bsV.newOptimum(currentOptimum, candidate, pillarCoverage,pillarScore);
+        Assertions.assertTrue(newOptimum);
+    }
+
+    @Test
+    void newOptimumTestTrue(){
+        //Welche Säule deckt welche Person ab?
+        ArrayList<BitSet> pillarCoverage = new ArrayList<>();
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b10111001}));  //Säule 1
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b01001010}));  //Säule 2
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b11000001}));  // ...
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b00010011}));
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b10101100}));
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b01010100}));
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b00101011}));
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b00001110}));
+
+        //Welche Säule hat welches Gewicht?
+        ArrayList<Integer> pillarScore = new ArrayList<>();
+        pillarScore.add(2);     //Säule1
+        pillarScore.add(0);     //Säule2
+        pillarScore.add(1);     //...
+        pillarScore.add(-1);
+        pillarScore.add(-1);
+        pillarScore.add(1);
+        pillarScore.add(2);
+        pillarScore.add(1);
+
+        BitSet candidateBitSet = new BitSet(8);
+        candidateBitSet.set(0);
+        candidateBitSet.set(5);
+        candidateBitSet.set(6);
+        candidateBitSet.set(8);
+        Tabu_Plus_BitSet candidate = new Tabu_Plus_BitSet(new TabuElement(-1,-1,-1), candidateBitSet);
+
+        BitSet currentOptimum = new BitSet(8);
+        currentOptimum.set(0);
+        currentOptimum.set(2);
+        currentOptimum.set(7);
+        currentOptimum.set(8);
+
+        BitSetValidator bsV = new BitSetValidator();
+        boolean newOptimum = bsV.newOptimum(currentOptimum, candidate, pillarCoverage,pillarScore);
+        Assertions.assertTrue(newOptimum);
+    }
+
+    @Test
+    void findTopCandidateTest(){
+        //Welche Säule deckt welche Person ab?
+        ArrayList<BitSet> pillarCoverage = new ArrayList<>();
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b10111001}));  //Säule 1
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b01001010}));  //Säule 2
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b11000001}));  // ...
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b00010011}));
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b10101100}));
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b01010100}));
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b00101011}));
+        pillarCoverage.add(BitSet.valueOf(new byte[]{(byte) 0b00001110}));
+
+        //Welche Säule hat welches Gewicht?
+        ArrayList<Integer> pillarScore = new ArrayList<>();
+        pillarScore.add(2);     //Säule1
+        pillarScore.add(0);     //Säule2
+        pillarScore.add(1);     //...
+        pillarScore.add(-1);
+        pillarScore.add(-1);
+        pillarScore.add(1);
+        pillarScore.add(2);
+        pillarScore.add(1);
+
+        ArrayList<Tabu_Plus_BitSet> testNeighbourhood = new ArrayList<>();
+        BitSet ref1 = new BitSet(8);
+        ref1.set(1);
+        ref1.set(5);
+        ref1.set(7);
+        ref1.set(8);
+        testNeighbourhood.add(new Tabu_Plus_BitSet(new TabuElement(0,1,-1),ref1));
+
+        BitSet ref2 = new BitSet(8);
+        ref2.set(2);
+        ref2.set(5);
+        ref2.set(7);
+        ref2.set(8);
+        testNeighbourhood.add(new Tabu_Plus_BitSet(new TabuElement(0,2,-1),ref2));
+
+        BitSet ref3 = new BitSet(8);
+        ref3.set(3);
+        ref3.set(5);
+        ref3.set(7);
+        ref3.set(8);
+        testNeighbourhood.add(new Tabu_Plus_BitSet(new TabuElement(0,3,-1),ref3));
+
+        BitSet ref4 = new BitSet(8);
+        ref4.set(4);
+        ref4.set(5);
+        ref4.set(7);
+        ref4.set(8);
+        testNeighbourhood.add(new Tabu_Plus_BitSet(new TabuElement(0,4,-1),ref4));
+
+        BitSet ref5 = new BitSet(8);
+        ref5.set(5);
+        ref5.set(6);
+        ref5.set(7);
+        ref5.set(8);
+        testNeighbourhood.add(new Tabu_Plus_BitSet(new TabuElement(0,6,-1),ref5));
+
+        BitSet ref6 = new BitSet(8);
+        ref6.set(0);
+        ref6.set(1);
+        ref6.set(7);
+        ref6.set(8);
+        testNeighbourhood.add(new Tabu_Plus_BitSet(new TabuElement(1,5,-1),ref6));
+
+        BitSet ref7 = new BitSet(8);
+        ref7.set(0);
+        ref7.set(3);
+        ref7.set(7);
+        ref7.set(8);
+        testNeighbourhood.add(new Tabu_Plus_BitSet(new TabuElement(3,5,-1),ref7));
+
+        BitSet ref8 = new BitSet(8);
+        ref8.set(0);
+        ref8.set(4);
+        ref8.set(7);
+        ref8.set(8);
+        testNeighbourhood.add(new Tabu_Plus_BitSet(new TabuElement(4,5,-1),ref8));
+
+        BitSet ref9 = new BitSet(8);
+        ref9.set(0);
+        ref9.set(6);
+        ref9.set(7);
+        ref9.set(8);
+        testNeighbourhood.add(new Tabu_Plus_BitSet(new TabuElement(5,6,-1),ref9));
+
+        BitSet ref10 = new BitSet(8);
+        ref10.set(0);
+        ref10.set(2);
+        ref10.set(5);
+        ref10.set(8);
+        testNeighbourhood.add(new Tabu_Plus_BitSet(new TabuElement(2,7,-1),ref10));
+
+        BitSet ref11 = new BitSet(8);
+        ref11.set(0);
+        ref11.set(3);
+        ref11.set(5);
+        ref11.set(8);
+        testNeighbourhood.add(new Tabu_Plus_BitSet(new TabuElement(3,7,-1),ref11));
+
+        BitSet ref12 = new BitSet(8);
+        ref12.set(0);
+        ref12.set(4);
+        ref12.set(5);
+        ref12.set(8);
+        testNeighbourhood.add(new Tabu_Plus_BitSet(new TabuElement(4,7,-1),ref12));
+
+        BitSet ref13 = new BitSet(8);
+        ref13.set(0);
+        ref13.set(5);
+        ref13.set(6);
+        ref13.set(8);
+        testNeighbourhood.add(new Tabu_Plus_BitSet(new TabuElement(6,7,-1),ref13));
+
+
+        BitSetValidator bsV = new BitSetValidator();
+        BitSet referenceBitSet = new BitSet(8);
+        referenceBitSet.set(0);
+        referenceBitSet.set(5);
+        referenceBitSet.set(6);
+        referenceBitSet.set(8);
+        Tabu_Plus_BitSet reference = new Tabu_Plus_BitSet(new TabuElement(6,7,-1),referenceBitSet);
+        Tabu_Plus_BitSet result = bsV.findTopCandidate(testNeighbourhood,pillarCoverage,pillarScore);
+        Assertions.assertEquals(result,reference);
+    }
+
+
+
+}

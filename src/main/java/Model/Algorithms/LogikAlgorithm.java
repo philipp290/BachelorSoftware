@@ -2,6 +2,7 @@ package Model.Algorithms;
 
 import Model.Components.Person;
 import Model.Components.Pillar;
+import Model.Services.CsvAnalysisService;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -32,8 +33,13 @@ public class LogikAlgorithm implements Algorithm{
             rarityTable.add(rarityCount);
         }
 
+        if(!ABS_REL){
+            CsvAnalysisService cas = new CsvAnalysisService();
+            double[] temp = cas.reachabilityAnalysis(people);
+            goal = (int) Math.ceil((temp[0]/100)*goal);
+        }
 
-        while((markedColumns.cardinality()!= people.size())&&(ABS_REL && markedRows.cardinality() < goal)){
+        while((markedColumns.cardinality()!= people.size()) && ((ABS_REL && markedRows.cardinality() < goal)||(!ABS_REL && markedColumns.cardinality() < goal))){
             //1.KRITERIUM
             ArrayList<Integer> candidateIndex = new ArrayList<>();
             candidateIndex.add(0);

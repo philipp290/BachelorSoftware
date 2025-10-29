@@ -3,6 +3,7 @@ package Model.Services;
 import Model.Components.Encounter;
 import Model.Components.Person;
 import Model.Components.Pillar;
+import Model.Session;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -157,18 +158,12 @@ public class CsvAnalysisService {
     /**
      * Methode um zu analysieren wie erreichbar, die Leute aus peopleFile durch die
      * Säulen in pillarFile sind
-     * @param peopleFile File mit der Verkehrs-Simulation
-     * @param pillarFile File mit den Säulen
-     * @param distance Distanz ab der Personen von Säulen abgedeckt sind
+     * @param people File mit der Verkehrs-Simulation
      * @return [0] absolute Anzahl erreichter Personen
      *         [1] anzahl Personen insgesamt in der Verkehrs-Simulation
      *         [2] relative Erreichbarkeitsquote der Personen durch die Säulen
      */
-    public double[] reachabilityAnalysis(String peopleFile, String pillarFile, int distance){
-        CsvReaderService crs = new CsvReaderService();
-
-        ArrayList<Pillar> pillars = crs.readPillarsFromFile(pillarFile);
-        ArrayList<Person> people = crs.readPerson(peopleFile, pillars, distance);
+    public double[] reachabilityAnalysis(ArrayList<Person> people){
         double whole = people.size();
         double reached = 0;
         for(Person p : people){
@@ -176,6 +171,10 @@ public class CsvAnalysisService {
                 reached++;
             }
         }
+
+        //Vorarbeit für benutzerfreundliche UI
+        Session.getInstance().setAmountOfReachablePeople((int) reached);
+
         double[] result = new double[3];
         result[0] = reached;
         result[1] = whole;

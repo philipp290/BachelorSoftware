@@ -15,6 +15,12 @@ public class Session {
 
     private int reachingDistance = 20;
 
+
+    private int amountOfReachablePeople = -1;
+
+    private ArrayList<Integer> algorithmParameters = new ArrayList<>();
+
+
     private Session() {}
 
     public static Session getInstance() {
@@ -30,4 +36,9 @@ public class Session {
     public void setPeople(ArrayList<Person> people) {this.people = people;}
     public int getReachingDistance() {return reachingDistance;}
     public void setReachingDistance(int reachingDistance) {this.reachingDistance = reachingDistance;}
+    public int getAmountOfReachablePeople() {return amountOfReachablePeople;}
+    public void setAmountOfReachablePeople(int amountOfReachablePeople) {this.amountOfReachablePeople = amountOfReachablePeople;}
+    public ArrayList<Integer> getAlgorithmParameters() {return algorithmParameters;}
+    public void setAlgorithmParameters(ArrayList<Integer> algorithmParameters) {this.algorithmParameters = algorithmParameters;}
+
 }

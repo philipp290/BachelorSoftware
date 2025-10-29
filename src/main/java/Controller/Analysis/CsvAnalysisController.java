@@ -1,5 +1,6 @@
 package Controller.Analysis;
 
+import Model.Components.Person;
 import Model.Components.Pillar;
 import Model.Services.CsvAnalysisService;
 import Model.Services.CsvReaderService;
@@ -44,7 +45,9 @@ public class CsvAnalysisController {
         });
         view.addReachabilityListener((ActionEvent e) -> {
             if(!view.getDistance().isEmpty() && !view.getPathFieldOne().isEmpty() && !view.getPathFieldTwo().isEmpty()) {
-                double[] reachability = cas.reachabilityAnalysis(view.getPathFieldOne(), view.getPathFieldTwo(), Integer.parseInt(view.getDistance()));
+                ArrayList<Pillar> pillars = crs.readPillarsFromFile(view.getPathFieldTwo());
+                ArrayList<Person> people = crs.readPerson(view.getPathFieldOne(),pillars,Integer.parseInt(view.getDistance()));
+                double[] reachability = cas.reachabilityAnalysis(people);
                 SwingUtilities.invokeLater(() -> {
                     CsvAnalysisReachabilityWindow viewer = new CsvAnalysisReachabilityWindow(reachability);
                     viewer.setVisible(true);

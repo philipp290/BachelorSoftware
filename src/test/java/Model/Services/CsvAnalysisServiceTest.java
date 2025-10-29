@@ -1,5 +1,6 @@
 package Model.Services;
 
+import Model.Components.Person;
 import Model.Components.Pillar;
 import Model.Components.Shadow;
 import org.junit.jupiter.api.Assertions;
@@ -36,8 +37,12 @@ class CsvAnalysisServiceTest {
         referenceInstance[1] = 10;
         referenceInstance[2] = 0.6;
 
+        CsvReaderService crs = new CsvReaderService();
+        ArrayList<Pillar> pillars = crs.readPillarsFromFile("Data/TestingData/ReadTest/pillarReadTest1.csv");
+        ArrayList<Person> people = crs.readPerson("Data/TestingData/AnalysisTest/reachabilityTestPeople.csv",pillars,20);
+
         CsvAnalysisService cas = new CsvAnalysisService();
-        double[] testInstance = cas.reachabilityAnalysis("Data/TestingData/AnalysisTest/reachabilityTestPeople.csv","Data/TestingData/ReadTest/pillarReadTest1.csv",20);
+        double[] testInstance = cas.reachabilityAnalysis(people);
 
         Assertions.assertEquals(referenceInstance[0],testInstance[0]);
         Assertions.assertEquals(referenceInstance[1],testInstance[1]);

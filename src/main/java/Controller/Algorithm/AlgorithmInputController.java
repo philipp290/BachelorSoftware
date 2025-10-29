@@ -1,12 +1,15 @@
 package Controller.Algorithm;
 
 import Model.Algorithms.Algorithm;
+import Model.Algorithms.LatticeAlgorithms.LatticeAlgorithm;
 import Model.Algorithms.LogikAlgorithm;
 import Model.Components.Person;
 import Model.Components.Pillar;
 import Model.Services.CsvReaderService;
+import Model.Session;
 import View.Algorithm.AlgorithmInputWindow;
 import View.Algorithm.AlgorithmResultWindow;
+import View.Algorithm.AlgorithmTabuSearchWindow;
 import View.Analysis.CsvAnalysisWindow;
 
 import javax.swing.*;
@@ -17,7 +20,6 @@ import java.util.ArrayList;
 
 public class AlgorithmInputController {
     private final AlgorithmInputWindow view;
-    private Algorithm a;
     private final CsvReaderService crs;
 
     public AlgorithmInputController(AlgorithmInputWindow view) {
@@ -56,33 +58,41 @@ public class AlgorithmInputController {
             else if(view.getCRelativ()&&view.getCoverage().isEmpty()){view.showError("Abdeckungs-Quote nicht spezifiziert");}
             else if(!view.getCLogik()&&!view.getCLatticeSearch()&&!view.getCLineareOptimierung()){view.showError("Algorithmus nicht spezifiziert");}
             else {
-                ArrayList<Pillar> pillars = crs.readPillarsFromFile(view.getPathFieldTwo());
-                ArrayList<Person> people = crs.readPerson(view.getPathFieldOne(), pillars, Integer.parseInt(view.getDistance()));
 
-                boolean abs_rel = true;
-                int goal = 0;
-                if (view.getCRelativ()) {
-                    abs_rel = false;
-                    goal = Integer.parseInt(view.getCoverage());
-                } else if (view.getCAbsolut()) {
-                    goal = Integer.parseInt(view.getPillarCount());
-                }
-                Algorithm a = new Algorithm() {
-                    @Override
-                    public ArrayList<Pillar> execute(ArrayList<Pillar> pillars, ArrayList<Person> people, boolean ABS_REL, int goal) {
-                        return null;
-                    }
-                };
                 if (view.getCLogik()) {
-                    a = new LogikAlgorithm();
+                    LogikAlgorithm a = new LogikAlgorithm();
+                    executeAlgorithm(a);
                 }
-                ArrayList<Pillar> result = a.execute(pillars, people, abs_rel, goal);
-
-                SwingUtilities.invokeLater(() -> {
-                    AlgorithmResultWindow viewer = new AlgorithmResultWindow(result);
-                    viewer.setVisible(true);
-                });
+                if(view.getCLatticeSearch()){
+                    if(view.getCAbsolut()){
+                        SwingUtilities.invokeLater(() -> {
+                            AlgorithmTabuSearchWindow viewer = new AlgorithmTabuSearchWindow(this);
+                            viewer.setVisible(true);
+                        });
+                    }
+                }
             }
+        });
+
+    }
+    public void executeAlgorithm (Algorithm algo){
+        ArrayList<Pillar> pillars = crs.readPillarsFromFile(view.getPathFieldTwo());
+        ArrayList<Person> people = crs.readPerson(view.getPathFieldOne(), pillars, Integer.parseInt(view.getDistance()));
+
+        boolean abs_rel = true;
+        int goal = 0;
+        if (view.getCRelativ()) {
+            abs_rel = false;
+            goal = Integer.parseInt(view.getCoverage());
+        } else if (view.getCAbsolut()) {
+            goal = Integer.parseInt(view.getPillarCount());
+        }
+
+        ArrayList<Pillar> result = algo.execute(pillars, people, abs_rel, goal);
+
+        SwingUtilities.invokeLater(() -> {
+            AlgorithmResultWindow viewer = new AlgorithmResultWindow(result);
+            viewer.setVisible(true);
         });
     }
 }
