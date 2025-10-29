@@ -2,11 +2,13 @@ package Controller.Algorithm;
 
 import Model.Algorithms.Algorithm;
 import Model.Algorithms.LatticeAlgorithms.LatticeAlgorithm;
+import Model.Algorithms.LinearOptimizationAlgorithm;
 import Model.Algorithms.LogikAlgorithm;
 import Model.Components.Person;
 import Model.Components.Pillar;
 import Model.Services.CsvReaderService;
 import Model.Session;
+import View.Algorithm.AlgorithmExportWindow;
 import View.Algorithm.AlgorithmInputWindow;
 import View.Algorithm.AlgorithmResultWindow;
 import View.Algorithm.AlgorithmTabuSearchWindow;
@@ -71,6 +73,10 @@ public class AlgorithmInputController {
                         });
                     }
                 }
+                if(view.getCLineareOptimierung()){
+                    LinearOptimizationAlgorithm a = new LinearOptimizationAlgorithm();
+                    executeAlgorithm(a);
+                }
             }
         });
 
@@ -90,9 +96,18 @@ public class AlgorithmInputController {
 
         ArrayList<Pillar> result = algo.execute(pillars, people, abs_rel, goal);
 
-        SwingUtilities.invokeLater(() -> {
-            AlgorithmResultWindow viewer = new AlgorithmResultWindow(result);
-            viewer.setVisible(true);
-        });
+        String test = algo.getClass().toString();
+
+        if(algo.getClass().toString().equals("class Model.Algorithms.LinearOptimizationAlgorithm")){
+            SwingUtilities.invokeLater(() -> {
+                AlgorithmExportWindow viewer = new AlgorithmExportWindow("Data/Cache/LinearOptimizationCache/loExport.txt");
+                viewer.setVisible(true);
+            });
+        }else {
+            SwingUtilities.invokeLater(() -> {
+                AlgorithmResultWindow viewer = new AlgorithmResultWindow(result);
+                viewer.setVisible(true);
+            });
+        }
     }
 }
