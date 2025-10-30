@@ -2,7 +2,9 @@ package View;
 
 import Controller.Algorithm.AlgorithmInputController;
 import Controller.Analysis.CsvAnalysisController;
+import Controller.Comparator.ComparatorController;
 import Controller.Editor.CsvEditorController;
+import Controller.ExportUnity.ExportUnityController;
 import View.Algorithm.AlgorithmInputWindow;
 import View.Analysis.CsvAnalysisWindow;
 import View.Comparator.ComparatorWindow;
@@ -91,6 +93,7 @@ public class MainWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 SwingUtilities.invokeLater(() -> {
                     ComparatorWindow viewer = new ComparatorWindow();
+                    new ComparatorController(viewer);
                     viewer.setVisible(true);
                 });
             }
@@ -100,6 +103,7 @@ public class MainWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 SwingUtilities.invokeLater(() -> {
                     ExportUnityWindow viewer = new ExportUnityWindow();
+                    new ExportUnityController(viewer);
                     viewer.setVisible(true);
                 });
             }

@@ -1,5 +1,7 @@
 package Model.Services;
 
+import Model.Components.Pillar;
+import Model.Components.Shadow;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -74,4 +76,13 @@ class CsvUpdateServiceTest {
         Assertions.assertEquals(referenceInstance,testingInstance);
     }
 
+    @Test
+    void solutionUnityExportTest(){
+        ArrayList<Pillar> pillars = new ArrayList<>();
+        pillars.add(new Pillar(2,20,20, Shadow.KEIN));
+
+        CsvUpdateService cus = new CsvUpdateService();
+        cus.solutionUnityExport("Data/TestingData/AlgorithmTest/LogikAlgorithmTest/logikAlgorithmTest2.csv","Data/TestingData/UpdateTest/unityExportTest1.csv", pillars, 20);
+
+    }
 }

@@ -1,5 +1,8 @@
 package Model.Services;
 
+import Model.Components.Person;
+import Model.Components.Pillar;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -133,4 +136,75 @@ public class CsvUpdateService {
         }
     }
 
+    /**
+     * Methode die Mapping erstellt für Unity Visualisierung
+     * @param inputFile Verkehrs-Simulation
+     * @param outputFile Output-File
+     * @param pillars Menge gesetzter Säulen
+     */
+    public void solutionUnityExport(String inputFile, String outputFile, ArrayList<Pillar> pillars, int distance){
+
+        ArrayList<Person> personModel = new ArrayList<>();
+        int internalPersonId = 0;
+        try (
+                BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+                BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))
+        ) {
+            String line;
+
+            writer.write(String.join(",","type","time","id","lat","lon","reached"));
+            writer.newLine();
+
+            reader.readLine();
+            while ((line = reader.readLine()) != null) {
+                String[] tokens = line.split(",");
+                Person lookingAt = findPerson(Integer.parseInt(tokens[1]),personModel);
+
+                if(lookingAt == null){
+                    personModel.add(new Person(Integer.parseInt(tokens[1]),internalPersonId));
+                    lookingAt = findPerson(Integer.parseInt(tokens[1]),personModel);
+                    internalPersonId++;
+                }
+
+                if(!lookingAt.isReached()){
+                    Pillar isNear = findPassing(Integer.parseInt(tokens[2]),Integer.parseInt(tokens[3]),pillars,distance);
+                    if(isNear != null){
+                        lookingAt.setReached(true);
+                    }
+                }
+                String reached = "";
+                if(lookingAt.isReached()){
+                    reached="1";
+                }else{
+                    reached="0";
+                }
+                String outputLine = String.join(",", "Point",tokens[0], tokens[1],tokens[2],tokens[3],reached);
+                writer.write(outputLine);
+                writer.newLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    //Hilfsmethode1
+    //Erkennt ob Person in Sichtbarkeits Radius von Säule war
+    private static Pillar findPassing(double lon, double lat, ArrayList<Pillar> pillars, int dist){
+        for(Pillar p: pillars){
+            if(p.distanceTo(lon,lat) <= dist){
+                return p;
+            }
+        }
+        return null;
+    }
+    //Hilfsmethode1.2
+    //Gibt entweder die Person wieder mit der Id
+    //Oder: Gibt null wieder
+    private static Person findPerson (int id, ArrayList<Person> pl){
+        for(Person p:pl){
+            if(id == p.getPersonID()){
+                return p;
+            }
+        }
+        return null;
+    }
 }

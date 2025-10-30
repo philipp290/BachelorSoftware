@@ -1,7 +1,10 @@
 package View.ExportUnity;
 
+import Controller.ExportUnity.ExportUnityController;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class ExportUnityWindow extends JFrame{
         private final JLabel solutionLabelOne = new JLabel("Lösungs-Säulen CSV");
@@ -56,11 +59,24 @@ public class ExportUnityWindow extends JFrame{
             startButton.setBounds(60, 200, 260, 50);
             getContentPane().add(startButton);
         }
+        //---------------------------Controller-Export-------------------------
+        public void addBrowserOne(ActionListener a){this.browseButtonOne.addActionListener(a);}
+        public void addBrowserTwo(ActionListener a){this.browseButtonTwo.addActionListener(a);}
+        public void addStartFunction(ActionListener a){this.startButton.addActionListener(a);}
+
+        public void setSolution(String msg){this.solutionTextFieldOne.setText(msg);}
+        public String getSolution(){return this.solutionTextFieldOne.getText();}
+
+        public void setPeople(String msg){this.personTextField.setText(msg);}
+        public String getPeople(){return this.personTextField.getText();}
+
+        public void showError(String msg){ JOptionPane.showMessageDialog(this, msg, "Fehler", JOptionPane.ERROR_MESSAGE); }
 
         //--------------------------------------------------------DEBUGGING---------------
         public static void main(String[] args) {
             SwingUtilities.invokeLater(() -> {
                 ExportUnityWindow viewer = new ExportUnityWindow();
+                new ExportUnityController(viewer);
                 viewer.setVisible(true);
             });
         }
