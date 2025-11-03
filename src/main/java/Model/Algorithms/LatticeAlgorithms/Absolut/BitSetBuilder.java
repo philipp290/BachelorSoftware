@@ -83,4 +83,46 @@ public class BitSetBuilder {
         return bitSet;
     }
 
+    /**
+     * Methode die Level k bei n Säulen generiert
+     * @param k level
+     * @param n Anzahl Säulen
+     * @return alle BitSets in diesem Level
+     */
+    public ArrayList<BitSet> buildLevelK (int k, int n){
+        //TODO checke Richtigkeit
+        ArrayList<BitSet> result = new ArrayList<>();
+
+        if (k < 0 || k > n) {return result;}
+        if (k == 0) {
+            result.add(new BitSet(n));
+            return result;
+        }
+        int[] comb = new int[k];
+        for (int i = 0; i < k; i++) {
+            comb[i] = i;
+        }
+        while (true) {
+            BitSet bs = new BitSet(n);
+            for (int idx : comb) {
+                bs.set(idx);
+            }
+            bs.set(n);
+            result.add(bs);
+
+            int pos = k - 1;
+            while (pos >= 0 && comb[pos] == n - k + pos) {
+                pos--;
+            }
+            if (pos < 0) {
+                break;
+            }
+            comb[pos]++;
+            for (int i = pos + 1; i < k; i++) {
+                comb[i] = comb[i - 1] + 1;
+            }
+        }
+        return result;
+    }
+
 }
