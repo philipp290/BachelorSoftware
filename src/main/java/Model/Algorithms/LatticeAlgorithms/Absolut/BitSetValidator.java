@@ -1,5 +1,9 @@
 package Model.Algorithms.LatticeAlgorithms.Absolut;
 
+import Model.Algorithms.LatticeAlgorithms.Relativ.BitSet_Plus;
+import Model.Components.Pillar;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.BitSet;
 
@@ -80,5 +84,33 @@ public class BitSetValidator {
             }
         }
         return fin;
+    }
+
+    /**
+     * Methode die bestimmt, ob bsTwo eine Generalisierung von
+     * bsOne ist
+     * @param bsOne bsOne
+     * @param bsTwo bsTwo
+     * @return Ergebnis
+     */
+    public boolean isGeneralisationOf(BitSet bsOne, BitSet bsTwo){
+        BitSet validation = (BitSet) bsOne.clone();
+        validation.flip(0,validation.length()-1);
+        validation.and(bsTwo);
+        return !(validation.cardinality() > 1);
+    }
+
+
+    public ArrayList<BitSet> topDownPruning(ArrayList<BitSet> nextLevel, ArrayList<BitSet> invalidPrevLevel){
+        ArrayList<BitSet> invalidNextLevel = new ArrayList<>();
+        for(BitSet nL : nextLevel){
+            for(BitSet ipL : invalidPrevLevel){
+                if(isGeneralisationOf(ipL,nL)){
+                    invalidNextLevel.add(nL);
+                    break;
+                }
+            }
+        }
+        return invalidNextLevel;
     }
 }

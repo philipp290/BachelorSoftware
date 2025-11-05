@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.BitSet;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -267,6 +268,184 @@ class BitSetValidatorTest {
         Assertions.assertEquals(result,reference);
     }
 
+    @Test
+    public void isGeneralizationTest(){
+        BitSet one = new BitSet(17);
+        one.set(16);
+        one.set(0,10);
+
+        BitSet two = new BitSet(17);
+        two.set(16);
+        two.set(2,8);
+
+        BitSetValidator bsv = new BitSetValidator();
+
+        Assertions.assertTrue(!bsv.isGeneralisationOf(two,one));
+        Assertions.assertTrue(bsv.isGeneralisationOf(one,two));
+    }
+    @Test
+    public void isNoGeneralizationTest(){
+        BitSet one = new BitSet(9);
+        one.set(9);
+        one.set(0,4);
+
+        BitSet two = new BitSet(9);
+        two.set(9);
+        two.set(2,7);
+
+        BitSetValidator bsv = new BitSetValidator();
+
+        Assertions.assertTrue(!bsv.isGeneralisationOf(two,one));
+        Assertions.assertTrue(!bsv.isGeneralisationOf(one,two));
+    }
+
+    @Test
+    public void topDownPruningTest1(){
+        ArrayList<BitSet> originalLevel = new ArrayList<>();
+        originalLevel.add(BitSet.valueOf(new byte[]{(byte) 0b111000001}));
+
+        ArrayList<BitSet> nextLevel = new ArrayList<>();
+        nextLevel.add(BitSet.valueOf(new byte[]{(byte) 0b110000001}));
+        nextLevel.add(BitSet.valueOf(new byte[]{(byte) 0b101000001}));
+        nextLevel.add(BitSet.valueOf(new byte[]{(byte) 0b011000001}));
+        nextLevel.add(BitSet.valueOf(new byte[]{(byte) 0b100000101}));
+
+        BitSetValidator bsv = new BitSetValidator();
+
+        ArrayList<BitSet> testingInstance = bsv.topDownPruning(nextLevel,originalLevel);
+
+        nextLevel.remove(0);
+        nextLevel.remove(0);
+        nextLevel.remove(0);
+
+        Assertions.assertEquals(testingInstance,nextLevel);
+    }
 
 
+    @Test
+    public void topDownPruningTest2(){
+        ArrayList<BitSet> originalLevel = new ArrayList<>();
+        BitSet testingBits = new BitSet();
+        testingBits.set(1);
+        testingBits.set(5);
+        testingBits.set(6);
+        testingBits.set(7);
+
+        originalLevel.add(testingBits);
+
+        ArrayList<BitSet> nextLevel = new ArrayList<>();
+
+        BitSet bs1 = new BitSet();
+        bs1.set(0);
+        bs1.set(1);
+        bs1.set(7);
+        nextLevel.add(bs1);  //1
+        BitSet bs2 = new BitSet();
+        bs2.set(0);
+        bs2.set(2);
+        bs2.set(7);
+        nextLevel.add(bs2);  //2
+        BitSet bs3 = new BitSet();
+        bs3.set(0);
+        bs3.set(3);
+        bs3.set(7);
+        nextLevel.add(bs3);  //3
+        BitSet bs4 = new BitSet();
+        bs4.set(0);
+        bs4.set(4);
+        bs4.set(7);
+        nextLevel.add(bs4);  //4
+        BitSet bs5 = new BitSet();
+        bs5.set(0);
+        bs5.set(5);
+        bs5.set(7);
+        nextLevel.add(bs5);  //5
+        BitSet bs6 = new BitSet();
+        bs6.set(0);
+        bs6.set(6);
+        bs6.set(7);
+        nextLevel.add(bs6);  //6
+        BitSet bs7 = new BitSet();
+        bs7.set(1);
+        bs7.set(2);
+        bs7.set(7);
+        nextLevel.add(bs7);  //7
+        BitSet bs8 = new BitSet();
+        bs8.set(1);
+        bs8.set(3);
+        bs8.set(7);
+        nextLevel.add(bs8);  //8
+        BitSet bs9 = new BitSet();
+        bs9.set(1);
+        bs9.set(4);
+        bs9.set(7);
+        nextLevel.add(bs9);  //9
+        BitSet bs10 = new BitSet();
+        bs10.set(1);
+        bs10.set(5);
+        bs10.set(7);
+        nextLevel.add(bs10);  //10
+        BitSet bs11 = new BitSet();
+        bs11.set(1);
+        bs11.set(6);
+        bs11.set(7);
+        nextLevel.add(bs11);  //11
+        BitSet bs12 = new BitSet();
+        bs12.set(2);
+        bs12.set(3);
+        bs12.set(7);
+        nextLevel.add(bs12);  //12
+        BitSet bs13 = new BitSet();
+        bs13.set(2);
+        bs13.set(4);
+        bs13.set(7);
+        nextLevel.add(bs13);  //13
+        BitSet bs14 = new BitSet();
+        bs14.set(2);
+        bs14.set(5);
+        bs14.set(7);
+        nextLevel.add(bs14);  //14
+        BitSet bs15 = new BitSet();
+        bs15.set(2);
+        bs15.set(6);
+        bs15.set(7);
+        nextLevel.add(bs15);  //15
+        BitSet bs16 = new BitSet();
+        bs16.set(3);
+        bs16.set(4);
+        bs16.set(7);
+        nextLevel.add(bs16);  //16
+        BitSet bs17 = new BitSet();
+        bs17.set(3);
+        bs17.set(5);
+        bs17.set(7);
+        nextLevel.add(bs17);  //17
+        BitSet bs18 = new BitSet();
+        bs18.set(3);
+        bs18.set(6);
+        bs18.set(7);
+        nextLevel.add(bs18);  //18
+        BitSet bs19 = new BitSet();
+        bs19.set(4);
+        bs19.set(5);
+        bs19.set(7);
+        nextLevel.add(bs19);  //19
+        BitSet bs20 = new BitSet();
+        bs20.set(4);
+        bs20.set(6);
+        bs20.set(7);
+        nextLevel.add(bs20);  //20
+        BitSet bs21 = new BitSet();
+        bs21.set(5);
+        bs21.set(6);
+        bs21.set(7);
+        nextLevel.add(bs21);  //21
+
+
+        BitSetValidator bsv = new BitSetValidator();
+
+        ArrayList<BitSet> testingInstance = bsv.topDownPruning(nextLevel,originalLevel);
+
+        Assertions.assertEquals(testingInstance,new ArrayList<>(Arrays.asList(nextLevel.get(9), nextLevel.get(10), nextLevel.get(20))));
+    }
 }
