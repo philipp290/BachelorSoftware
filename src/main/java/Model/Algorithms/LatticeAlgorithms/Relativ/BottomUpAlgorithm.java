@@ -1,8 +1,8 @@
 package Model.Algorithms.LatticeAlgorithms.Relativ;
 
 import Model.Algorithms.Algorithm;
-import Model.Algorithms.LatticeAlgorithms.Absolut.BitSetBuilder;
-import Model.Algorithms.LatticeAlgorithms.Absolut.BitSetValidator;
+import Model.Algorithms.LatticeAlgorithms.General.BitSetBuilder;
+import Model.Algorithms.LatticeAlgorithms.General.BitSetValidator;
 import Model.Components.Person;
 import Model.Components.Pillar;
 
@@ -22,7 +22,7 @@ public class BottomUpAlgorithm implements Algorithm {
 
     private boolean algoEnded = false;
 
-    BottomUpAlgorithm(int maxLevel){
+    public BottomUpAlgorithm(int maxLevel){
         this.maxLevel = maxLevel;
         currentLevelIndex=0;
         bsb = new BitSetBuilder();

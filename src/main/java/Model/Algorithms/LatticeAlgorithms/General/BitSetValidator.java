@@ -1,5 +1,6 @@
-package Model.Algorithms.LatticeAlgorithms.Absolut;
+package Model.Algorithms.LatticeAlgorithms.General;
 
+import Model.Algorithms.LatticeAlgorithms.Absolut.Tabu_Plus_BitSet;
 import Model.Algorithms.LatticeAlgorithms.Relativ.BitSet_Plus;
 import Model.Components.Pillar;
 

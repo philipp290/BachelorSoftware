@@ -1,5 +1,6 @@
 package Model.Algorithms.LatticeAlgorithms.Absolut;
 
+import Model.Algorithms.LatticeAlgorithms.General.BitSetBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

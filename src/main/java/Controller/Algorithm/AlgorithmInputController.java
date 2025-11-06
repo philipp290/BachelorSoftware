@@ -8,10 +8,7 @@ import Model.Components.Person;
 import Model.Components.Pillar;
 import Model.Services.CsvReaderService;
 import Model.Session;
-import View.Algorithm.AlgorithmExportWindow;
-import View.Algorithm.AlgorithmInputWindow;
-import View.Algorithm.AlgorithmResultWindow;
-import View.Algorithm.AlgorithmTabuSearchWindow;
+import View.Algorithm.*;
 import View.Analysis.CsvAnalysisWindow;
 
 import javax.swing.*;
@@ -69,6 +66,11 @@ public class AlgorithmInputController {
                     if(view.getCAbsolut()){
                         SwingUtilities.invokeLater(() -> {
                             AlgorithmTabuSearchWindow viewer = new AlgorithmTabuSearchWindow(this);
+                            viewer.setVisible(true);
+                        });
+                    }else{
+                        SwingUtilities.invokeLater(() -> {
+                            AlgorithmLatticeSearchSelectionWindow viewer = new AlgorithmLatticeSearchSelectionWindow(this);
                             viewer.setVisible(true);
                         });
                     }

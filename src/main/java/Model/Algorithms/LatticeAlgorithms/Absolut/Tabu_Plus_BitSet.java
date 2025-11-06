@@ -6,7 +6,7 @@ public class Tabu_Plus_BitSet {
     public TabuElement tabuElement;
     public BitSet bitSet;
 
-    Tabu_Plus_BitSet(TabuElement te, BitSet bS){
+    public Tabu_Plus_BitSet(TabuElement te, BitSet bS){
         this.tabuElement = te;
         this.bitSet = bS;
     }

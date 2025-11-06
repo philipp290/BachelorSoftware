@@ -1,8 +1,8 @@
 package Model.Algorithms.LatticeAlgorithms.Relativ;
 
 import Model.Algorithms.Algorithm;
-import Model.Algorithms.LatticeAlgorithms.Absolut.BitSetBuilder;
-import Model.Algorithms.LatticeAlgorithms.Absolut.BitSetValidator;
+import Model.Algorithms.LatticeAlgorithms.General.BitSetBuilder;
+import Model.Algorithms.LatticeAlgorithms.General.BitSetValidator;
 import Model.Components.Person;
 import Model.Components.Pillar;
 
@@ -30,7 +30,7 @@ public class RandomWalkAlgorithm implements Algorithm {
     private BitSet optimumNode = null;
     private boolean algoEnded = false;
 
-    RandomWalkAlgorithm(int minLevel, int maxLevel,int noOptimumTimer){
+    public RandomWalkAlgorithm(int minLevel, int maxLevel,int noOptimumTimer){
         this.noOptimumTimer = noOptimumTimer;
         this.minLevel = minLevel;
         this.maxLevel = maxLevel;

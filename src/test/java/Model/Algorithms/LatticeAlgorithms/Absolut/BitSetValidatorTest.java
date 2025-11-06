@@ -1,13 +1,12 @@
 package Model.Algorithms.LatticeAlgorithms.Absolut;
 
+import Model.Algorithms.LatticeAlgorithms.General.BitSetValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class BitSetValidatorTest {
     @Test
@@ -301,22 +300,43 @@ class BitSetValidatorTest {
 
     @Test
     public void topDownPruningTest1(){
+        //TODO FIX THIS TEST
         ArrayList<BitSet> originalLevel = new ArrayList<>();
-        originalLevel.add(BitSet.valueOf(new byte[]{(byte) 0b111000001}));
+        BitSet og1 = new BitSet();
+        og1.set(0);
+        og1.set(1);
+        og1.set(2);
+        og1.set(8);
+        originalLevel.add(og1);
 
         ArrayList<BitSet> nextLevel = new ArrayList<>();
-        nextLevel.add(BitSet.valueOf(new byte[]{(byte) 0b110000001}));
-        nextLevel.add(BitSet.valueOf(new byte[]{(byte) 0b101000001}));
-        nextLevel.add(BitSet.valueOf(new byte[]{(byte) 0b011000001}));
-        nextLevel.add(BitSet.valueOf(new byte[]{(byte) 0b100000101}));
+        BitSet bs1 = new BitSet();
+        bs1.set(0);
+        bs1.set(1);
+        bs1.set(8);
+        nextLevel.add(bs1);
+        BitSet bs2 = new BitSet();
+        bs2.set(0);
+        bs2.set(2);
+        bs2.set(8);
+        nextLevel.add(bs2);
+        BitSet bs3 = new BitSet();
+        bs3.set(1);
+        bs3.set(2);
+        bs3.set(8);
+        nextLevel.add(bs3);
+        BitSet bs4 = new BitSet();
+        bs4.set(0);
+        bs4.set(6);
+        bs4.set(8);
+        nextLevel.add(bs4);
 
         BitSetValidator bsv = new BitSetValidator();
 
         ArrayList<BitSet> testingInstance = bsv.topDownPruning(nextLevel,originalLevel);
 
-        nextLevel.remove(0);
-        nextLevel.remove(0);
-        nextLevel.remove(0);
+
+        nextLevel.remove(3);
 
         Assertions.assertEquals(testingInstance,nextLevel);
     }

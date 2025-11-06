@@ -1,8 +1,9 @@
 package Model.Algorithms.LatticeAlgorithms.Absolut;
 
+import Model.Algorithms.LatticeAlgorithms.General.BitSetBuilder;
+import Model.Algorithms.LatticeAlgorithms.General.BitSetValidator;
 import Model.Components.Pillar;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.BitSet;
 

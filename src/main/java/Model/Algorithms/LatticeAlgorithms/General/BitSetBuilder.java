@@ -1,4 +1,7 @@
-package Model.Algorithms.LatticeAlgorithms.Absolut;
+package Model.Algorithms.LatticeAlgorithms.General;
+
+import Model.Algorithms.LatticeAlgorithms.Absolut.TabuElement;
+import Model.Algorithms.LatticeAlgorithms.Absolut.Tabu_Plus_BitSet;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -52,7 +55,7 @@ public class BitSetBuilder {
      * @param t Tabu-Element, was angibt, welche Bits getauscht werden sollen
      * @return bS mit dem Durchgeführten Bit-Swap
      */
-    BitSet bitSwap(BitSet bS, TabuElement t){
+    public BitSet bitSwap(BitSet bS, TabuElement t){
         BitSet bitSet = (BitSet) bS.clone();
         if(bitSet.get(t.indexOne)){
             bitSet.clear(t.indexOne);

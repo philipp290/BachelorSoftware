@@ -1,8 +1,8 @@
 package Model.Algorithms.LatticeAlgorithms.Relativ;
 
 import Model.Algorithms.Algorithm;
-import Model.Algorithms.LatticeAlgorithms.Absolut.BitSetBuilder;
-import Model.Algorithms.LatticeAlgorithms.Absolut.BitSetValidator;
+import Model.Algorithms.LatticeAlgorithms.General.BitSetBuilder;
+import Model.Algorithms.LatticeAlgorithms.General.BitSetValidator;
 import Model.Components.Person;
 import Model.Components.Pillar;
 
@@ -24,7 +24,7 @@ public class TopDownAlgorithm implements Algorithm {
 
     private boolean algoEnded = false;
 
-    TopDownAlgorithm(int minLevel){
+    public TopDownAlgorithm(int minLevel){
         this.minLevel = minLevel;
         this.invalidPreviousLevel = new ArrayList<>();
         this.validPreviousLevel = new ArrayList<>();
