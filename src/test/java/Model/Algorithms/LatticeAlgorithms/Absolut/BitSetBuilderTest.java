@@ -265,4 +265,89 @@ class BitSetBuilderTest {
         ArrayList<Tabu_Plus_BitSet> testNeighbourhood = bsb.generateCandidatesPlus(testInstance, tabuListe, -1);
         Assertions.assertEquals(testNeighbourhood, referenceNeighbourhood);
     }
+
+    @Test
+    void buildGeneralizationsTest(){
+        BitSetBuilder bsb = new BitSetBuilder();
+        BitSet original = new BitSet();
+        original.set(0);
+        original.set(4);
+        original.set(5);
+        original.set(7);
+
+        ArrayList<BitSet> reference = new ArrayList<>();
+
+        BitSet bs1 = new BitSet();
+        bs1.set(4);
+        bs1.set(5);
+        bs1.set(7);
+        reference.add(bs1);
+
+        BitSet bs2 = new BitSet();
+        bs2.set(0);
+        bs2.set(5);
+        bs2.set(7);
+        reference.add(bs2);
+
+        BitSet bs3 = new BitSet();
+        bs3.set(0);
+        bs3.set(4);
+        bs3.set(7);
+        reference.add(bs3);
+
+        ArrayList<BitSet> testingInstance = bsb.buildGeneralisations(original);
+
+        Assertions.assertEquals(reference,testingInstance);
+
+    }
+
+    @Test
+    void buildSpecializatiobsTest(){
+        BitSetBuilder bsb = new BitSetBuilder();
+        BitSet original = new BitSet();
+        original.set(0);
+        original.set(4);
+        original.set(5);
+        original.set(7);
+
+        ArrayList<BitSet> reference = new ArrayList<>();
+
+        BitSet bs1 = new BitSet();
+        bs1.set(0);
+        bs1.set(1);
+        bs1.set(4);
+        bs1.set(5);
+        bs1.set(7);
+        reference.add(bs1);
+
+        BitSet bs2 = new BitSet();
+        bs2.set(0);
+        bs2.set(2);
+        bs2.set(4);
+        bs2.set(5);
+        bs2.set(7);
+        reference.add(bs2);
+
+        BitSet bs3 = new BitSet();
+        bs3.set(0);
+        bs3.set(3);
+        bs3.set(4);
+        bs3.set(5);
+        bs3.set(7);
+        reference.add(bs3);
+
+        BitSet bs4 = new BitSet();
+        bs4.set(0);
+        bs4.set(4);
+        bs4.set(5);
+        bs4.set(6);
+        bs4.set(7);
+        reference.add(bs4);
+
+        ArrayList<BitSet> testingInstance = bsb.buildSpecialisations(original);
+
+        Assertions.assertEquals(reference,testingInstance);
+
+    }
+
 }

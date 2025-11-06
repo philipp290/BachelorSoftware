@@ -448,4 +448,235 @@ class BitSetValidatorTest {
 
         Assertions.assertEquals(testingInstance,new ArrayList<>(Arrays.asList(nextLevel.get(9), nextLevel.get(10), nextLevel.get(20))));
     }
+
+    @Test
+    void bottomUpPruningTest1(){
+        BitSetValidator bsv = new BitSetValidator();
+
+        BitSet validPrev = new BitSet();
+        validPrev.set(0);
+        validPrev.set(1);
+        validPrev.set(7);
+        ArrayList<BitSet> prev = new ArrayList<>();
+        prev.add(validPrev);
+
+        ArrayList<BitSet> reference = new ArrayList<>();
+
+        BitSet bs1 = new BitSet();
+        bs1.set(0);
+        bs1.set(1);
+        bs1.set(2);
+        bs1.set(7);
+        reference.add(bs1);
+
+        BitSet bs2 = new BitSet();
+        bs2.set(0);
+        bs2.set(1);
+        bs2.set(3);
+        bs2.set(7);
+        reference.add(bs2);
+
+        BitSet bs3 = new BitSet();
+        bs3.set(0);
+        bs3.set(1);
+        bs3.set(4);
+        bs3.set(7);
+        reference.add(bs3);
+
+        BitSet bs4 = new BitSet();
+        bs4.set(0);
+        bs4.set(1);
+        bs4.set(5);
+        bs4.set(7);
+        reference.add(bs4);
+
+        BitSet bs5 = new BitSet();
+        bs5.set(0);
+        bs5.set(1);
+        bs5.set(6);
+        bs5.set(7);
+        reference.add(bs5);
+
+        BitSet bs6 = new BitSet();
+        bs6.set(4);
+        bs6.set(5);
+        bs6.set(6);
+        bs6.set(7);
+        reference.add(bs6);
+
+        BitSet bs7 = new BitSet();
+        bs7.set(2);
+        bs7.set(5);
+        bs7.set(6);
+        bs7.set(7);
+        reference.add(bs7);
+
+        ArrayList<BitSet> testingInstance = bsv.bottomUpPruning(reference,prev);
+
+        reference.remove(6);
+        reference.remove(5);
+
+        Assertions.assertEquals(reference,testingInstance);
+    }
+
+    /**
+     * Hier wollen wir fest stellen, ob die Spezialisierungs-
+     * Erkennung auch über mehrere Ebenen funktioniert
+     */
+    @Test
+    void bottomUpPruningTest2(){
+        BitSetValidator bsv = new BitSetValidator();
+
+        BitSet validPrev = new BitSet();
+        validPrev.set(0);
+        validPrev.set(7);
+        ArrayList<BitSet> prev = new ArrayList<>();
+        prev.add(validPrev);
+
+        ArrayList<BitSet> reference = new ArrayList<>();
+
+        BitSet bs1 = new BitSet();
+        bs1.set(0);
+        bs1.set(4);
+        bs1.set(5);
+        bs1.set(7);
+        reference.add(bs1);
+
+        BitSet bs2 = new BitSet();
+        bs2.set(0);
+        bs2.set(3);
+        bs2.set(7);
+        reference.add(bs2);
+
+        BitSet bs3 = new BitSet();
+        bs3.set(0);
+        bs3.set(1);
+        bs3.set(2);
+        bs3.set(4);
+        bs3.set(7);
+        reference.add(bs3);
+
+        BitSet bs4 = new BitSet();
+        bs4.set(0);
+        bs4.set(1);
+        bs4.set(5);
+        bs4.set(7);
+        reference.add(bs4);
+
+        BitSet bs5 = new BitSet();
+        bs5.set(0);
+        bs5.set(1);
+        bs5.set(2);
+        bs5.set(3);
+        bs5.set(6);
+        bs5.set(7);
+        reference.add(bs5);
+
+        BitSet bs6 = new BitSet();
+        bs6.set(4);
+        bs6.set(5);
+        bs6.set(6);
+        bs6.set(7);
+        reference.add(bs6);
+
+        BitSet bs7 = new BitSet();
+        bs7.set(2);
+        bs7.set(5);
+        bs7.set(7);
+        reference.add(bs7);
+
+        ArrayList<BitSet> testingInstance = bsv.bottomUpPruning(reference,prev);
+
+        reference.remove(6);
+        reference.remove(5);
+
+        Assertions.assertEquals(reference,testingInstance);
+    }
+
+    @Test
+    void equalityPruningTest(){
+        BitSetValidator bsv = new BitSetValidator();
+        ArrayList<BitSet> original = new ArrayList<>();
+        BitSet obs1 = new BitSet();
+        obs1.set(0);
+        obs1.set(1);
+        obs1.set(7);
+        original.add(obs1);
+
+        ArrayList<BitSet> toBePruned = new ArrayList<>();
+        BitSet bs1 = new BitSet();
+        bs1.set(0);
+        bs1.set(1);
+        bs1.set(2);
+        bs1.set(7);
+        toBePruned.add(bs1);
+        BitSet bs2 = new BitSet();
+        bs2.set(0);
+        bs2.set(7);
+        toBePruned.add(bs2);
+        BitSet bs3 = new BitSet();
+        bs3.set(0);
+        bs3.set(1);
+        bs3.set(7);
+        toBePruned.add(bs3);
+        BitSet bs4 = new BitSet();
+        bs4.set(3);
+        bs4.set(4);
+        bs4.set(5);
+        bs4.set(7);
+        toBePruned.add(bs4);
+
+        ArrayList<BitSet> testingInstance = bsv.equalityPruning(toBePruned,original);
+        toBePruned.remove(3);
+        toBePruned.remove(1);
+        toBePruned.remove(0);
+
+        Assertions.assertEquals(toBePruned,original);
+
+    }
+
+    @Test
+    void newOptimumRelTest(){
+        BitSetValidator bsv = new BitSetValidator();
+
+        ArrayList<BitSet> pillarCoverage = new ArrayList<>();
+        ArrayList<Integer> pillarScore = new ArrayList<>();
+
+        BitSet pc1 = new BitSet();
+        pc1.set(0);
+        pc1.set(1);
+        pc1.set(2);
+        pc1.set(3);
+        pc1.set(7);
+        pillarCoverage.add(pc1);
+        pillarScore.add(0);
+
+        BitSet pc2 = new BitSet();
+        pc2.set(0);
+        pc2.set(4);
+        pc2.set(5);
+        pc2.set(6);
+        pc2.set(7);
+        pillarCoverage.add(pc2);
+        pillarScore.add(0);
+
+        BitSet pc3 = new BitSet();
+        pc3.set(0);
+        pc3.set(7);
+        pillarCoverage.add(pc3);
+        pillarScore.add(3);
+
+        BitSet candidat = new BitSet();
+        candidat.set(0);
+        candidat.set(1);
+        candidat.set(7);
+
+        BitSet optimum = new BitSet();
+        optimum.set(2);
+        optimum.set(7);
+
+        Assertions.assertTrue(!bsv.newOptimumRel(optimum,candidat,pillarCoverage,pillarScore));
+        Assertions.assertTrue(bsv.newOptimumRel(candidat,optimum,pillarCoverage,pillarScore));
+    }
+
 }

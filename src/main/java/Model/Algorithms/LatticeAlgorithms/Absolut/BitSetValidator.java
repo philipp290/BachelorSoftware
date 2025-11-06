@@ -113,4 +113,41 @@ public class BitSetValidator {
         }
         return invalidNextLevel;
     }
+
+    public ArrayList<BitSet> bottomUpPruning(ArrayList<BitSet> nextLevel, ArrayList<BitSet> validPrevLevel){
+        ArrayList<BitSet> validNextLevel = new ArrayList<>();
+        for(BitSet nL : nextLevel){
+            for(BitSet ipL : validPrevLevel){
+                if(isGeneralisationOf(nL,ipL)){
+                    validNextLevel.add(nL);
+                    break;
+                }
+            }
+        }
+        return validNextLevel;
+    }
+
+    public ArrayList<BitSet> equalityPruning(ArrayList<BitSet> nextLevel, ArrayList<BitSet> prevLevel){
+        ArrayList<BitSet> toBePruned = new ArrayList<>();
+        for(BitSet nL : toBePruned){
+            for(BitSet ipL : prevLevel){
+                if(nL.equals(ipL)){
+                    toBePruned.add(nL);
+                    break;
+                }
+            }
+        }
+        return toBePruned;
+    }
+
+    public boolean newOptimumRel(BitSet optimum, BitSet candidate, ArrayList<BitSet> pillarCov, ArrayList<Integer> pillarSc){
+        if(optimum.cardinality() < candidate.cardinality()){
+            return false;
+        }else if(optimum.cardinality() == candidate.cardinality()){
+            if(validateScore(optimum,pillarSc) > validateScore(candidate,pillarSc)){
+                return false;
+            }
+        }
+        return true;
+    }
 }

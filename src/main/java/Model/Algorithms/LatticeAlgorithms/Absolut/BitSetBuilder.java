@@ -125,4 +125,36 @@ public class BitSetBuilder {
         return result;
     }
 
+    /**
+     * Methode die alle Generalisierungen im Level drunter von bs wiedergibt
+     * @param bs Input BitSet
+     * @return alle Generalisierungen im Level drunter von bs
+     */
+    public ArrayList<BitSet> buildGeneralisations(BitSet bs){
+        ArrayList<BitSet> result = new ArrayList<>();
+        for(int i = 0; i<bs.length()-1; i++){
+            if(bs.get(i)){
+                BitSet temp = (BitSet) bs.clone();
+                temp.clear(i);
+                result.add(temp);
+            }
+        }
+        return result;
+    }
+    /**
+     * Methode die alle Spezialisierungen im Level drunter von bs wiedergibt
+     * @param bs Input BitSet
+     * @return alle Spezialisierungen im Level drunter von bs
+     */
+    public ArrayList<BitSet> buildSpecialisations(BitSet bs){
+        ArrayList<BitSet> result = new ArrayList<>();
+        for(int i = 0; i<bs.length()-1; i++){
+            if(!bs.get(i)){
+                BitSet temp = (BitSet) bs.clone();
+                temp.set(i);
+                result.add(temp);
+            }
+        }
+        return result;
+    }
 }
