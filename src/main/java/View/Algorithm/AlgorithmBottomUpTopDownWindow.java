@@ -64,10 +64,14 @@ public class AlgorithmBottomUpTopDownWindow extends JFrame {
 
         //-------------------BUTTON-FUNCTION------------------
         nextButton.addActionListener((ActionEvent) ->{
-            int input = Integer.parseInt(this.inputField.getText());
-            Session.getInstance().getAlgorithmParameters().add(input);
-            aic.executeAlgorithm(new LatticeAlgorithm());
-            dispose();
+            if(!inputField.getText().isEmpty()) {
+                int input = Integer.parseInt(this.inputField.getText());
+                Session.getInstance().getAlgorithmParameters().add(input);
+                aic.executeAlgorithm(new LatticeAlgorithm());
+                dispose();
+            }else{
+                JOptionPane.showMessageDialog(this, "Spezifiziere Grenze", "Fehler", JOptionPane.ERROR_MESSAGE);
+            }
         });
 
 

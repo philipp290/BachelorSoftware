@@ -71,7 +71,17 @@ public class TopDownAlgorithm implements Algorithm {
     public void nextStep(){
         currentLevelIndex--;
         if(currentLevelIndex < this.minLevel){
-            this.algoEnded = true;
+            this.algoEnded=true;
+            int highScore = -999999;
+            BitSet optimum = new BitSet();
+            for(BitSet bs : validPreviousLevel){
+                int score = bsv.validateScore(bs,pillarScore);
+                if(score > highScore){
+                    optimum = bs;
+                    highScore = score;
+                }
+            }
+            this.optimumNode = optimum;
             return;
         }
         ArrayList<BitSet> currentLevel = bsb.buildLevelK(currentLevelIndex,pillarCount);

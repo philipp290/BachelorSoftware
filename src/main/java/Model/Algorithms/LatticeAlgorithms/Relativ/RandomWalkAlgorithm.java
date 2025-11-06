@@ -81,10 +81,10 @@ public class RandomWalkAlgorithm implements Algorithm {
         if(bsv.validateAbs(currentCenterNode,pillarCoverage) >= this.minCoverage){
             up_down = false;
         }
-        if(currentLevelIndex > maxLevel && up_down){
+        if(currentLevelIndex >= maxLevel){
             up_down = false;
         }
-        if(currentLevelIndex < minLevel && !up_down){
+        if(currentLevelIndex <= minLevel){
             up_down = true;
         }
         ArrayList<BitSet> currentLevel = new ArrayList<>();

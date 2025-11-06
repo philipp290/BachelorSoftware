@@ -79,14 +79,18 @@ public class AlgorithmRandomWalkWindow extends JFrame {
 
         //-----------------BUTTON-FUNCTION------------------------
         nextButton.addActionListener((ActionEvent) -> {
-            int ceil = Integer.parseInt(this.ceilField.getText());
-            int bot = Integer.parseInt(this.botField.getText());
-            int timer = Integer.parseInt(this.timerField.getText());
-            Session.getInstance().getAlgorithmParameters().add(bot);
-            Session.getInstance().getAlgorithmParameters().add(ceil);
-            Session.getInstance().getAlgorithmParameters().add(timer);
-            aic.executeAlgorithm(new LatticeAlgorithm());
-            dispose();
+            if(!ceilField.getText().isEmpty()&&!botField.getText().isEmpty()&&!timerField.getText().isEmpty()) {
+                int ceil = Integer.parseInt(this.ceilField.getText());
+                int bot = Integer.parseInt(this.botField.getText());
+                int timer = Integer.parseInt(this.timerField.getText());
+                Session.getInstance().getAlgorithmParameters().add(bot);
+                Session.getInstance().getAlgorithmParameters().add(ceil);
+                Session.getInstance().getAlgorithmParameters().add(timer);
+                aic.executeAlgorithm(new LatticeAlgorithm());
+                dispose();
+            }else{
+                JOptionPane.showMessageDialog(this, "Spezifikation nicht fertig", "Fehler", JOptionPane.ERROR_MESSAGE);
+            }
         });
 
     }
