@@ -20,15 +20,16 @@ public class RandomWalkAlgorithm implements Algorithm {
     private final int maxLevel;
     private int pillarCount;
     private int minCoverage;
-    private ArrayList<BitSet> pillarCoverage;
-    private ArrayList<Integer> pillarScore;
+    public ArrayList<BitSet> pillarCoverage;
+    public ArrayList<Integer> pillarScore;
 
     private int timer = 0;
     private int noOptimumTimer;
-    private boolean timerActivated = false;
+    public boolean timerActivated = false;
 
-    private BitSet optimumNode = null;
-    private boolean algoEnded = false;
+    public BitSet optimumNode = null;
+    public boolean algoEnded = false;
+    public boolean foundValidNode = false;
 
     public RandomWalkAlgorithm(int minLevel, int maxLevel,int noOptimumTimer){
         this.noOptimumTimer = noOptimumTimer;
@@ -140,6 +141,7 @@ public class RandomWalkAlgorithm implements Algorithm {
             }
             if(bsv.newOptimumRel(this.optimumNode,currentOptimum,pillarCoverage,pillarScore)){
                 this.optimumNode = currentOptimum;
+                this.foundValidNode = true;
                 if(timerActivated){
                     this.timer = 0;
                 }

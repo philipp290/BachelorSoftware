@@ -18,9 +18,9 @@ public class BottomUpAlgorithm implements Algorithm {
     private int minCoverage;
     private ArrayList<BitSet> pillarCoverage;
     private ArrayList<Integer> pillarScore;
-    private BitSet optimumNode = null;
+    public BitSet optimumNode = null;
 
-    private boolean algoEnded = false;
+    public boolean algoEnded = false;
 
     public BottomUpAlgorithm(int maxLevel){
         this.maxLevel = maxLevel;

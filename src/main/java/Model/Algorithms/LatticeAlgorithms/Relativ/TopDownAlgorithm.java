@@ -18,11 +18,11 @@ public class TopDownAlgorithm implements Algorithm {
     private final int minLevel;
     private int pillarCount;
     private int minCoverage;
-    private ArrayList<BitSet> pillarCoverage;
-    private ArrayList<Integer> pillarScore;
-    private BitSet optimumNode = null;
+    public ArrayList<BitSet> pillarCoverage;
+    public ArrayList<Integer> pillarScore;
 
-    private boolean algoEnded = false;
+    public BitSet optimumNode = null;
+    public boolean algoEnded = false;
 
     public TopDownAlgorithm(int minLevel){
         this.minLevel = minLevel;
