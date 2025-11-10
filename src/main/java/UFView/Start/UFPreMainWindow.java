@@ -16,8 +16,31 @@ package UFView.Start;
 //<a href="https://www.flaticon.com/free-icons/yes" title="yes icons">Yes icons created by heisenberg_jr - Flaticon</a>
 //No:
 //<a href="https://www.flaticon.com/free-icons/close" title="close icons">Close icons created by Pixel perfect - Flaticon</a>
+//Lighthouse:
+//<a href="https://www.flaticon.com/free-icons/lighthouse" title="lighthouse icons">Lighthouse icons created by yoyonpujiono - Flaticon</a>
+//Algorithm:
+//<a href="https://www.flaticon.com/free-icons/machine-learning" title="machine learning icons">Machine learning icons created by Becris - Flaticon</a>
+//Compare:
+//<a href="https://www.flaticon.com/free-icons/compare" title="compare icons">Compare icons created by Oleh PF - Flaticon</a>
+//Unity:
+//<a target="_blank" href="https://icons8.com/icon/39848/unity">Unity</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+//Error:
+//<a href="https://www.flaticon.com/free-icons/error" title="error icons">Error icons created by Gregor Cresnar - Flaticon</a>
+//Info:
+//<a href="https://www.flaticon.com/free-icons/info" title="info icons">Info icons created by Freepik - Flaticon</a>
+//RadioButtonUnselected:
+//<a href="https://www.flaticon.com/free-icons/radio-button" title="radio button icons">Radio button icons created by Icon mania - Flaticon</a>
+//RadioButtonSelected:
+//<a href="https://www.flaticon.com/free-icons/radio" title="radio icons">Radio icons created by Bharat Icons - Flaticon</a>
+//CheckBoxSelcted
+//<a href="https://www.flaticon.com/free-icons/checkbox" title="checkbox icons">Checkbox icons created by inkubators - Flaticon</a>
+//CheckBoxUnselected
+//<a href="https://www.flaticon.com/free-icons/checkbox" title="checkbox icons">Checkbox icons created by Kushal Jain - Flaticon</a>
+
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 
 public class UFPreMainWindow extends JFrame {
@@ -77,6 +100,16 @@ public class UFPreMainWindow extends JFrame {
         startingButton.setBounds(20, 80, 360, 40);
         formatButton(startingButton);
         getContentPane().add(startingButton);
+
+        //--------------BUTTON-FUNCTION-----------------
+        startingButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                UFSpecificationWindow viewer = new UFSpecificationWindow(true);
+                viewer.setVisible(true);
+            });
+            dispose();
+        });
+
     }
 
     private void formatButton(JButton button){

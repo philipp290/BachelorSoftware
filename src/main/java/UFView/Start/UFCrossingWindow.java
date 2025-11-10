@@ -1,7 +1,12 @@
 package UFView.Start;
 
+import Model.Session;
+import UFView.UFMainWindow;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class UFCrossingWindow extends JFrame {
     private JLabel header;
@@ -68,6 +73,35 @@ public class UFCrossingWindow extends JFrame {
         noButton.setBounds(240,60,120,40);
         formatButton(noButton);
         getContentPane().add(noButton);
+
+        yesButton.addActionListener((ActionEvent)->{
+            if(type) {
+                SwingUtilities.invokeLater(() -> {
+                    UFPillarChoosingWindow viewer = new UFPillarChoosingWindow(Session.getInstance().getPillars());
+                    viewer.setVisible(true);
+                });
+            }else{
+                SwingUtilities.invokeLater(() -> {
+                    UFSpecificationWindow viewer = new UFSpecificationWindow(false);
+                    viewer.setVisible(true);
+                });
+            }
+            dispose();
+        });
+        noButton.addActionListener((ActionEvent)->{
+            if(type) {
+                SwingUtilities.invokeLater(() -> {
+                    UFCrossingWindow viewer = new UFCrossingWindow(false);
+                    viewer.setVisible(true);
+                });
+            }else{
+                SwingUtilities.invokeLater(() -> {
+                    UFMainWindow viewer = new UFMainWindow();
+                    viewer.setVisible(true);
+                });
+            }
+            dispose();
+        });
     }
 
     private void formatButton(JButton button){
@@ -100,7 +134,7 @@ public class UFCrossingWindow extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            UFCrossingWindow viewer = new UFCrossingWindow(true);
+            UFCrossingWindow viewer = new UFCrossingWindow(false);
             viewer.setVisible(true);
         });
     }

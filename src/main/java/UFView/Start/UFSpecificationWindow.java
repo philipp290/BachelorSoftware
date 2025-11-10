@@ -1,9 +1,18 @@
 package UFView.Start;
 
+import Model.Components.Person;
+import Model.Components.Pillar;
+import Model.Services.CsvReaderService;
+import Model.Session;
+import UFView.UFMainWindow;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.util.ArrayList;
 
 public class UFSpecificationWindow extends JFrame {
     private JLabel pillarHeader;
@@ -25,8 +34,18 @@ public class UFSpecificationWindow extends JFrame {
     private ImageIcon carIcon;
     private ImageIcon searchIcon;
     private ImageIcon startIcon;
+    private ImageIcon lighthouseIcon;
 
-    public UFSpecificationWindow(){
+    private boolean type;
+
+    public UFSpecificationWindow(boolean t){
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        this.type = t;
         defaultColor = new Color(220, 220, 220);
         hoverColor = new Color(170, 170, 170);
         clickColor = new Color(130, 130, 130);
@@ -49,6 +68,10 @@ public class UFSpecificationWindow extends JFrame {
         scaledImage = startIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         startIcon = new ImageIcon(scaledImage);
 
+        lighthouseIcon = new ImageIcon(getClass().getResource("/lighthouseIcon.png"));
+        scaledImage = lighthouseIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        lighthouseIcon = new ImageIcon(scaledImage);
+
         Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/emergencityIcon.png"));
         setIconImage(icon);
         setTitle("Spezifikation");
@@ -56,7 +79,11 @@ public class UFSpecificationWindow extends JFrame {
 
         JPanel content = new JPanel(null);
         content.setBackground(Color.WHITE);
-        content.setPreferredSize(new Dimension(400, 300));
+        if(type) {
+            content.setPreferredSize(new Dimension(400, 300));
+        }else{
+            content.setPreferredSize(new Dimension(400, 200));
+        }
         setContentPane(content);
 
         initUI();
@@ -65,10 +92,14 @@ public class UFSpecificationWindow extends JFrame {
     }
 
     public void initUI(){
-        pillarHeader = new JLabel("Litfaßsäulen CSV",pillarIcon,JLabel.LEFT);
+        if(type) {
+            pillarHeader = new JLabel("Litfaßsäulen CSV", pillarIcon, JLabel.LEFT);
+        }else{
+            pillarHeader = new JLabel("Katastrophenschutz-Leuchtturm CSV", lighthouseIcon, JLabel.LEFT);
+        }
         pillarHeader.setHorizontalTextPosition(SwingConstants.LEFT);
         pillarHeader.setVerticalTextPosition(SwingConstants.CENTER);
-        pillarHeader.setBounds(20,20,220,20);
+        pillarHeader.setBounds(20,20,320,20);
         pillarHeader.setFont(mainFont);
         getContentPane().add(pillarHeader);
 
@@ -85,28 +116,113 @@ public class UFSpecificationWindow extends JFrame {
         pillarPath.setBorder(BorderFactory.createCompoundBorder(lineBorder, emptyBorder));
         getContentPane().add(pillarPath);
 
-        peopleHeader = new JLabel("Verkehrs-Simulations CSV",carIcon,JLabel.LEFT);
-        peopleHeader.setHorizontalTextPosition(SwingConstants.LEFT);
-        peopleHeader.setVerticalTextPosition(SwingConstants.CENTER);
-        peopleHeader.setBounds(20,120,280,20);
-        peopleHeader.setFont(mainFont);
-        getContentPane().add(peopleHeader);
+        if(type) {
+            peopleHeader = new JLabel("Verkehrs-Simulations CSV", carIcon, JLabel.LEFT);
+            peopleHeader.setHorizontalTextPosition(SwingConstants.LEFT);
+            peopleHeader.setVerticalTextPosition(SwingConstants.CENTER);
+            peopleHeader.setBounds(20, 120, 280, 20);
+            peopleHeader.setFont(mainFont);
+            getContentPane().add(peopleHeader);
 
-        peopleSearch = new JButton("Suche",searchIcon);
-        peopleSearch.setBounds(20,160,80,40);
-        formatButton(peopleSearch);
-        getContentPane().add(peopleSearch);
+            peopleSearch = new JButton("Suche", searchIcon);
+            peopleSearch.setBounds(20, 160, 80, 40);
+            formatButton(peopleSearch);
+            getContentPane().add(peopleSearch);
 
-        peoplePath = new JTextField();
-        peoplePath.setBounds(120,160,260,40);
-        peoplePath.setFont(mainFont);
-        peoplePath.setBorder(BorderFactory.createCompoundBorder(lineBorder, emptyBorder));
-        getContentPane().add(peoplePath);
+            peoplePath = new JTextField();
+            peoplePath.setBounds(120, 160, 260, 40);
+            peoplePath.setFont(mainFont);
+            peoplePath.setBorder(BorderFactory.createCompoundBorder(lineBorder, emptyBorder));
+            getContentPane().add(peoplePath);
+        }
 
         next = new JButton("Weiter",startIcon);
-        next.setBounds(260,220,120,40);
+        if(type) {
+            next.setBounds(260, 220, 120, 40);
+        }else{
+            next.setBounds(260, 120, 120, 40);
+        }
         formatButton(next);
         getContentPane().add(next);
+
+        //-------------BUTTON-FUNCTION----------------
+        next.addActionListener((ActionEvent) -> {
+            if(type) {
+                if (!peoplePath.getText().isEmpty() && !pillarPath.getText().isEmpty()) {
+                    CsvReaderService crs = new CsvReaderService();
+                    ArrayList<Pillar> pil = crs.readPillarsFromFile(pillarPath.getText());
+                    ArrayList<Person> per = crs.readPerson(peoplePath.getText(), pil, Session.getInstance().getReachingDistance());
+                    Session.getInstance().setPillars(pil);
+                    Session.getInstance().setPeople(per);
+                    SwingUtilities.invokeLater(() -> {
+                        UFCrossingWindow viewer = new UFCrossingWindow(true);
+                        viewer.setVisible(true);
+                    });
+
+                    dispose();
+                } else {
+                    SwingUtilities.invokeLater(() -> {
+                        UFErrorWindow viewer = new UFErrorWindow("Noch nicht fertig", "spezifiziert!");
+                        viewer.setVisible(true);
+                    });
+                }
+            }else{
+                if (!pillarPath.getText().isEmpty()) {
+                    CsvReaderService crs = new CsvReaderService();
+                    ArrayList<Pillar> pil = crs.readPillarsFromFile(pillarPath.getText());
+                    for(Pillar p:pil){
+                        p.setSet(true);
+                    }
+                    Session.getInstance().getPillars().addAll(pil);
+                    SwingUtilities.invokeLater(() -> {
+                        UFMainWindow viewer = new UFMainWindow();
+                        viewer.setVisible(true);
+                    });
+
+
+                    dispose();
+                }else {
+                    SwingUtilities.invokeLater(() -> {
+                        UFErrorWindow viewer = new UFErrorWindow("Noch nicht fertig", "spezifiziert!");
+                        viewer.setVisible(true);
+                    });
+                }
+            }
+        });
+
+        pillarSearch.addActionListener((ActionEvent)->{
+            File startDir = new File("Data");
+            JFileChooser fileChooser = new JFileChooser(startDir);
+            fileChooser.setDialogTitle("Wähle die Säulen CSV aus");
+            int result = fileChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                this.pillarPath.setText(selectedFile.getAbsolutePath());
+            }
+        });
+        if(type) {
+            peopleSearch.addActionListener((ActionEvent) -> {
+                File startDir = new File("Data");
+                JFileChooser fileChooser = new JFileChooser(startDir);
+                fileChooser.setDialogTitle("Wähle die Verkehrs-Simulation aus");
+                int result = fileChooser.showOpenDialog(this);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    this.peoplePath.setText(selectedFile.getAbsolutePath());
+                }
+            });
+        }
+
+
+
+
+
+
+        //DEBUGGING
+        pillarPath.setText("Data/TestingData/ReadTest/pillarReadTest2.csv");
+        if(type) {
+            peoplePath.setText("Data/TestingData/AlgorithmTest/LogikAlgorithmTest/logikAlgorithmTest2.csv");
+        }
     }
     private void formatButton(JButton button){
         button.setHorizontalTextPosition(SwingConstants.LEFT);
@@ -138,7 +254,7 @@ public class UFSpecificationWindow extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            UFSpecificationWindow viewer = new UFSpecificationWindow();
+            UFSpecificationWindow viewer = new UFSpecificationWindow(false);
             viewer.setVisible(true);
         });
     }
