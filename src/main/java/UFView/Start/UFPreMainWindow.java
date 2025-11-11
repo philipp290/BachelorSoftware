@@ -1,7 +1,5 @@
 package UFView.Start;
 //Credits for the Icons used in this GUI:
-//All the icons come from flaticon.com
-//In DetaiL:
 //Pillar:
 //<a href="https://www.flaticon.com/free-icons/pillar" title="pillar icons">Pillar icons created by Good Ware - Flaticon</a>
 //Car:
@@ -36,6 +34,12 @@ package UFView.Start;
 //<a href="https://www.flaticon.com/free-icons/checkbox" title="checkbox icons">Checkbox icons created by inkubators - Flaticon</a>
 //CheckBoxUnselected
 //<a href="https://www.flaticon.com/free-icons/checkbox" title="checkbox icons">Checkbox icons created by Kushal Jain - Flaticon</a>
+//Goal:
+//<a href="https://www.flaticon.com/free-icons/finish-flag" title="finish flag icons">Finish flag icons created by Icon mania - Flaticon</a>
+//Reachability
+//<a href="https://www.flaticon.com/free-icons/outreach" title="outreach icons">Outreach icons created by Iconjam - Flaticon</a>
+//Time
+//<a href="https://www.flaticon.com/free-icons/clock" title="clock icons">Clock icons created by dmitri13 - Flaticon</a>
 
 
 import javax.swing.*;

@@ -15,6 +15,9 @@ public class Session {
     private ArrayList<Pillar> pillars = new ArrayList<>();
     private ArrayList<Person> people = new ArrayList<>();
 
+
+    private String originalPeopleFile = "";
+
     private int defaultReachingDistance = 20;
 
     private int amountOfReachablePeople = -1;
@@ -49,4 +52,7 @@ public class Session {
     public void setSolutionCache(HashMap<String, ArrayList<Pillar>> solutionCache) {this.solutionCache = solutionCache;}
     public ArrayList<String> getSolutionKeys() {return solutionKeys;}
     public void setSolutionKeys(ArrayList<String> solutionKeys) {this.solutionKeys = solutionKeys;}
+    public String getOriginalPeopleFile() {return originalPeopleFile;}
+    public void setOriginalPeopleFile(String originalPeopleFile) {this.originalPeopleFile = originalPeopleFile;}
+
 }

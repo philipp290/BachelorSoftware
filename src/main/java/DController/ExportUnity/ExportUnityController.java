@@ -53,7 +53,6 @@ public class ExportUnityController {
                     File selectedFile = fileChooser.getSelectedFile();
                     String saveFile = selectedFile.getAbsolutePath() + "/unityExportTest2.csv";
                     ArrayList<Pillar> pillars = crs.readPillarsFromFile(view.getSolution());
-                    //Die 20 hier sollte eig auch variabel sein (evtl TODO)
                     cus.solutionUnityExport(view.getPeople(), saveFile, pillars, 20);
                     view.dispose();
                 }

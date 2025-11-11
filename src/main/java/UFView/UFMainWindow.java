@@ -2,12 +2,15 @@ package UFView;
 
 import UFController.Algorithm.UFAlgorithmInputController;
 import UFView.Algorithm.UFAlgorithmInputWindow;
+import UFView.Analysis.UFAnalysisWindow;
 import UFView.Comparator.UFComparatorWindow;
+import UFView.ExportUnity.UFExportUnityWindow;
 import UFView.Start.UFCrossingWindow;
 import UFView.Start.UFPreMainWindow;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class UFMainWindow extends JFrame {
     private JButton analysisButton;
@@ -98,6 +101,18 @@ public class UFMainWindow extends JFrame {
         compareButton.addActionListener((ActionEvent)->{
             SwingUtilities.invokeLater(() -> {
                 UFComparatorWindow viewer = new UFComparatorWindow();
+                viewer.setVisible(true);
+            });
+        });
+        unityButton.addActionListener((ActionEvent) ->{
+            SwingUtilities.invokeLater(() -> {
+                UFExportUnityWindow viewer = new UFExportUnityWindow();
+                viewer.setVisible(true);
+            });
+        });
+        analysisButton.addActionListener((ActionEvent) ->{
+            SwingUtilities.invokeLater(() -> {
+                UFAnalysisWindow viewer = new UFAnalysisWindow();
                 viewer.setVisible(true);
             });
         });

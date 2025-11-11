@@ -149,6 +149,7 @@ public class UFSpecificationWindow extends JFrame {
         next.addActionListener((ActionEvent) -> {
             if(type) {
                 if (!peoplePath.getText().isEmpty() && !pillarPath.getText().isEmpty()) {
+                    Session.getInstance().setOriginalPeopleFile(peoplePath.getText());
                     CsvReaderService crs = new CsvReaderService();
                     ArrayList<Pillar> pil = crs.readPillarsFromFile(pillarPath.getText());
                     ArrayList<Person> per = crs.readPerson(peoplePath.getText(), pil, Session.getInstance().getReachingDistance());

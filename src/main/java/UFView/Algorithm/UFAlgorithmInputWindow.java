@@ -33,10 +33,6 @@ public class UFAlgorithmInputWindow extends JFrame {
     JCheckBox cSampling;
     JTextField samplingField;
 
-    private final Color defaultColor;
-    private final Color hoverColor;
-    private final Color clickColor;
-    private final Font mainFont;
 
     private JPanel seperationLineFour;
     private JCheckBox cTimeWindow;
@@ -57,6 +53,11 @@ public class UFAlgorithmInputWindow extends JFrame {
 
     private ImageIcon checkSelectedIcon;
     private ImageIcon checkUnselectedIcon;
+
+    private final Color defaultColor;
+    private final Color hoverColor;
+    private final Color clickColor;
+    private final Font mainFont;
 
     public UFAlgorithmInputWindow(){
         defaultColor = new Color(220, 220, 220);

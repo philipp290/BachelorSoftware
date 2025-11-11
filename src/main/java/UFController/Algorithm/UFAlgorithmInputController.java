@@ -1,14 +1,16 @@
 package UFController.Algorithm;
 
 import DView.Algorithm.AlgorithmExportWindow;
+import DView.Algorithm.AlgorithmLatticeSearchSelectionWindow;
 import DView.Algorithm.AlgorithmResultWindow;
+import DView.Algorithm.AlgorithmTabuSearchWindow;
 import Model.Algorithms.Algorithm;
+import Model.Algorithms.LinearOptimizationAlgorithm;
 import Model.Algorithms.LogikAlgorithm;
 import Model.Components.Person;
 import Model.Components.Pillar;
 import Model.Session;
-import UFView.Algorithm.UFAlgorithmInputWindow;
-import UFView.Algorithm.UFAlgorithmResultWindow;
+import UFView.Algorithm.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -25,6 +27,23 @@ public class UFAlgorithmInputController {
         view.addExecuteFunction((ActionEvent) -> {
             if (view.getLogikSelect()) {
                 LogikAlgorithm a = new LogikAlgorithm();
+                executeAlgorithm(a);
+            }
+            if(view.getLatticeSelect()){
+                if(view.getAbsSelect()){
+                    SwingUtilities.invokeLater(() -> {
+                        UFTabuSearchWindow viewer = new UFTabuSearchWindow(this);
+                        viewer.setVisible(true);
+                    });
+                }else{
+                    SwingUtilities.invokeLater(() -> {
+                        UFLatticeSearchSelectionWindow viewer = new UFLatticeSearchSelectionWindow(this);
+                        viewer.setVisible(true);
+                    });
+                }
+            }
+            if(view.getLinearSelect()){
+                LinearOptimizationAlgorithm a = new LinearOptimizationAlgorithm();
                 executeAlgorithm(a);
             }
         });
@@ -46,7 +65,7 @@ public class UFAlgorithmInputController {
 
         if(algo.getClass().toString().equals("class Model.Algorithms.LinearOptimizationAlgorithm")){
             SwingUtilities.invokeLater(() -> {
-                AlgorithmExportWindow viewer = new AlgorithmExportWindow("Data/Cache/LinearOptimizationCache/loExport.txt");
+                UFAlgorithmExportWindow viewer = new UFAlgorithmExportWindow("Data/Cache/LinearOptimizationCache/loExport.txt");
                 viewer.setVisible(true);
             });
         }else {

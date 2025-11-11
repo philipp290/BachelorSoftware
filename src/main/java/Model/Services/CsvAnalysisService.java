@@ -105,27 +105,34 @@ public class CsvAnalysisService {
         cws.writeIntegerList(occurrences,"Data/Cache/AnalysisCache/encounterLengthTemporary.csv");
 
         double median;
-        boolean evenCase = false;
-        if((encounterLengthSum%2)==0){
-            evenCase = true;
-        }
-        int solutionIndex=-1;
-        int countingUp = 0;
-        int targetIndex;
-        if(evenCase){
-            targetIndex = encounterLengthSum/2;
-        }else{
-            targetIndex = (encounterLengthSum+1)/2;
+        boolean even = (encounterLengthSum % 2 == 0);
+        int mid1 = (encounterLengthSum + 1) / 2;
+        int mid2;
+        if (even) {
+            mid2 = mid1 + 1;
+        } else {
+            mid2 = mid1;
         }
 
-        while(countingUp < targetIndex){
-            solutionIndex++;
-            countingUp = countingUp + occurrences.get(solutionIndex);
+        int cumulative = 0;
+        double median1 = 0;
+        double median2 = 0;
+
+        for (int i = 0; i < occurrences.size(); i++) {
+            cumulative += occurrences.get(i);
+
+            if (median1 == 0 && cumulative >= mid1) {
+                median1 = i + 1;
+            }
+            if (cumulative >= mid2) {
+                median2 = i + 1;
+                break;
+            }
         }
-        if(countingUp==targetIndex&&evenCase){
-            median= solutionIndex+0.5;
-        }else{
-            median = solutionIndex;
+        if (even) {
+            median = (median1 + median2) / 2.0;
+        } else {
+            median = median1;
         }
 
         double[] result = new double[4];
