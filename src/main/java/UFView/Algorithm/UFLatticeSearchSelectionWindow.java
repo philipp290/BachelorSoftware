@@ -3,6 +3,7 @@ package UFView.Algorithm;
 import DView.Algorithm.AlgorithmBottomUpTopDownWindow;
 import DView.Algorithm.AlgorithmRandomWalkWindow;
 import Model.Session;
+import UFController.Algorithm.UFAlgorithmInput;
 import UFController.Algorithm.UFAlgorithmInputController;
 
 import javax.swing.*;
@@ -33,8 +34,8 @@ public class UFLatticeSearchSelectionWindow extends JFrame {
     private ImageIcon unselectedIcon;
     private ImageIcon selectedIcon;
 
-    private UFAlgorithmInputController ac;
-    public UFLatticeSearchSelectionWindow(UFAlgorithmInputController ac){
+    private UFAlgorithmInput ac;
+    public UFLatticeSearchSelectionWindow(UFAlgorithmInput ac){
         this.ac = ac;
 
         defaultColor = new Color(220, 220, 220);

@@ -2,6 +2,7 @@ package UFView.Algorithm;
 
 import Model.Algorithms.LatticeAlgorithms.LatticeAlgorithm;
 import Model.Session;
+import UFController.Algorithm.UFAlgorithmInput;
 import UFController.Algorithm.UFAlgorithmInputController;
 import UFView.Comparator.UFComparatorResultWindow;
 import UFView.Start.UFErrorWindow;
@@ -31,8 +32,8 @@ public class UFTabuSearchWindow extends JFrame {
 
     private ImageIcon startIcon;
 
-    private UFAlgorithmInputController ac;
-    public UFTabuSearchWindow(UFAlgorithmInputController ac) {
+    private UFAlgorithmInput ac;
+    public UFTabuSearchWindow(UFAlgorithmInput ac) {
         this.ac = ac;
 
         defaultColor = new Color(220, 220, 220);

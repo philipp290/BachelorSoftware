@@ -2,6 +2,7 @@ package UFView.Algorithm;
 
 import Model.Algorithms.LatticeAlgorithms.LatticeAlgorithm;
 import Model.Session;
+import UFController.Algorithm.UFAlgorithmInput;
 import UFController.Algorithm.UFAlgorithmInputController;
 import UFView.Start.UFErrorWindow;
 
@@ -32,9 +33,9 @@ public class UFAlgorithmLatticeSpecificationWindow extends JFrame {
     private ImageIcon startIcon;
 
     private int type;
-    private UFAlgorithmInputController ac;
+    private UFAlgorithmInput ac;
 
-    public UFAlgorithmLatticeSpecificationWindow(int t, UFAlgorithmInputController ac) {
+    public UFAlgorithmLatticeSpecificationWindow(int t, UFAlgorithmInput ac) {
         this.ac = ac;
         this.type = t;
 

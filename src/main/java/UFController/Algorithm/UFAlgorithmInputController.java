@@ -16,7 +16,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
-public class UFAlgorithmInputController {
+public class UFAlgorithmInputController implements UFAlgorithmInput{
     UFAlgorithmInputWindow view;
 
     public UFAlgorithmInputController(UFAlgorithmInputWindow v){

@@ -7,6 +7,7 @@ import Model.Services.CsvReaderService;
 import Model.Services.SolutionValidationService;
 import Model.Session;
 import UFView.Algorithm.UFAlgorithmInputWindow;
+import UFView.Start.UFErrorWindow;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -212,33 +213,40 @@ public class UFComparatorWindow extends JFrame {
 
         //----------------------BUTTON-FUNCTION------------------
         startButton.addActionListener((ActionEvent)->{
-            SolutionValidationService svs = new SolutionValidationService();
-            ArrayList<Pillar> pillarsOne = Session.getInstance().getSolutionCache().get(solutionOne.getSelectedItem().toString());
+            if(solutionOne.getSelectedItem() != null && solutionTwo.getSelectedItem() != null) {
+                SolutionValidationService svs = new SolutionValidationService();
+                ArrayList<Pillar> pillarsOne = Session.getInstance().getSolutionCache().get(solutionOne.getSelectedItem().toString());
 
-            ArrayList<Person> temp = Session.getInstance().getPeople();
-            int peopleAmount = temp.size();
+                ArrayList<Person> temp = Session.getInstance().getPeople();
+                int peopleAmount = temp.size();
 
-            ArrayList<Pillar> pillarsTwo = Session.getInstance().getSolutionCache().get(solutionTwo.getSelectedItem().toString());
+                ArrayList<Pillar> pillarsTwo = Session.getInstance().getSolutionCache().get(solutionTwo.getSelectedItem().toString());
 
-            int coverage1 = svs.coverageValidation(pillarsOne);
-            int score1 = svs.scoreValidation(pillarsOne);
-            int coverage2 = svs.coverageValidation(pillarsTwo);
-            int score2 = svs.scoreValidation(pillarsTwo);
+                int coverage1 = svs.coverageValidation(pillarsOne);
+                int score1 = svs.scoreValidation(pillarsOne);
+                int coverage2 = svs.coverageValidation(pillarsTwo);
+                int score2 = svs.scoreValidation(pillarsTwo);
 
-            double[] result = new double[8];
-            result[0] = Math.round((double) coverage1 /peopleAmount * 100.0);
-            result[1] = coverage1;
-            result[2] = pillarsOne.size();
-            result[3] = Math.round((double) score1 /pillarsOne.size() * 100.0) / 100.0;
-            result[4] = Math.round((double) coverage2 /peopleAmount * 100.0) ;
-            result[5] = coverage2;
-            result[6] = pillarsTwo.size();
-            result[7] = Math.round((double) score2 /pillarsTwo.size() * 100.0) / 100.0;
+                double[] result = new double[8];
+                result[0] = Math.round((double) coverage1 / peopleAmount * 100.0);
+                result[1] = coverage1;
+                result[2] = pillarsOne.size();
+                result[3] = Math.round((double) score1 / pillarsOne.size() * 100.0) / 100.0;
+                result[4] = Math.round((double) coverage2 / peopleAmount * 100.0);
+                result[5] = coverage2;
+                result[6] = pillarsTwo.size();
+                result[7] = Math.round((double) score2 / pillarsTwo.size() * 100.0) / 100.0;
 
-            SwingUtilities.invokeLater(() -> {
-                UFComparatorResultWindow viewer = new UFComparatorResultWindow(result);
-                viewer.setVisible(true);
-            });
+                SwingUtilities.invokeLater(() -> {
+                    UFComparatorResultWindow viewer = new UFComparatorResultWindow(result);
+                    viewer.setVisible(true);
+                });
+            }else{
+                SwingUtilities.invokeLater(() -> {
+                    UFErrorWindow viewer = new UFErrorWindow("Wähle zwie Lös-","ungen aus!");
+                    viewer.setVisible(true);
+                });
+            }
         });
 
 

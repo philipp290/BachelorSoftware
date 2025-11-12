@@ -36,7 +36,7 @@ public class UFErrorWindow extends JFrame {
         Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/emergencityIcon.png"));
         setIconImage(icon);
         setTitle("Fehler");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel content = new JPanel(null);
         content.setBackground(Color.WHITE);

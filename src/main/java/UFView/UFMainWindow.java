@@ -1,6 +1,7 @@
 package UFView;
 
 import UFController.Algorithm.UFAlgorithmInputController;
+import UFView.Algorithm.UFAlgorithmInputSelectionWindow;
 import UFView.Algorithm.UFAlgorithmInputWindow;
 import UFView.Analysis.UFAnalysisWindow;
 import UFView.Comparator.UFComparatorWindow;
@@ -93,8 +94,7 @@ public class UFMainWindow extends JFrame {
         //-------------------BUTTON-FUNCTION-------------
         algorithmButton.addActionListener((ActionEvent)->{
             SwingUtilities.invokeLater(() -> {
-                UFAlgorithmInputWindow viewer = new UFAlgorithmInputWindow();
-                new UFAlgorithmInputController(viewer);
+                UFAlgorithmInputSelectionWindow viewer = new UFAlgorithmInputSelectionWindow();
                 viewer.setVisible(true);
             });
         });

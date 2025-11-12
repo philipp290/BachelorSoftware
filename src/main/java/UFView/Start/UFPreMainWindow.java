@@ -40,6 +40,11 @@ package UFView.Start;
 //<a href="https://www.flaticon.com/free-icons/outreach" title="outreach icons">Outreach icons created by Iconjam - Flaticon</a>
 //Time
 //<a href="https://www.flaticon.com/free-icons/clock" title="clock icons">Clock icons created by dmitri13 - Flaticon</a>
+//Single
+//<a href="https://www.flaticon.com/free-icons/man" title="man icons">Man icons created by DinosoftLabs - Flaticon</a>
+//Bulk
+//<a href="https://www.flaticon.com/free-icons/people" title="people icons">People icons created by Freepik - Flaticon</a>
+
 
 
 import javax.swing.*;
