@@ -11,6 +11,7 @@ import java.awt.*;
 
 public class UFAnalysisWindow extends JFrame {
     private JButton reachability;
+    private JButton coverage;
     private JButton encounterLength;
 
     private final Color defaultColor;
@@ -19,6 +20,7 @@ public class UFAnalysisWindow extends JFrame {
     private final Font buttonFont;
 
     private ImageIcon reachIcon;
+    private ImageIcon coverIcon;
     private ImageIcon timeIcon;
 
     public UFAnalysisWindow() {
@@ -34,6 +36,10 @@ public class UFAnalysisWindow extends JFrame {
         Image scaledImage = reachIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         reachIcon = new ImageIcon(scaledImage);
 
+        coverIcon = new ImageIcon(getClass().getResource("/coverageIcon.png"));
+        scaledImage = coverIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        coverIcon = new ImageIcon(scaledImage);
+
         timeIcon = new ImageIcon(getClass().getResource("/timeIcon.png"));
         scaledImage = timeIcon.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
         timeIcon = new ImageIcon(scaledImage);
@@ -43,7 +49,7 @@ public class UFAnalysisWindow extends JFrame {
 
         JPanel content = new JPanel(null);
         content.setBackground(Color.WHITE);
-        content.setPreferredSize(new Dimension(400, 140));
+        content.setPreferredSize(new Dimension(400, 200));
         setContentPane(content);
 
         initUI();
@@ -57,8 +63,13 @@ public class UFAnalysisWindow extends JFrame {
         formatButton(reachability);
         getContentPane().add(reachability);
 
+        coverage = new JButton("Abdeckungs-Analyse ", coverIcon);
+        coverage.setBounds(20, 80, 360, 40);
+        formatButton(coverage);
+        getContentPane().add(coverage);
+
         encounterLength = new JButton("Verweildauer-Analyse ", timeIcon);
-        encounterLength.setBounds(20, 80, 360, 40);
+        encounterLength.setBounds(20, 140, 360, 40);
         formatButton(encounterLength);
         getContentPane().add(encounterLength);
 
@@ -71,6 +82,16 @@ public class UFAnalysisWindow extends JFrame {
                 viewer.setVisible(true);
             });
         });
+
+        coverage.addActionListener((ActionEvent)->{
+            CsvAnalysisService cas = new CsvAnalysisService();
+            SwingUtilities.invokeLater(() -> {
+                double[] content = cas.coverageAnalysis(Session.getInstance().getPillars());
+                UFAnalysisCoverageWindow viewer = new UFAnalysisCoverageWindow(Session.getInstance().getPillars(),content);
+                viewer.setVisible(true);
+            });
+        });
+
         encounterLength.addActionListener((ActionEvent)->{
             CsvAnalysisService cas = new CsvAnalysisService();
             double[] encounterdata = cas.encounterLengthAnalysis(Session.getInstance().getOriginalPeopleFile(), Session.getInstance().getPillars(),Session.getInstance().getReachingDistance());

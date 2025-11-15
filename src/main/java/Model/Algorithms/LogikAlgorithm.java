@@ -12,9 +12,13 @@ public class LogikAlgorithm implements Algorithm{
     private BitSet markedRows = new BitSet();
     private ArrayList<Integer> rarityTable = new ArrayList<>();
 
-    //TODO relative alternative
     @Override
     public ArrayList<Pillar> execute(ArrayList<Pillar> pillars, ArrayList<Person> people, boolean ABS_REL, int goal) {
+        if(ABS_REL && goal > pillars.size()){
+            System.out.println("invalid input");
+            return null;
+        }
+
         ArrayList<BitSet> playingField = new ArrayList<>();
         for(Pillar p: pillars){
             playingField.add((BitSet) p.getPeopleReached().clone());
@@ -39,49 +43,40 @@ public class LogikAlgorithm implements Algorithm{
             goal = (int) Math.ceil((temp[0]/100)*goal);
         }
 
-        while((markedColumns.cardinality()!= people.size()) && ((ABS_REL && markedRows.cardinality() < goal)||(!ABS_REL && markedColumns.cardinality() < goal))){
+        while((ABS_REL && markedColumns.cardinality() < people.size() && markedRows.cardinality() < goal) || (!ABS_REL && markedColumns.cardinality() < goal)){
             //1.KRITERIUM
             ArrayList<Integer> candidateIndex = new ArrayList<>();
-            candidateIndex.add(0);
-            int j = 1;
-            while(j < playingField.size()){
-                if(!markedRows.get(j)) {
-                    if (remainingCardinality(playingField.get(j), people.size()) > remainingCardinality(playingField.get(candidateIndex.get(0)), people.size())) {
-                        candidateIndex.clear();
-                        candidateIndex.add(j);
-                    } else if (remainingCardinality(playingField.get(j), people.size()) == remainingCardinality(playingField.get(candidateIndex.get(0)), people.size())) {
-                        candidateIndex.add(j);
-                    }
+            int firstValidRow = 0;
+            while(firstValidRow<pillars.size()){
+                if(!markedRows.get(firstValidRow)){
+                    break;
                 }
-                j++;
+                firstValidRow++;
             }
-            //2.KRITERIUM
-            if(candidateIndex.size() > 1){
-                ArrayList<Integer> candidateIndexNext = new ArrayList<>();
-                candidateIndexNext.add(candidateIndex.get(0));
-                int k = 1;
-                while(k < candidateIndex.size()){
-                    if(pillars.get(candidateIndex.get(k)).getShadow().getValue() > pillars.get(candidateIndexNext.get(0)).getShadow().getValue()){
-                        candidateIndexNext.clear();
-                        candidateIndexNext.add(candidateIndex.get(k));
-                    }else if(pillars.get(candidateIndex.get(k)).getShadow().getValue() == pillars.get(candidateIndexNext.get(0)).getShadow().getValue()){
-                        candidateIndexNext.add(candidateIndex.get(k));
+            if(firstValidRow<pillars.size()) {
+                candidateIndex.add(firstValidRow);
+                int j = firstValidRow + 1;
+                while (j < playingField.size()) {
+                    if (!markedRows.get(j)) {
+                        if (remainingCardinality(playingField.get(j), people.size()) > remainingCardinality(playingField.get(candidateIndex.get(0)), people.size())) {
+                            candidateIndex.clear();
+                            candidateIndex.add(j);
+                        } else if (remainingCardinality(playingField.get(j), people.size()) == remainingCardinality(playingField.get(candidateIndex.get(0)), people.size())) {
+                            candidateIndex.add(j);
+                        }
                     }
-                    k++;
+                    j++;
                 }
-                candidateIndex.clear();
-                candidateIndex.addAll(candidateIndexNext);
-                candidateIndexNext.clear();
-                //3.KRITERIUM
-                if(candidateIndex.size() > 1){
-                    System.out.println("Kriterium 3 ist in Kraft getretten");
+                //2.KRITERIUM
+                if (candidateIndex.size() > 1) {
+                    ArrayList<Integer> candidateIndexNext = new ArrayList<>();
                     candidateIndexNext.add(candidateIndex.get(0));
-                    k = 1;
-                    while(k < candidateIndex.size()){
-                        if(rarityScore(pillars.get(candidateIndex.get(k)).getPeopleReached(),people.size()) < rarityScore(pillars.get(candidateIndexNext.get(0)).getPeopleReached(), people.size())){
+                    int k = 1;
+                    while (k < candidateIndex.size()) {
+                        if (pillars.get(candidateIndex.get(k)).getShadow().getValue() > pillars.get(candidateIndexNext.get(0)).getShadow().getValue()) {
                             candidateIndexNext.clear();
                             candidateIndexNext.add(candidateIndex.get(k));
-                        }else if(rarityScore(pillars.get(candidateIndex.get(k)).getPeopleReached(),people.size()) == rarityScore(pillars.get(candidateIndexNext.get(0)).getPeopleReached(), people.size())){
+                        } else if (pillars.get(candidateIndex.get(k)).getShadow().getValue() == pillars.get(candidateIndexNext.get(0)).getShadow().getValue()) {
                             candidateIndexNext.add(candidateIndex.get(k));
                         }
                         k++;
@@ -89,12 +84,37 @@ public class LogikAlgorithm implements Algorithm{
                     candidateIndex.clear();
                     candidateIndex.addAll(candidateIndexNext);
                     candidateIndexNext.clear();
+                    //3.KRITERIUM
+                    if (candidateIndex.size() > 1) {
+                        //System.out.println("Kriterium 3 ist in Kraft getretten");
+                        candidateIndexNext.add(candidateIndex.get(0));
+                        k = 1;
+                        while (k < candidateIndex.size()) {
+                            if (rarityScore(pillars.get(candidateIndex.get(k)).getPeopleReached(), people.size()) < rarityScore(pillars.get(candidateIndexNext.get(0)).getPeopleReached(), people.size())) {
+                                candidateIndexNext.clear();
+                                candidateIndexNext.add(candidateIndex.get(k));
+                            } else if (rarityScore(pillars.get(candidateIndex.get(k)).getPeopleReached(), people.size()) == rarityScore(pillars.get(candidateIndexNext.get(0)).getPeopleReached(), people.size())) {
+                                candidateIndexNext.add(candidateIndex.get(k));
+                            }
+                            k++;
+                        }
+                        candidateIndex.clear();
+                        candidateIndex.addAll(candidateIndexNext);
+                        candidateIndexNext.clear();
+                    }
                 }
-            }
-            int candidate = candidateIndex.get(0);
+                int candidate = candidateIndex.get(0);
 
-            markedRows.set(candidate);
-            markedColumns.or(playingField.get(candidate));
+                BitSet testUpdate = (BitSet) markedColumns.clone();
+                testUpdate.or(playingField.get(candidate));
+                if(testUpdate.equals(markedColumns)){
+                    break;
+                }
+                markedRows.set(candidate);
+                markedColumns.or(playingField.get(candidate));
+            }else{
+                break;
+            }
         }
         ArrayList<Pillar> algorithmResult = new ArrayList<>();
         for(int i = 0; i < pillars.size(); i++){
@@ -162,6 +182,7 @@ public class LogikAlgorithm implements Algorithm{
         pillar4.set(1);
         pillar4.set(2);
         pillar4.set(3);
+
         System.out.println(la.remainingCardinality(pillar4,6));
 
     }

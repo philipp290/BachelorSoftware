@@ -44,8 +44,17 @@ package UFView.Start;
 //<a href="https://www.flaticon.com/free-icons/man" title="man icons">Man icons created by DinosoftLabs - Flaticon</a>
 //Bulk
 //<a href="https://www.flaticon.com/free-icons/people" title="people icons">People icons created by Freepik - Flaticon</a>
+//Load
+//<a href="https://www.flaticon.com/free-icons/loading" title="loading icons">Loading icons created by Royyan Wijaya - Flaticon</a>
+//Row
+//<a href="https://www.flaticon.com/free-icons/row" title="row icons">Row icons created by Cuputo - Flaticon</a>
+//Column
+//<a href="https://www.flaticon.com/free-icons/column" title="column icons">Column icons created by Pixel perfect - Flaticon</a>
+//Coverage
+//<a href="https://www.flaticon.com/free-icons/coverage" title="coverage icons">Coverage icons created by Anggara - Flaticon</a>
 
 
+import UFView.Editor.UFEditorSelectionWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -118,7 +127,13 @@ public class UFPreMainWindow extends JFrame {
             });
             dispose();
         });
-
+        editingButton.addActionListener((ActionEvent) ->{
+            SwingUtilities.invokeLater(() -> {
+                UFEditorSelectionWindow viewer = new UFEditorSelectionWindow();
+                viewer.setVisible(true);
+            });
+            dispose();
+        });
     }
 
     private void formatButton(JButton button){

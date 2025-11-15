@@ -89,7 +89,7 @@ public class CsvAnalysisService {
         }
 
         ArrayList<Integer> occurrences = new ArrayList<>();
-        System.out.println("Häufigkeiten");
+        System.out.print("encL = c( ");
         for(int n = minimum; n<=maximum; n++){
             int countApperance = 0;
             for(Integer i : encounterLenghts){
@@ -98,15 +98,17 @@ public class CsvAnalysisService {
                 }
             }
             occurrences.add(countApperance);
-            System.out.println(n+": "+ countApperance+" Vorkommen");
+            System.out.print(countApperance+", ");
         }
+        System.out.println(")");
 
         CsvWriterService cws = new CsvWriterService();
         cws.writeIntegerList(occurrences,"Data/Cache/AnalysisCache/encounterLengthTemporary.csv");
 
         double median;
-        boolean even = (encounterLengthSum % 2 == 0);
-        int mid1 = (encounterLengthSum + 1) / 2;
+        int eC = encounterLenghts.size();
+        boolean even = (eC % 2 == 0);
+        int mid1 = (eC + 1) / 2;
         int mid2;
         if (even) {
             mid2 = mid1 + 1;
@@ -120,15 +122,17 @@ public class CsvAnalysisService {
 
         for (int i = 0; i < occurrences.size(); i++) {
             cumulative += occurrences.get(i);
-
-            if (median1 == 0 && cumulative >= mid1) {
+            if (cumulative >= mid1) {
                 median1 = i + 1;
-            }
-            if (cumulative >= mid2) {
-                median2 = i + 1;
                 break;
             }
         }
+        if (cumulative >= mid2) {
+            median2 = median1;
+        }else{
+            median2 = median1+1;
+        }
+
         if (even) {
             median = (median1 + median2) / 2.0;
         } else {
@@ -206,5 +210,25 @@ public class CsvAnalysisService {
             }
         }
         return minimumDis;
+    }
+    public double[] coverageAnalysis(ArrayList<Pillar> pillars){
+        int max = 0;
+        int min = Integer.MAX_VALUE;
+        int sum = 0;
+        int zeroCount=0;
+        for(Pillar p : pillars){
+            int cover = p.getPeopleReached().cardinality();
+            if(cover<min){
+                min=cover;
+            }
+            if(cover>max){
+                max=cover;
+            }
+            if(cover == 0){
+                zeroCount++;
+            }
+            sum+=cover;
+        }
+        return new double[]{max,min,(double)(sum/pillars.size()), zeroCount};
     }
 }

@@ -18,6 +18,10 @@ public class TabuSearch {
      */
     //Auskommentiert sind hier Print-Befehle zum Debuggen
     public ArrayList<Pillar> execute(int resultCardinality, int cancelTimer, int tabuTimer, ArrayList<Pillar> pillars){
+        if(resultCardinality == pillars.size()){
+            return pillars;
+        }
+
         BitSetBuilder bsb = new BitSetBuilder();
         BitSetValidator bsv = new BitSetValidator();
 

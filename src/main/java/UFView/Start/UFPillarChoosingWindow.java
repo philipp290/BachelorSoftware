@@ -57,12 +57,12 @@ public class UFPillarChoosingWindow extends JFrame {
         content.setPreferredSize(new Dimension(520, 300));
         setContentPane(content);
 
+        initTable();
         initUI();
         pack();
         setLocationRelativeTo(null);
 
-        initTable();
-        initUI();
+
     }
 
     public void initUI(){

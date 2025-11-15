@@ -89,6 +89,34 @@ public class CsvUpdateService {
     }
 
     /**
+     * Method that delets every row which contains the keyword in the specified
+     * Column
+     * @param inputFile inputFile
+     * @param outputFile outputFile
+     * @param colIndex Index to watch
+     * @param keyWord keyWord to Delete
+     */
+    public void deleteRows(String inputFile, String outputFile, int colIndex, String keyWord){
+        try (
+                BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+                BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))
+        ) {
+            String line = reader.readLine();
+            writer.write(line);
+            writer.newLine();
+            while ((line = reader.readLine())!= null) {
+                String[] tokens = line.split(",");
+                if(!tokens[colIndex].equals(keyWord)) {
+                    writer.write(line);
+                    writer.newLine();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Methode um CSV zu samplen auf jede n'te Zeile
      * @param inputFile zu sampelnde CSV
      * @param outputFile gesampelte CSV

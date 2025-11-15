@@ -88,6 +88,7 @@ public class UFAlgorithmVisualisationController implements UFAlgorithmInput{
             if(view.getShad()){
                 shad.add(Math.round((double) score /resultPillars.size() * 100.0) / 100.0);
             }
+            System.out.println(i+". Rechnung fertig");
         }
         TxtWriterService tws = new TxtWriterService();
         ArrayList<Double>[] exportContainer = new ArrayList[4];
