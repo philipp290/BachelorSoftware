@@ -13,6 +13,8 @@ public class Session {
     private static Session instance;
 
     private ArrayList<Pillar> pillars = new ArrayList<>();
+    private ArrayList<Integer> setIndexes = new ArrayList<>();
+    private ArrayList<Pillar> lighthouses = new ArrayList<>();
     private ArrayList<Person> people = new ArrayList<>();
 
 
@@ -54,5 +56,8 @@ public class Session {
     public void setSolutionKeys(ArrayList<String> solutionKeys) {this.solutionKeys = solutionKeys;}
     public String getOriginalPeopleFile() {return originalPeopleFile;}
     public void setOriginalPeopleFile(String originalPeopleFile) {this.originalPeopleFile = originalPeopleFile;}
-
+    public ArrayList<Pillar> getLighthouses() {return lighthouses;}
+    public void setLighthouses(ArrayList<Pillar> lighthouses) {this.lighthouses = lighthouses;}
+    public ArrayList<Integer> getSetIndexes() {return setIndexes;}
+    public void setSetIndexes(ArrayList<Integer> setIndexes) {this.setIndexes = setIndexes;}
 }

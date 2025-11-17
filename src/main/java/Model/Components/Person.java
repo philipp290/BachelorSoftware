@@ -11,6 +11,9 @@ public class Person {
     //Menge aller passierten Säulen
     //"Welche Knoten decken die Person ab?"
     private BitSet pillarsPassed;
+    //Menge aller passierten Katastrophenschutz-Leuchttürme
+    //"Welche Leuchttürme decken die Person ab?"
+    private BitSet lighthousesPassed;
     //Boolean das beim UnityExport trackt, ob die Person in einem Zeitpunkt
     //bereits abgedeckt wurde oder nicht
     private boolean isReached = false;

@@ -16,8 +16,8 @@ public class Pillar {
     //Score für den Zeitfenster Algorithmus
     private int score = 0;
 
-    //Boolean die trackt, ob eine Säule bereits gesetzt wurde
-    private boolean isSet = false;
+    private int nearestPillar=-9999;
+
 
     //Radius der Erde für Distanz Berechnungen
     private static final double EARTH_RADIUS = 6371000;
@@ -123,7 +123,7 @@ public class Pillar {
     public int getScore() {return score;}
     public void setScore(int score) {this.score = score;}
     public void scorePlusOne(){this.score++;}
+    public int getNearestPillar() {return nearestPillar;}
+    public void setNearestPillar(int nearestPillar) {this.nearestPillar = nearestPillar;}
 
-    public boolean isSet() {return isSet;}
-    public void setSet(boolean set) {isSet = set;}
 }

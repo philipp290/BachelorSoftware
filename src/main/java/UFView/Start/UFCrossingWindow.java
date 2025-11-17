@@ -95,10 +95,7 @@ public class UFCrossingWindow extends JFrame {
                     viewer.setVisible(true);
                 });
             }else{
-                SwingUtilities.invokeLater(() -> {
-                    UFMainWindow viewer = new UFMainWindow();
-                    viewer.setVisible(true);
-                });
+                SwingUtilities.invokeLater(UFLoadingScreen::showLoadingScreen);
             }
             dispose();
         });

@@ -23,14 +23,14 @@ public class LinearOptimizationAlgorithm implements Algorithm {
                 StringBuilder objectiveLine = new StringBuilder("max: ");
                 int i = 0;
                 while(i < people.size()){
-                    objectiveLine.append("y"+i+" + ");
+                    objectiveLine.append("y" + i + " + ");
                     i++;
                 }
                 objectiveLine.delete(objectiveLine.length() - 3, objectiveLine.length());
                 objectiveLine.append(" - ");
                 i = 0;
                 while(i < pillars.size()){
-                    objectiveLine.append((pillars.get(i).getShadow().getValue()*pillarWeight)+"x"+i+" - ");
+                    objectiveLine.append((pillars.get(i).getShadow().getValue() * pillarWeight) + "x" + i + " - ");
                     i++;
                 }
                 objectiveLine.delete(objectiveLine.length() - 3, objectiveLine.length());
@@ -44,12 +44,12 @@ public class LinearOptimizationAlgorithm implements Algorithm {
                 int xIndex = 0;
                 while(yIndex < people.size()){
                     StringBuilder constraint = new StringBuilder("y");
-                    constraint.append(yIndex+" <= ");
+                    constraint.append(yIndex + " <= ");
 
                     xIndex = 0;
-                    while(xIndex < pillars.size()){
-                        if(people.get(yIndex).getPillarsPassed().get(xIndex)){
-                            constraint.append("x"+xIndex+" + ");
+                    while (xIndex < pillars.size()) {
+                        if (people.get(yIndex).getPillarsPassed().get(xIndex)) {
+                            constraint.append("x" + xIndex + " + ");
                         }
                         xIndex++;
                     }
@@ -65,7 +65,7 @@ public class LinearOptimizationAlgorithm implements Algorithm {
                 StringBuilder goalLine = new StringBuilder(goal+" >= ");
                 i = 0;
                 while(i < pillars.size()){
-                    goalLine.append("x"+i+" + ");
+                    goalLine.append("x" + i + " + ");
                     i++;
                 }
                 goalLine.delete(goalLine.length() - 3, goalLine.length());
@@ -79,11 +79,11 @@ public class LinearOptimizationAlgorithm implements Algorithm {
                 xIndex = 0;
                 yIndex = 0;
                 while(yIndex<people.size()){
-                    booleanLine.append("y"+yIndex+", ");
+                    booleanLine.append("y" + yIndex + ", ");
                     yIndex++;
                 }
                 while(xIndex<pillars.size()){
-                    booleanLine.append("x"+xIndex+", ");
+                    booleanLine.append("x" + xIndex + ", ");
                     xIndex++;
                 }
                 booleanLine.delete(booleanLine.length()-2, booleanLine.length());

@@ -86,7 +86,7 @@ public class UFPillarChoosingWindow extends JFrame {
                 if (value instanceof Boolean) {
                     boolean checked = (Boolean) value;
                     if (checked) {
-                        Session.getInstance().getPillars().get(row).setSet(true);
+                        Session.getInstance().getSetIndexes().add(row);
                     }
                 }
             }

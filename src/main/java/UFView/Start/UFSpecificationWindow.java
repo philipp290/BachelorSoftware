@@ -152,9 +152,7 @@ public class UFSpecificationWindow extends JFrame {
                     Session.getInstance().setOriginalPeopleFile(peoplePath.getText());
                     CsvReaderService crs = new CsvReaderService();
                     ArrayList<Pillar> pil = crs.readPillarsFromFile(pillarPath.getText());
-                    ArrayList<Person> per = crs.readPerson(peoplePath.getText(), pil, Session.getInstance().getReachingDistance());
                     Session.getInstance().setPillars(pil);
-                    Session.getInstance().setPeople(per);
                     SwingUtilities.invokeLater(() -> {
                         UFCrossingWindow viewer = new UFCrossingWindow(true);
                         viewer.setVisible(true);
@@ -171,14 +169,8 @@ public class UFSpecificationWindow extends JFrame {
                 if (!pillarPath.getText().isEmpty()) {
                     CsvReaderService crs = new CsvReaderService();
                     ArrayList<Pillar> pil = crs.readPillarsFromFile(pillarPath.getText());
-                    for(Pillar p:pil){
-                        p.setSet(true);
-                    }
-                    Session.getInstance().getPillars().addAll(pil);
-                    SwingUtilities.invokeLater(() -> {
-                        UFMainWindow viewer = new UFMainWindow();
-                        viewer.setVisible(true);
-                    });
+                    Session.getInstance().getLighthouses().addAll(pil);
+                    SwingUtilities.invokeLater(UFLoadingScreen::showLoadingScreen);
 
 
                     dispose();
