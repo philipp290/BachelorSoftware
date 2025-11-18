@@ -3,6 +3,7 @@ package Model.Services;
 import Model.Components.Person;
 import Model.Components.Pillar;
 import Model.Components.Shadow;
+import Model.Session;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -54,6 +55,48 @@ public class CsvReaderService {
             e.printStackTrace();
         }
         return resultPillars;
+    }
+
+    /**
+     * Methode um Säulen Objekte aus vorheriger Problem
+     * Instanz zu importieren
+     * @param inputFile input File
+     */
+    public void importPillars(String inputFile){
+        ArrayList<Pillar> resultPillars = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
+            reader.readLine();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] components = line.split(",");
+                //components[0]=components[0].replace("\"", "");
+                int id = Integer.parseInt(components[0]);
+                double longitude = Double.parseDouble(components[1]);
+                double latitude = Double.parseDouble(components[2]);
+                Shadow shadow;
+                switch (components[3]) {
+                    case "hoch":
+                        shadow = Shadow.HOCH;
+                        break;
+                    case "mittel":
+                        shadow = Shadow.MITTEL;
+                        break;
+                    case "niedrig":
+                        shadow = Shadow.NIEDRIG;
+                        break;
+                    default:
+                        shadow = Shadow.KEIN;
+                        break;
+                }
+                resultPillars.add(new Pillar(id, longitude, latitude, shadow));
+                if(components[4].equals("1")){
+                    Session.getInstance().getSetIndexes().add(id);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Session.getInstance().setPillars(resultPillars);
     }
 
     /**
@@ -129,6 +172,41 @@ public class CsvReaderService {
             e.printStackTrace();
         }
         return resultPersons;
+    }
+
+    /**
+     * Methode Personen Objekte aus vorheriger Problem Instanz zu importieren
+     * @param inputFile input File
+     * @return Personen Objekte und Mappings in den Bitmaps
+     */
+    public void importPeople(String inputFile){
+        ArrayList<Person> resultPeople = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
+            reader.readLine();
+            String line;
+            int id = 0;
+            while ((line = reader.readLine()) != null) {
+                String[] components = line.split(",");
+                Person lookingAt = findPerson(Integer.parseInt(components[0]),resultPeople);
+                if(lookingAt == null){
+                    lookingAt = new Person(Integer.parseInt(components[0]),id,new BitSet());
+                    resultPeople.add(lookingAt);
+                    id++;
+                }
+                if(Integer.parseInt(components[1])!= -99999) {
+                    if (Integer.parseInt(components[1]) >= 0) {
+                        Session.getInstance().getPillars().get(Integer.parseInt(components[1])).getPeopleReached().set(lookingAt.getInternalID());
+                        lookingAt.getPillarsPassed().set(Integer.parseInt(components[1]));
+                    } else {
+                        Session.getInstance().getLighthouses().get(Integer.parseInt(components[1])).getPeopleReached().set(lookingAt.getInternalID());
+                        lookingAt.getLighthousesPassed().set(Integer.parseInt(components[1]) * -1);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Session.getInstance().setPeople(resultPeople);
     }
 
     //Hilfsmethode1.2 Personen-Finder

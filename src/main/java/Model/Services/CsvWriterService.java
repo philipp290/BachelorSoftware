@@ -105,6 +105,12 @@ public class CsvWriterService {
                         }
                     }
                 }
+                if(p.getLighthousesPassed().cardinality()==0 && p.getPillarsPassed().cardinality()==0){
+                    String outputLine = String.join(",", String.valueOf(p.getPersonID()),"-99999");
+                    System.out.println(outputLine);
+                    writer.write(outputLine);
+                    writer.newLine();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

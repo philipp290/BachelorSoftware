@@ -58,12 +58,15 @@ package UFView.Start;
 //<a href="https://www.flaticon.com/free-icons/exclamation-mark" title="exclamation mark icons">Exclamation mark icons created by Nur syifa fauziah - Flaticon</a>
 //Solution
 //<a href="https://www.flaticon.com/free-icons/light-bulb" title="light bulb icons">Light bulb icons created by Kiranshastry - Flaticon</a>
+//Fast
+//<a href="https://www.flaticon.com/free-icons/arrows" title="arrows icons">Arrows icons created by Pixel perfect - Flaticon</a>
 
 import UFView.Editor.UFEditorSelectionWindow;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 public class UFPreMainWindow extends JFrame {
@@ -71,6 +74,7 @@ public class UFPreMainWindow extends JFrame {
 
     private JButton editingButton;
     private JButton startingButton;
+    private JButton quickStartButton;
 
     private final Color defaultColor;
     private final Color hoverColor;
@@ -79,6 +83,7 @@ public class UFPreMainWindow extends JFrame {
 
     private ImageIcon editIcon;
     private ImageIcon startIcon;
+    private ImageIcon fastIcon;
 
     public UFPreMainWindow() {
 
@@ -98,12 +103,16 @@ public class UFPreMainWindow extends JFrame {
         scaledImage = startIcon.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
         startIcon = new ImageIcon(scaledImage);
 
+        fastIcon = new ImageIcon(getClass().getResource("/fastIcon.png"));
+        scaledImage = fastIcon.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
+        fastIcon = new ImageIcon(scaledImage);
+
         setTitle("Start");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel content = new JPanel(null);
         content.setBackground(Color.WHITE);
-        content.setPreferredSize(new Dimension(400, 140));
+        content.setPreferredSize(new Dimension(400, 200));
         setContentPane(content);
 
         initUI();
@@ -124,6 +133,11 @@ public class UFPreMainWindow extends JFrame {
         formatButton(startingButton);
         getContentPane().add(startingButton);
 
+        quickStartButton = new JButton("Schnell-Start", fastIcon);
+        quickStartButton.setBounds(20, 140, 360, 40);
+        formatButton(quickStartButton);
+        getContentPane().add(quickStartButton);
+
         //--------------BUTTON-FUNCTION-----------------
         startingButton.addActionListener((ActionEvent e) -> {
             SwingUtilities.invokeLater(() -> {
@@ -135,6 +149,12 @@ public class UFPreMainWindow extends JFrame {
         editingButton.addActionListener((ActionEvent) ->{
             SwingUtilities.invokeLater(() -> {
                 UFEditorSelectionWindow viewer = new UFEditorSelectionWindow();
+                viewer.setVisible(true);
+            });
+        });
+        quickStartButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                UFQuickStartWindow viewer = new UFQuickStartWindow();
                 viewer.setVisible(true);
             });
             dispose();

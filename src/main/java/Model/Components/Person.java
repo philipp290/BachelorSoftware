@@ -23,18 +23,21 @@ public class Person {
     public Person(int id, int internalId){
         this.personID=id;
         this.internalID = internalId;
-        pillarsPassed = new BitSet();
+        this.pillarsPassed = new BitSet();
+        lighthousesPassed = new BitSet();
     }
 
     public Person(int id, int internalId, BitSet pillars ){
         this.personID = id;
         this.internalID = internalId;
         this.pillarsPassed = pillars;
+        this.lighthousesPassed = new BitSet();
     }
     //Copy Constructor
     public Person (Person p){
         this.personID=p.getPersonID();
         this.pillarsPassed = p.getPillarsPassed();
+        this.lighthousesPassed = p.getLighthousesPassed();
     }
 
     //-----------------------------------------------------------------------Function----------------
