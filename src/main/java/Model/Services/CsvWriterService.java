@@ -90,7 +90,8 @@ public class CsvWriterService {
             for (Person p : people) {
                 for(int i = 0; i<Session.getInstance().getPillars().size(); i++) {
                     if(p.getPillarsPassed().get(i)) {
-                        String outputLine = String.join(",", String.valueOf(p.getInternalID()),String.valueOf(i));
+                        String outputLine = String.join(",", String.valueOf(p.getPersonID()),String.valueOf(i));
+                        System.out.println(outputLine);
                         writer.write(outputLine);
                         writer.newLine();
                     }

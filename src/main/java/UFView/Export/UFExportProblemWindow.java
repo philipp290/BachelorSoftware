@@ -2,6 +2,7 @@ package UFView.Export;
 
 import Model.Components.Pillar;
 import Model.Services.CsvReaderService;
+import Model.Services.CsvWriterService;
 import Model.Session;
 import UFView.Start.UFCrossingWindow;
 import UFView.Start.UFErrorWindow;
@@ -145,15 +146,9 @@ public class UFExportProblemWindow extends JFrame {
         //-------------BUTTON-FUNCTION----------------
         next.addActionListener((ActionEvent) -> {
             if (!peoplePath.getText().isEmpty() && !pillarPath.getText().isEmpty()) {
-                Session.getInstance().setOriginalPeopleFile(peoplePath.getText());
-                CsvReaderService crs = new CsvReaderService();
-                ArrayList<Pillar> pil = crs.readPillarsFromFile(pillarPath.getText());
-                Session.getInstance().setPillars(pil);
-                SwingUtilities.invokeLater(() -> {
-                    UFCrossingWindow viewer = new UFCrossingWindow(true);
-                    viewer.setVisible(true);
-                });
-
+                CsvWriterService cws = new CsvWriterService();
+                cws.exportPillarsToFile(pillarPath.getText()+"/pillarExport.csv");
+                cws.exportPeopleToFile(peoplePath.getText()+"/personExport.csv");
                 dispose();
             } else {
                 SwingUtilities.invokeLater(() -> {
@@ -167,7 +162,8 @@ public class UFExportProblemWindow extends JFrame {
         pillarSearch.addActionListener((ActionEvent)->{
             File startDir = new File("Data");
             JFileChooser fileChooser = new JFileChooser(startDir);
-            fileChooser.setDialogTitle("Wähle die Säulen CSV aus");
+            fileChooser.setDialogTitle("Wähle den Ziel-Ordner für die Säulen");
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int result = fileChooser.showOpenDialog(this);
             if (result == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
@@ -177,7 +173,8 @@ public class UFExportProblemWindow extends JFrame {
         peopleSearch.addActionListener((ActionEvent) -> {
                 File startDir = new File("Data");
                 JFileChooser fileChooser = new JFileChooser(startDir);
-                fileChooser.setDialogTitle("Wähle die Verkehrs-Simulation aus");
+                fileChooser.setDialogTitle("Wähle den Ziel-Ordner für die Personen");
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 int result = fileChooser.showOpenDialog(this);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();

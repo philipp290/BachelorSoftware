@@ -1,5 +1,7 @@
 package UFView;
 
+import Model.Components.Person;
+import Model.Session;
 import UFView.Algorithm.UFAlgorithmInputSelectionWindow;
 import UFView.Analysis.UFAnalysisWindow;
 import UFView.Comparator.UFComparatorWindow;
@@ -8,6 +10,8 @@ import UFView.Export.UFExportUnityWindow;
 
 import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class UFMainWindow extends JFrame {
     private JButton analysisButton;
@@ -67,6 +71,8 @@ public class UFMainWindow extends JFrame {
     }
 
     public void initUI() {
+        ArrayList<Person> test = Session.getInstance().getPeople();
+
         analysisButton = new JButton("CSVs analysieren ", analysisIcon);
         analysisButton.setBounds(20, 20, 360, 40);
         formatButton(analysisButton);
