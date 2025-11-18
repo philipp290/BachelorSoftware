@@ -7,18 +7,16 @@ import UFView.UFMainWindow;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-public class UFLoadingScreen extends JFrame {
+public class UFLoadingWindow extends JFrame {
     private static long startTime;
-    private static final Image emergencityIcon = Toolkit.getDefaultToolkit().getImage(UFLoadingScreen.class.getResource("/emergencityIcon.png"));
-    private static final Image emergencityRoundIcon = Toolkit.getDefaultToolkit().getImage(UFLoadingScreen.class.getResource("/emergencityIconRound.png"));
+    private static final Image emergencityIcon = Toolkit.getDefaultToolkit().getImage(UFLoadingWindow.class.getResource("/emergencityIcon.png"));
+    private static final Image emergencityRoundIcon = Toolkit.getDefaultToolkit().getImage(UFLoadingWindow.class.getResource("/emergencityIconRound.png"));
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(UFLoadingScreen::showLoadingScreen);
+        SwingUtilities.invokeLater(UFLoadingWindow::showLoadingScreen);
     }
 
     public static void showLoadingScreen() {

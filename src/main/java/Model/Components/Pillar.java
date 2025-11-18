@@ -5,6 +5,7 @@ import java.util.BitSet;
 public class Pillar {
     //---------------------------------------------------------Attribute--------------------------
     //Schlüssel Attribut zum identifizieren
+    //Leuchttürme haben negative IDs
     private int pillarID;
     //GPS Position der Säule
     private double longitude;
@@ -16,6 +17,7 @@ public class Pillar {
     //Score für den Zeitfenster Algorithmus
     private int score = 0;
 
+    //Ist nur gesetzt bei Leuchttürmen die exportiert werden sollen
     private int nearestPillar=-9999;
 
 

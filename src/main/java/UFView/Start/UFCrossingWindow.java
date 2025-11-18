@@ -1,12 +1,9 @@
 package UFView.Start;
 
 import Model.Session;
-import UFView.UFMainWindow;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class UFCrossingWindow extends JFrame {
     private JLabel header;
@@ -95,7 +92,7 @@ public class UFCrossingWindow extends JFrame {
                     viewer.setVisible(true);
                 });
             }else{
-                SwingUtilities.invokeLater(UFLoadingScreen::showLoadingScreen);
+                SwingUtilities.invokeLater(UFLoadingWindow::showLoadingScreen);
             }
             dispose();
         });

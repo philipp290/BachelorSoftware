@@ -1,7 +1,10 @@
 package Model.Services;
 
+import Model.Components.Person;
 import Model.Components.Pillar;
+import Model.Session;
 
+import javax.management.StringValueExp;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.nio.charset.StandardCharsets;
@@ -72,4 +75,62 @@ public class CsvWriterService {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Methode die in Komprimierter Form die gelesenen Personen in eine CSV
+     * schreibt -> Vorbereitung auf Quick-Start
+     * @param outputFile Ziel File
+     */
+    public void exportPeopleToFile(String outputFile){
+        ArrayList<Person> people = Session.getInstance().getPeople();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
+            writer.write(String.join(",", "PersonID","PillarID"));
+            writer.newLine();
+            boolean lighthousesSet = !Session.getInstance().getLighthouses().isEmpty();
+            for (Person p : people) {
+                for(int i = 0; i<Session.getInstance().getPillars().size(); i++) {
+                    if(p.getPillarsPassed().get(i)) {
+                        String outputLine = String.join(",", String.valueOf(p.getInternalID()),String.valueOf(i));
+                        writer.write(outputLine);
+                        writer.newLine();
+                    }
+                }
+                if(lighthousesSet){
+                    for(int i = 0; i<Session.getInstance().getLighthouses().size(); i++) {
+                        if(p.getLighthousesPassed().get(i)) {
+                            String outputLine = String.join(",", String.valueOf(p.getInternalID()),String.valueOf(i*(-1)));
+                            writer.write(outputLine);
+                            writer.newLine();
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Methode zum exportieren von Pillar Objekten. Merkt sich, ob diese gesetzt waren und die interne ID
+     * @param outputFile outputFile
+     */
+    public void exportPillarsToFile(String outputFile){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
+            writer.write(String.join(",", "ID","longitude","latitude","schatten","Gesetzt"));
+            writer.newLine();
+            ArrayList<Pillar> pp = Session.getInstance().getPillars();
+            for (Pillar p : pp) {
+                int gesetzt = 0;
+                if(Session.getInstance().getSetIndexes().contains(p.getPillarID())){
+                    gesetzt = 1;
+                }
+                String outputLine = String.join(",", String.valueOf(p.getPillarID()),Double.toString(p.getLongitude()), Double.toString(p.getLatitude()), p.getShadow().toString().toLowerCase(),String.valueOf(gesetzt));
+                writer.write(outputLine);
+                writer.newLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

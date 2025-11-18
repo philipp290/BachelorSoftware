@@ -1,11 +1,5 @@
 package UFView.Analysis;
 
-import UFController.Algorithm.UFAlgorithmInputController;
-import UFView.Algorithm.UFAlgorithmInputWindow;
-import UFView.Comparator.UFComparatorWindow;
-import UFView.ExportUnity.UFExportUnityWindow;
-import UFView.UFMainWindow;
-
 import javax.swing.*;
 import java.awt.*;
 

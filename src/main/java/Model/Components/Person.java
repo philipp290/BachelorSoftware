@@ -11,6 +11,7 @@ public class Person {
     //Menge aller passierten Säulen
     //"Welche Knoten decken die Person ab?"
     private BitSet pillarsPassed;
+
     //Menge aller passierten Katastrophenschutz-Leuchttürme
     //"Welche Leuchttürme decken die Person ab?"
     private BitSet lighthousesPassed;
@@ -64,4 +65,6 @@ public class Person {
     }
     public int getInternalID() {return internalID;}
     public void setInternalID(int internalID) {this.internalID = internalID;}
+    public BitSet getLighthousesPassed() {return lighthousesPassed;}
+    public void setLighthousesPassed(BitSet lighthousesPassed) {this.lighthousesPassed = lighthousesPassed;}
 }

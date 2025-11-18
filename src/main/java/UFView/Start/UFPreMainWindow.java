@@ -52,7 +52,12 @@ package UFView.Start;
 //<a href="https://www.flaticon.com/free-icons/column" title="column icons">Column icons created by Pixel perfect - Flaticon</a>
 //Coverage
 //<a href="https://www.flaticon.com/free-icons/coverage" title="coverage icons">Coverage icons created by Anggara - Flaticon</a>
-
+//Export
+//<a href="https://www.flaticon.com/free-icons/export" title="export icons">Export icons created by Dixit Lakhani_02 - Flaticon</a>
+//Problem
+//<a href="https://www.flaticon.com/free-icons/exclamation-mark" title="exclamation mark icons">Exclamation mark icons created by Nur syifa fauziah - Flaticon</a>
+//Solution
+//<a href="https://www.flaticon.com/free-icons/light-bulb" title="light bulb icons">Light bulb icons created by Kiranshastry - Flaticon</a>
 
 import UFView.Editor.UFEditorSelectionWindow;
 

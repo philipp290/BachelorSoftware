@@ -1,17 +1,13 @@
 package UFView;
 
-import UFController.Algorithm.UFAlgorithmInputController;
 import UFView.Algorithm.UFAlgorithmInputSelectionWindow;
-import UFView.Algorithm.UFAlgorithmInputWindow;
 import UFView.Analysis.UFAnalysisWindow;
 import UFView.Comparator.UFComparatorWindow;
-import UFView.ExportUnity.UFExportUnityWindow;
-import UFView.Start.UFCrossingWindow;
-import UFView.Start.UFPreMainWindow;
+import UFView.Export.UFExportSelectionWindow;
+import UFView.Export.UFExportUnityWindow;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 public class UFMainWindow extends JFrame {
     private JButton analysisButton;
@@ -28,7 +24,7 @@ public class UFMainWindow extends JFrame {
     private ImageIcon analysisIcon;
     private ImageIcon algorithmIcon;
     private ImageIcon compareIcon;
-    private ImageIcon unityIcon;
+    private ImageIcon exportIcon;
 
     public UFMainWindow() {
         defaultColor = new Color(220, 220, 220);
@@ -51,9 +47,9 @@ public class UFMainWindow extends JFrame {
         scaledImage = compareIcon.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
         compareIcon = new ImageIcon(scaledImage);
 
-        unityIcon = new ImageIcon(getClass().getResource("/unityIcon.png"));
-        scaledImage = unityIcon.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
-        unityIcon = new ImageIcon(scaledImage);
+        exportIcon = new ImageIcon(getClass().getResource("/exportIcon.png"));
+        scaledImage = exportIcon.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
+        exportIcon = new ImageIcon(scaledImage);
 
         setTitle("Start");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -86,7 +82,7 @@ public class UFMainWindow extends JFrame {
         formatButton(compareButton);
         getContentPane().add(compareButton);
 
-        unityButton = new JButton("Unity Export ", unityIcon);
+        unityButton = new JButton("Export ", exportIcon);
         unityButton.setBounds(20, 200, 360, 40);
         formatButton(unityButton);
         getContentPane().add(unityButton);
@@ -106,7 +102,7 @@ public class UFMainWindow extends JFrame {
         });
         unityButton.addActionListener((ActionEvent) ->{
             SwingUtilities.invokeLater(() -> {
-                UFExportUnityWindow viewer = new UFExportUnityWindow();
+                UFExportSelectionWindow viewer = new UFExportSelectionWindow();
                 viewer.setVisible(true);
             });
         });
