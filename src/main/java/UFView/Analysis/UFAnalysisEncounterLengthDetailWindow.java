@@ -39,7 +39,7 @@ public class UFAnalysisEncounterLengthDetailWindow extends JFrame {
         Image scaledImage = timeIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         timeIcon = new ImageIcon(scaledImage);
 
-        setTitle("Analysis");
+        setTitle("Analyse");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel content = new JPanel(null);

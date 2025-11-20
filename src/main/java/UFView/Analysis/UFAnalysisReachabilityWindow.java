@@ -26,7 +26,7 @@ public class UFAnalysisReachabilityWindow extends JFrame {
         Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/emergencityIcon.png"));
         setIconImage(icon);
 
-        setTitle("Analysis");
+        setTitle("Analyse");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel content = new JPanel(null);
