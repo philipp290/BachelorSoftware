@@ -7,9 +7,11 @@ import UFView.Analysis.UFAnalysisWindow;
 import UFView.Comparator.UFComparatorWindow;
 import UFView.Export.UFExportSelectionWindow;
 import UFView.Export.UFExportUnityWindow;
+import UFView.ManualSolution.UFManualSolutionWindow;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -17,6 +19,7 @@ public class UFMainWindow extends JFrame {
     private JButton analysisButton;
     private JButton algorithmButton;
     private JButton compareButton;
+    private JButton manualButton;
     private JButton unityButton;
 
 
@@ -28,6 +31,7 @@ public class UFMainWindow extends JFrame {
     private ImageIcon analysisIcon;
     private ImageIcon algorithmIcon;
     private ImageIcon compareIcon;
+    private ImageIcon solutionIcon;
     private ImageIcon exportIcon;
 
     public UFMainWindow() {
@@ -51,6 +55,10 @@ public class UFMainWindow extends JFrame {
         scaledImage = compareIcon.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
         compareIcon = new ImageIcon(scaledImage);
 
+        solutionIcon = new ImageIcon(getClass().getResource("/solutionIcon.png"));
+        scaledImage = solutionIcon.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
+        solutionIcon = new ImageIcon(scaledImage);
+
         exportIcon = new ImageIcon(getClass().getResource("/exportIcon.png"));
         scaledImage = exportIcon.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
         exportIcon = new ImageIcon(scaledImage);
@@ -60,7 +68,7 @@ public class UFMainWindow extends JFrame {
 
         JPanel content = new JPanel(null);
         content.setBackground(Color.WHITE);
-        content.setPreferredSize(new Dimension(400, 260));
+        content.setPreferredSize(new Dimension(400, 320));
         setContentPane(content);
 
         initUI();
@@ -88,8 +96,13 @@ public class UFMainWindow extends JFrame {
         formatButton(compareButton);
         getContentPane().add(compareButton);
 
+        manualButton = new JButton("Manuelle Lösung", solutionIcon);
+        manualButton.setBounds(20,200,360,40);
+        formatButton(manualButton);
+        getContentPane().add(manualButton);
+
         unityButton = new JButton("Export ", exportIcon);
-        unityButton.setBounds(20, 200, 360, 40);
+        unityButton.setBounds(20, 260, 360, 40);
         formatButton(unityButton);
         getContentPane().add(unityButton);
 
@@ -106,6 +119,14 @@ public class UFMainWindow extends JFrame {
                 viewer.setVisible(true);
             });
         });
+
+        manualButton.addActionListener((ActionEvent) ->{
+            SwingUtilities.invokeLater(() -> {
+                UFManualSolutionWindow viewer = new UFManualSolutionWindow(Session.getInstance().getPillars());
+                viewer.setVisible(true);
+            });
+        });
+
         unityButton.addActionListener((ActionEvent) ->{
             SwingUtilities.invokeLater(() -> {
                 UFExportSelectionWindow viewer = new UFExportSelectionWindow();

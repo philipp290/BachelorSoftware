@@ -1,6 +1,9 @@
 package Model.Components;
 
+import Model.Services.CsvReaderService;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,5 +36,22 @@ class PillarTest {
         double result = p.distanceTo(11.567424,  48.227000);
         System.out.print(result);
         assertEquals(result,10000, 0.1);
+    }
+
+    @Test
+    public void riegerPlatzPillar() {
+        CsvReaderService crs = new CsvReaderService();
+        ArrayList<Pillar> test = crs.readPillarsFromFile("C:/Users/phili/OneDrive/Desktop/Bachelor Evaluation/Standorte_Litfaßsäule_Darmstadt.csv");
+        Pillar RiegerPlatz = new Pillar(-9999999, 8.66093, 49.88071, Shadow.HOCH);
+        double minDistance = 99999999999.0;
+        int nearetPillar = -1;
+        for (Pillar p : test) {
+            double dis = p.distanceTo(RiegerPlatz.getLongitude(), RiegerPlatz.getLatitude());
+            if (dis < minDistance) {
+                minDistance = dis;
+                nearetPillar = p.getPillarID();
+            }
+        }
+        System.out.println("Säule " + nearetPillar + " : " + minDistance + " meter");
     }
 }

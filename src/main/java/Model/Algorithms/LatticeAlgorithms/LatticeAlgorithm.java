@@ -30,10 +30,10 @@ public class LatticeAlgorithm implements Algorithm {
                 TopDownAlgorithm tda = new TopDownAlgorithm(Session.getInstance().getAlgorithmParameters().get(1));
                 return tda.execute(pillars,people,ABS_REL,goal);
             }else if(algoType == 3){
-                RandomWalkAlgorithm rwa = new RandomWalkAlgorithm(Session.getInstance().getAlgorithmParameters().get(1),Session.getInstance().getAlgorithmParameters().get(2),Session.getInstance().getAlgorithmParameters().get(3));
+                RandomWalkAlgorithm rwa = new RandomWalkAlgorithm(Session.getInstance().getAlgorithmParameters().get(2),Session.getInstance().getAlgorithmParameters().get(1),Session.getInstance().getAlgorithmParameters().get(3));
                 return rwa.execute(pillars,people,ABS_REL,goal);
             }else if(algoType == 4){
-                CombinedAlgorithm ca = new CombinedAlgorithm(Session.getInstance().getAlgorithmParameters().get(1),Session.getInstance().getAlgorithmParameters().get(2),Session.getInstance().getAlgorithmParameters().get(3));
+                CombinedAlgorithm ca = new CombinedAlgorithm(Session.getInstance().getAlgorithmParameters().get(2),Session.getInstance().getAlgorithmParameters().get(1),Session.getInstance().getAlgorithmParameters().get(3));
                 return ca.execute(pillars,people,ABS_REL,goal);
             }
         }
