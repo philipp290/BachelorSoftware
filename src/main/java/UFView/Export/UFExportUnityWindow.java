@@ -132,7 +132,7 @@ public class UFExportUnityWindow extends JFrame {
         start.addActionListener((ActionEvent)->{
             if(!goalPath.getText().isEmpty() && !solution.getSelectedItem().toString().isEmpty()){
                 CsvUpdateService cus = new CsvUpdateService();
-                String saveFile = goalPath +"/"+ solution.getSelectedItem().toString()+"UnityExport.csv";
+                String saveFile = goalPath.getText() +"\\UnityExport.csv";
                 ArrayList<Pillar> pillars = Session.getInstance().getSolutionCache().get(solution.getSelectedItem().toString());
                 cus.solutionUnityExport(Session.getInstance().getOriginalPeopleFile(), saveFile, pillars, Session.getInstance().getReachingDistance());
                 dispose();

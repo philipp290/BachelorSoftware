@@ -79,7 +79,8 @@ public class RandomWalkAlgorithm implements Algorithm {
 
     public void nextStep(){
         boolean up_down = true;
-        if(bsv.validateAbs(currentCenterNode,pillarCoverage) >= this.minCoverage){
+        int currentScore = bsv.validateAbs(currentCenterNode,pillarCoverage);
+        if(currentScore >= this.minCoverage){
             up_down = false;
         }
         if(currentLevelIndex >= maxLevel){

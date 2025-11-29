@@ -195,7 +195,7 @@ public class CsvUpdateService {
                 }
 
                 if(!lookingAt.isReached()){
-                    Pillar isNear = findPassing(Integer.parseInt(tokens[2]),Integer.parseInt(tokens[3]),pillars,distance);
+                    Pillar isNear = findPassing(Double.parseDouble(tokens[2]),Double.parseDouble(tokens[3]),pillars,distance);
                     if(isNear != null){
                         lookingAt.setReached(true);
                     }
