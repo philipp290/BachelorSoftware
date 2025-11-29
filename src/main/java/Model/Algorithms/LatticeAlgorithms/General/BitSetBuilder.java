@@ -5,6 +5,8 @@ import Model.Algorithms.LatticeAlgorithms.Absolut.Tabu_Plus_BitSet;
 
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.Collections;
+import java.util.List;
 
 public class BitSetBuilder {
     /**
@@ -84,6 +86,19 @@ public class BitSetBuilder {
         }
         bitSet.set(pillarAmount);
         return bitSet;
+    }
+
+    public BitSet findRandomBitSet(int level, int pillarCount){
+        List<Integer> numbers = new ArrayList<>();
+        for (int i = 0; i < pillarCount; i++) {
+            numbers.add(i);
+        }
+        Collections.shuffle(numbers);
+        BitSet result = new BitSet();
+        for(int i = 0; i < level; i++){
+            result.set(numbers.get(i));
+        }
+        return result;
     }
 
     /**

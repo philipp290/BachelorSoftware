@@ -26,7 +26,7 @@ public class CombinedAlgorithm implements Algorithm {
 
         bua.initAlgo(pillars, people, goal);
         tda.initAlgo(pillars, people, goal);
-        rwa.initAlgo(pillars,people,goal);
+        rwa.initAlgo(pillars, people, goal);
 
         BitSet optimum = new BitSet();
         optimum.set(0, pillars.size()+1);
@@ -54,10 +54,8 @@ public class CombinedAlgorithm implements Algorithm {
                 if(rwa.optimumNode!=null) {
                     if (bsv.newOptimumRel(optimum, rwa.optimumNode, rwa.pillarCoverage, rwa.pillarScore)) {
                         optimum = rwa.optimumNode;
+                        tda.algoEnded = true;
                     }
-                }
-                if(rwa.foundValidNode){
-                    tda.algoEnded = true;
                 }
             }else{
                 break;

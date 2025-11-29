@@ -6,13 +6,11 @@ import java.util.BitSet;
 
 public class BitSet_Plus {
     public BitSet bitSet;
-    public boolean valid;
-    public int score;
+    public int timer;
 
-    BitSet_Plus(BitSet bs, boolean v, int s){
+    BitSet_Plus(BitSet bs, int t){
         this.bitSet = bs;
-        this.valid = v;
-        this.score = s;
+        this.timer = t;
     }
 
     // equals() überschreiben
@@ -21,7 +19,7 @@ public class BitSet_Plus {
         if (this == obj){ return true;}
         if (obj == null || getClass() != obj.getClass()){ return false;}
         BitSet_Plus other = (BitSet_Plus) obj;
-        if((other.valid != this.valid) || !(other.bitSet.equals(this.bitSet)) || (other.score!=this.score) ){
+        if(!(other.bitSet.equals(this.bitSet)) || (other.timer!=this.timer) ){
             return false;
         }
         return true;

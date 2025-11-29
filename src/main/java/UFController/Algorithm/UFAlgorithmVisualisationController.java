@@ -83,10 +83,18 @@ public class UFAlgorithmVisualisationController implements UFAlgorithmInput{
                 peop.add((double)coverage);
             }
             if(view.getPil()){
-                pil.add((double)resultPillars.size());
+                if(resultPillars==null){
+                    pil.add(0.0);
+                }else {
+                    pil.add((double) resultPillars.size());
+                }
             }
             if(view.getShad()){
-                shad.add(Math.round((double) score /resultPillars.size() * 100.0) / 100.0);
+                if(resultPillars==null){
+                    shad.add(0.0);
+                }else {
+                    shad.add(Math.round((double) score / resultPillars.size() * 100.0) / 100.0);
+                }
             }
             System.out.println(i+". Rechnung fertig");
         }

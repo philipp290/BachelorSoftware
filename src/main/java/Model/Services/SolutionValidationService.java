@@ -62,6 +62,9 @@ public class SolutionValidationService {
      * @return Anzahl erreichter Personen
      */
     public int coverageValidation(ArrayList<Pillar> pillars){
+        if(pillars == null){
+            return 0;
+        }
         BitSet completeCoverage = new BitSet();
         for(Pillar p : pillars){
             completeCoverage.or(p.getPeopleReached());
@@ -76,6 +79,9 @@ public class SolutionValidationService {
      * @return Beschattungs-Score
      */
     public int scoreValidation(ArrayList<Pillar> pillars){
+        if(pillars == null){
+            return 0;
+        }
         int completeScore = 0;
         for(Pillar p : pillars){
             completeScore += p.getShadow().getValue();
