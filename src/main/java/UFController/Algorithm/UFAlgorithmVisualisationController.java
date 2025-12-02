@@ -5,6 +5,7 @@ import Model.Algorithms.LinearOptimizationAlgorithm;
 import Model.Algorithms.LogikAlgorithm;
 import Model.Components.Person;
 import Model.Components.Pillar;
+import Model.Services.PruningService;
 import Model.Services.SolutionValidationService;
 import Model.Services.TxtWriterService;
 import Model.Session;
@@ -57,10 +58,12 @@ public class UFAlgorithmVisualisationController implements UFAlgorithmInput{
         });
     }
     public void executeAlgorithm (Algorithm algo){
+        PruningService ps = new PruningService();
+
         SolutionValidationService svs = new SolutionValidationService();
 
         ArrayList<Pillar> pillars = Session.getInstance().getPillars();
-        ArrayList<Person> people = Session.getInstance().getPeople();
+        ArrayList<Person> people = ps.prunePeople(Session.getInstance().getPeople());
         boolean abs_rel = view.getAbsSelect();
 
         ArrayList<Double> perc = new ArrayList<>();

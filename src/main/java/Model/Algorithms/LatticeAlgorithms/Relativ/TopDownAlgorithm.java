@@ -89,7 +89,7 @@ public class TopDownAlgorithm implements Algorithm {
         ArrayList<BitSet> validCurrentLevel = new ArrayList<>();
         // TOP DOWN PRUNING
         if(!invalidPreviousLevel.isEmpty()){
-            ArrayList<BitSet> temp = bsv.topDownPruning(currentLevel, this.invalidPreviousLevel);
+            ArrayList<BitSet> temp = bsv.topDownPruning(currentLevel, this.invalidPreviousLevel,pillarCount);
             invalidCurrentLevel.addAll(temp);
             currentLevel.removeAll(invalidCurrentLevel);
         }

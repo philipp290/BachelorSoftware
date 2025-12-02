@@ -28,7 +28,7 @@ public class RandomWalkAlgorithm implements Algorithm {
     public boolean timerActivated = false;
 
     public int maxTimer = 0;
-    public int maxTimerMAX = 500;
+    public int maxTimerMAX = 5000;
 
 
     public BitSet optimumNode = null;
@@ -72,8 +72,18 @@ public class RandomWalkAlgorithm implements Algorithm {
     public void initAlgo(ArrayList<Pillar> pillars, ArrayList<Person> people, int goal){
         this.pillarCount = pillars.size();
         currentLevelIndex = (int) Math.floor(minLevel+(0.5*(maxLevel-minLevel)));
-        currentCenterNode = bsb.buildStartInstance(currentLevelIndex,pillarCount);
+        currentCenterNode = bsb.findRandomBitSet(currentLevelIndex,pillarCount);
         optimumNode = currentCenterNode;
+        /*
+        int reachablePeople = 0;
+        for(Person p: people){
+            if(p.getPillarsPassed().cardinality()!=0){
+                reachablePeople++;
+            }
+        }
+        this.minCoverage = ((int)Math.ceil((reachablePeople/100.0)*goal));
+
+         */
         this.minCoverage = ((int)Math.ceil((people.size()/100.0)*goal));
         this.pillarCoverage = new ArrayList<>();
         this.pillarScore = new ArrayList<>();
@@ -92,6 +102,10 @@ public class RandomWalkAlgorithm implements Algorithm {
         updateList(invalidNodesCache);
         updateList(validNodesCache);
 
+        //DEBUG START DER NEUEN ITERATION
+        int debug = 1;
+        //
+
         boolean up_down = true;
         //Valide?
         int currentScore = bsv.validateAbs(currentCenterNode, pillarCoverage);
@@ -109,31 +123,63 @@ public class RandomWalkAlgorithm implements Algorithm {
         } else{
             currentLevelIndex--;
         }
+
+        //DEBUG HOCH ODER RUNTER?
+        debug = 2;
+        //
+
         ArrayList<BitSet> currentLevel = new ArrayList<>();
         ArrayList<BitSet> currentValid = new ArrayList<>();
         ArrayList<BitSet> currentInvalid = new ArrayList<>();
         //TOP DOWN PRUNING
         if(!up_down){
             currentLevel = bsb.buildGeneralisations(currentCenterNode);
+            //GENERIERE LEVEL--------------------
+            debug = 3;
+            //-----------------------------------
             //invalide Generalisierungen Prunen
-            ArrayList<BitSet> pruneDown = bsv.topDownPruning(currentLevel,convert(invalidNodesCache));
+            ArrayList<BitSet> pruneDown = bsv.topDownPruning(currentLevel,convert(invalidNodesCache),pillarCount);
             currentInvalid.addAll(pruneDown);
             currentLevel.removeAll(pruneDown);
+
+            //TOPDOWN PRUNING---------------------------
+            debug = 4;
+            //------------------------------------------
+
             //valide Wiederholungen prunen
             ArrayList<BitSet> eqPrune = bsv.equalityPruning(currentLevel,convert(validNodesCache));
             currentValid.addAll(eqPrune);
             currentLevel.removeAll(eqPrune);
+
+            //EQUALITY PRUNING---------------------------
+            debug = 5;
+            //------------------------------------------
+
         }else{
             //BOTTOM UP
             currentLevel = bsb.buildSpecialisations(currentCenterNode);
+
+            //GENERIERE LEVEL--------------------
+            debug = 3;
+            //-----------------------------------
+
             //valide Spezialisierungen prunen
-            ArrayList<BitSet> pruneUp = bsv.bottomUpPruning(currentLevel,convert(validNodesCache));
+            ArrayList<BitSet> pruneUp = bsv.bottomUpPruning(currentLevel,convert(validNodesCache),pillarCount);
             currentValid.addAll(pruneUp);
             currentLevel.removeAll(pruneUp);
+
+            //BOTTOMUP PRUNING---------------------------
+            debug = 4;
+            //------------------------------------------
+
             //invalide Wiederholungen prunen
             ArrayList<BitSet> eqPrune = bsv.equalityPruning(currentLevel,convert(invalidNodesCache));
             currentInvalid.addAll(eqPrune);
             currentLevel.removeAll(eqPrune);
+
+            //EQUALITY PRUNING---------------------------
+            debug = 5;
+            //------------------------------------------
         }
 
         //alle currentLevel "weggeprunt"
@@ -153,12 +199,16 @@ public class RandomWalkAlgorithm implements Algorithm {
         }
         addConvert(currentInvalid,invalidNodesCache);
         addConvert(currentValid,validNodesCache);
-        //this.invalidNodesCache.addAll(currentInvalid);
-        //this.validNodesCache.addAll(currentValid);
 
         BitSet currentOptimum = new BitSet();
         int highScore = -999999;
-        if(!currentValid.isEmpty()){
+        boolean validResult = currentValid.isEmpty();
+
+        //Valider Knoten übrig?---------------------------
+        debug = 6;
+        //------------------------------------------
+
+        if(!validResult){
             for(BitSet bs : currentValid){
                 int score = bsv.validateScore(bs,pillarScore);
                 if(score > highScore){
@@ -166,7 +216,17 @@ public class RandomWalkAlgorithm implements Algorithm {
                     highScore = score;
                 }
             }
+
+            //Optimum des neuen Levels---------------------------
+            debug = 7;
+            //------------------------------------------
+
             boolean newOptimum = bsv.newOptimumRel(this.optimumNode,currentOptimum,pillarCoverage,pillarScore);
+
+            //Neues globales Optimum?---------------------------
+            debug = 8;
+            //------------------------------------------
+
             if(newOptimum){
                 this.optimumNode = currentOptimum;
                 this.foundValidNode = true;
@@ -187,11 +247,30 @@ public class RandomWalkAlgorithm implements Algorithm {
                     currentOptimum = bs;
                     highScore = score;
                 }
+                boolean validOptimum = bsv.validateAbs(this.optimumNode,pillarCoverage) >= minCoverage;
+                if(!validOptimum){
+                    boolean newOptimum = bsv.newOptimumRel(this.optimumNode,currentOptimum,pillarCoverage,pillarScore);
+                    if(newOptimum){
+                        this.optimumNode = currentOptimum;
+                        this.foundValidNode = true;
+                    }
+                    if(timerActivated){
+                        this.timer++;
+                        if(this.timer > noOptimumTimer){
+                            this.algoEnded = true;
+                            return;
+                        }
+                    }
+                }
             }
         }
         currentCenterNode = currentOptimum;
+
+        debug = 10;
     }
 
+
+    //HILFSKLASSEN FÜR DIE CACHE ELEMENTE
     public ArrayList<BitSet> convert(ArrayList<BitSet_Plus> input){
         ArrayList<BitSet> output = new ArrayList<>();
         for(BitSet_Plus bp : input){
@@ -201,7 +280,7 @@ public class RandomWalkAlgorithm implements Algorithm {
     }
     public void addConvert(ArrayList<BitSet> traveler, ArrayList<BitSet_Plus> goal){
         for(BitSet b: traveler){
-            goal.add(new BitSet_Plus(b,5));
+            goal.add(new BitSet_Plus(b,2));
         }
     }
     public void updateList(ArrayList<BitSet_Plus> input){

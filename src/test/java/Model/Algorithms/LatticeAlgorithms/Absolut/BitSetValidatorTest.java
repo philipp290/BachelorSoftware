@@ -267,40 +267,9 @@ class BitSetValidatorTest {
         Assertions.assertEquals(result,reference);
     }
 
-    @Test
-    public void isGeneralizationTest(){
-        BitSet one = new BitSet(17);
-        one.set(16);
-        one.set(0,10);
-
-        BitSet two = new BitSet(17);
-        two.set(16);
-        two.set(2,8);
-
-        BitSetValidator bsv = new BitSetValidator();
-
-        Assertions.assertTrue(!bsv.isGeneralisationOf(two,one));
-        Assertions.assertTrue(bsv.isGeneralisationOf(one,two));
-    }
-    @Test
-    public void isNoGeneralizationTest(){
-        BitSet one = new BitSet(9);
-        one.set(9);
-        one.set(0,4);
-
-        BitSet two = new BitSet(9);
-        two.set(9);
-        two.set(2,7);
-
-        BitSetValidator bsv = new BitSetValidator();
-
-        Assertions.assertTrue(!bsv.isGeneralisationOf(two,one));
-        Assertions.assertTrue(!bsv.isGeneralisationOf(one,two));
-    }
 
     @Test
     public void topDownPruningTest1(){
-        //TODO FIX THIS TEST
         ArrayList<BitSet> originalLevel = new ArrayList<>();
         BitSet og1 = new BitSet();
         og1.set(0);
@@ -331,9 +300,10 @@ class BitSetValidatorTest {
         bs4.set(8);
         nextLevel.add(bs4);
 
+
         BitSetValidator bsv = new BitSetValidator();
 
-        ArrayList<BitSet> testingInstance = bsv.topDownPruning(nextLevel,originalLevel);
+        ArrayList<BitSet> testingInstance = bsv.topDownPruning(nextLevel,originalLevel,9);
 
 
         nextLevel.remove(3);
@@ -464,7 +434,7 @@ class BitSetValidatorTest {
 
         BitSetValidator bsv = new BitSetValidator();
 
-        ArrayList<BitSet> testingInstance = bsv.topDownPruning(nextLevel,originalLevel);
+        ArrayList<BitSet> testingInstance = bsv.topDownPruning(nextLevel,originalLevel,8);
 
         Assertions.assertEquals(testingInstance,new ArrayList<>(Arrays.asList(nextLevel.get(9), nextLevel.get(10), nextLevel.get(20))));
     }
@@ -531,7 +501,7 @@ class BitSetValidatorTest {
         bs7.set(7);
         reference.add(bs7);
 
-        ArrayList<BitSet> testingInstance = bsv.bottomUpPruning(reference,prev);
+        ArrayList<BitSet> testingInstance = bsv.bottomUpPruning(reference,prev,8);
 
         reference.remove(6);
         reference.remove(5);
@@ -605,7 +575,7 @@ class BitSetValidatorTest {
         bs7.set(7);
         reference.add(bs7);
 
-        ArrayList<BitSet> testingInstance = bsv.bottomUpPruning(reference,prev);
+        ArrayList<BitSet> testingInstance = bsv.bottomUpPruning(reference,prev,8);
 
         reference.remove(6);
         reference.remove(5);
@@ -699,4 +669,30 @@ class BitSetValidatorTest {
         Assertions.assertTrue(bsv.newOptimumRel(candidat,optimum,pillarCoverage,pillarScore));
     }
 
+    @Test
+    public void isGeneralisationOfTest(){
+        BitSet original = new BitSet();
+        original.set(0);
+        original.set(2);
+        original.set(6);
+        original.set(7);
+        original.set(10);
+        original.set(12);
+
+        BitSet generalisation = new BitSet();
+        generalisation.set(0);
+        generalisation.set(12);
+
+        BitSet noGeneralisation = new BitSet();
+        noGeneralisation.set(0);
+        noGeneralisation.set(2);
+        noGeneralisation.set(10);
+        noGeneralisation.set(19);
+
+        BitSetValidator bsv = new BitSetValidator();
+        Assertions.assertTrue(bsv.isGeneralisationOf(original,generalisation,20));
+        Assertions.assertTrue(!bsv.isGeneralisationOf(generalisation,original,20));
+        Assertions.assertTrue(!bsv.isGeneralisationOf(original,noGeneralisation,20));
+        Assertions.assertTrue(!bsv.isGeneralisationOf(noGeneralisation,original,20));
+    }
 }

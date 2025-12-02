@@ -94,19 +94,19 @@ public class BitSetValidator {
      * @param bsTwo bsTwo
      * @return Ergebnis
      */
-    public boolean isGeneralisationOf(BitSet bsOne, BitSet bsTwo){
+    public boolean isGeneralisationOf(BitSet bsOne, BitSet bsTwo, int length){
         BitSet validation = (BitSet) bsOne.clone();
-        validation.flip(0,validation.length()-1);
+        validation.flip(0,length);
         validation.and(bsTwo);
-        return !(validation.cardinality() > 1);
+        return !(validation.cardinality() > 0);
     }
 
 
-    public ArrayList<BitSet> topDownPruning(ArrayList<BitSet> nextLevel, ArrayList<BitSet> invalidPrevLevel){
+    public ArrayList<BitSet> topDownPruning(ArrayList<BitSet> nextLevel, ArrayList<BitSet> invalidPrevLevel, int length){
         ArrayList<BitSet> invalidNextLevel = new ArrayList<>();
         for(BitSet nL : nextLevel){
             for(BitSet ipL : invalidPrevLevel){
-                if(isGeneralisationOf(ipL,nL)){
+                if(isGeneralisationOf(ipL,nL,length)){
                     invalidNextLevel.add(nL);
                     break;
                 }
@@ -115,11 +115,11 @@ public class BitSetValidator {
         return invalidNextLevel;
     }
 
-    public ArrayList<BitSet> bottomUpPruning(ArrayList<BitSet> nextLevel, ArrayList<BitSet> validPrevLevel){
+    public ArrayList<BitSet> bottomUpPruning(ArrayList<BitSet> nextLevel, ArrayList<BitSet> validPrevLevel, int length){
         ArrayList<BitSet> validNextLevel = new ArrayList<>();
         for(BitSet nL : nextLevel){
             for(BitSet ipL : validPrevLevel){
-                if(isGeneralisationOf(nL,ipL)){
+                if(isGeneralisationOf(nL,ipL, length)){
                     validNextLevel.add(nL);
                     break;
                 }
@@ -145,7 +145,7 @@ public class BitSetValidator {
         if(optimum.cardinality() < candidate.cardinality()){
             return false;
         }else if(optimum.cardinality() == candidate.cardinality()){
-            if(validateScore(optimum,pillarSc) > validateScore(candidate,pillarSc)){
+            if(validateScore(optimum,pillarSc) >= validateScore(candidate,pillarSc)){
                 return false;
             }
         }

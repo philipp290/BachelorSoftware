@@ -9,6 +9,7 @@ import Model.Algorithms.LinearOptimizationAlgorithm;
 import Model.Algorithms.LogikAlgorithm;
 import Model.Components.Person;
 import Model.Components.Pillar;
+import Model.Services.PruningService;
 import Model.Session;
 import UFView.Algorithm.*;
 
@@ -49,8 +50,10 @@ public class UFAlgorithmInputController implements UFAlgorithmInput{
         });
     }
     public void executeAlgorithm (Algorithm algo){
+        PruningService ps = new PruningService();
+
         ArrayList<Pillar> pillars = Session.getInstance().getPillars();
-        ArrayList<Person> people = Session.getInstance().getPeople();
+        ArrayList<Person> people = ps.prunePeople(Session.getInstance().getPeople());
 
         boolean abs_rel = true;
         int goal = 0;
