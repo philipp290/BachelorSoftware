@@ -165,8 +165,7 @@ public class UFSpecificationWindow extends JFrame {
             }else{
                 if (!pillarPath.getText().isEmpty()) {
                     CsvReaderService crs = new CsvReaderService();
-                    ArrayList<Pillar> pil = crs.readPillarsFromFile(pillarPath.getText());
-                    Session.getInstance().getLighthouses().addAll(pil);
+                    crs.importLighthouses(pillarPath.getText());
                     SwingUtilities.invokeLater(UFLoadingWindow::showLoadingScreen);
 
 

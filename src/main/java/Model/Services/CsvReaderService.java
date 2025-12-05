@@ -100,6 +100,30 @@ public class CsvReaderService {
     }
 
     /**
+     * Methode um Katastrophenschutz Objekte aus vorheriger Problem-
+     * instanz zu importieren
+     * @param inputFile input File
+     */
+    public void importLighthouses(String inputFile){
+        ArrayList<Pillar> resultLighthouses = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
+            reader.readLine();
+            String line;
+            int internalID = -1;
+            while ((line = reader.readLine()) != null) {
+                String[] components = line.split(",");
+                double longitude = Double.parseDouble(components[0]);
+                double latitude = Double.parseDouble(components[1]);
+                resultLighthouses.add(new Pillar(internalID, longitude, latitude, null));
+                internalID--;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Session.getInstance().setLighthouses(resultLighthouses);
+    }
+
+    /**
      * Methode um Säulen Objekte aus CSV zu lesen
      * @param cacheFileName input File
      * @return Array Liste aller gelesener Säulen
@@ -165,6 +189,51 @@ public class CsvReaderService {
                     for(Pillar p : isNearOf) {
                         p.getPeopleReached().set(lookingAt.getInternalID());
                         lookingAt.getPillarsPassed().set(p.getPillarID());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultPersons;
+    }
+
+    /**
+     * Methode die Personen Objekte aus CSV Datei liest
+     * Besonderheit: Katastrophenschutz-Leuchttürme sind Teil der Probleminstanz
+     * @param inputFile input File
+     * @return Personen Objekte und Mappings in den Bitsets
+     */
+    public ArrayList<Person> readPersonWithLighthouses(String inputFile){
+        ArrayList<Pillar> pillars = Session.getInstance().getPillars();
+        ArrayList<Pillar> lighthouses = Session.getInstance().getLighthouses();
+        int dist = Session.getInstance().getReachingDistance();
+
+        ArrayList<Person> resultPersons = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
+            reader.readLine();
+            String line;
+            int id = 0;
+            while ((line = reader.readLine()) != null) {
+                String[] components = line.split(",");
+                Person lookingAt = findPerson(Integer.parseInt(components[1]),resultPersons);
+                if(lookingAt == null){
+                    lookingAt = new Person(Integer.parseInt(components[1]),id,new BitSet());
+                    resultPersons.add(lookingAt);
+                    id++;
+                }
+                ArrayList<Pillar> isNearOf = findPassing(Double.parseDouble(components[2]),Double.parseDouble(components[3]),pillars, dist);
+                if(isNearOf != null){
+                    for(Pillar p : isNearOf) {
+                        p.getPeopleReached().set(lookingAt.getInternalID());
+                        lookingAt.getPillarsPassed().set(p.getPillarID());
+                    }
+                }
+                isNearOf = findPassing(Double.parseDouble(components[2]),Double.parseDouble(components[3]),lighthouses, dist);
+                if(isNearOf != null){
+                    for(Pillar p : isNearOf) {
+                        p.getPeopleReached().set(lookingAt.getInternalID());
+                        lookingAt.getLighthousesPassed().set(p.getPillarID()*(-1));
                     }
                 }
             }

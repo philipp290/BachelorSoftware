@@ -24,7 +24,7 @@ public class Person {
         this.personID=id;
         this.internalID = internalId;
         this.pillarsPassed = new BitSet();
-        lighthousesPassed = new BitSet();
+        this.lighthousesPassed = new BitSet();
     }
 
     public Person(int id, int internalId, BitSet pillars ){

@@ -3,10 +3,7 @@ package Model.Algorithms.LatticeAlgorithms.General;
 import Model.Algorithms.LatticeAlgorithms.Absolut.TabuElement;
 import Model.Algorithms.LatticeAlgorithms.Absolut.Tabu_Plus_BitSet;
 
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class BitSetBuilder {
     /**
@@ -93,6 +90,9 @@ public class BitSetBuilder {
         for (int i = 0; i < pillarCount; i++) {
             numbers.add(i);
         }
+        long seed = 12345L;
+        Random random = new Random(seed);
+
         Collections.shuffle(numbers);
         BitSet result = new BitSet();
         for(int i = 0; i < level; i++){
@@ -108,7 +108,6 @@ public class BitSetBuilder {
      * @return alle BitSets in diesem Level
      */
     public ArrayList<BitSet> buildLevelK (int k, int n){
-        //TODO checke Richtigkeit
         ArrayList<BitSet> result = new ArrayList<>();
 
         if (k < 0 || k > n) {return result;}
@@ -148,9 +147,9 @@ public class BitSetBuilder {
      * @param bs Input BitSet
      * @return alle Generalisierungen im Level drunter von bs
      */
-    public ArrayList<BitSet> buildGeneralisations(BitSet bs){
+    public ArrayList<BitSet> buildGeneralisations(BitSet bs ,int length){
         ArrayList<BitSet> result = new ArrayList<>();
-        for(int i = 0; i<bs.length()-1; i++){
+        for(int i = 0; i<length; i++){
             if(bs.get(i)){
                 BitSet temp = (BitSet) bs.clone();
                 temp.clear(i);
@@ -164,9 +163,9 @@ public class BitSetBuilder {
      * @param bs Input BitSet
      * @return alle Spezialisierungen im Level drunter von bs
      */
-    public ArrayList<BitSet> buildSpecialisations(BitSet bs){
+    public ArrayList<BitSet> buildSpecialisations(BitSet bs, int length){
         ArrayList<BitSet> result = new ArrayList<>();
-        for(int i = 0; i<bs.length()-1; i++){
+        for(int i = 0; i<length; i++){
             if(!bs.get(i)){
                 BitSet temp = (BitSet) bs.clone();
                 temp.set(i);

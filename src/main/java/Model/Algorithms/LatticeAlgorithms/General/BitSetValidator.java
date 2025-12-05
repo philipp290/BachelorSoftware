@@ -103,6 +103,9 @@ public class BitSetValidator {
 
 
     public ArrayList<BitSet> topDownPruning(ArrayList<BitSet> nextLevel, ArrayList<BitSet> invalidPrevLevel, int length){
+        if(invalidPrevLevel.isEmpty()){
+            return null;
+        }
         ArrayList<BitSet> invalidNextLevel = new ArrayList<>();
         for(BitSet nL : nextLevel){
             for(BitSet ipL : invalidPrevLevel){
@@ -116,6 +119,9 @@ public class BitSetValidator {
     }
 
     public ArrayList<BitSet> bottomUpPruning(ArrayList<BitSet> nextLevel, ArrayList<BitSet> validPrevLevel, int length){
+        if(validPrevLevel.isEmpty()){
+            return null;
+        }
         ArrayList<BitSet> validNextLevel = new ArrayList<>();
         for(BitSet nL : nextLevel){
             for(BitSet ipL : validPrevLevel){
@@ -129,6 +135,9 @@ public class BitSetValidator {
     }
 
     public ArrayList<BitSet> equalityPruning(ArrayList<BitSet> nextLevel, ArrayList<BitSet> prevLevel){
+        if(prevLevel.isEmpty()){
+            return null;
+        }
         ArrayList<BitSet> toBePruned = new ArrayList<>();
         for(BitSet nL : toBePruned){
             for(BitSet ipL : prevLevel){
@@ -145,6 +154,16 @@ public class BitSetValidator {
         if(optimum.cardinality() < candidate.cardinality()){
             return false;
         }else if(optimum.cardinality() == candidate.cardinality()){
+            if(validateScore(optimum,pillarSc) >= validateScore(candidate,pillarSc)){
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean newInvalidOptimum(BitSet optimum, BitSet candidate, ArrayList<BitSet> pillarCov, ArrayList<Integer> pillarSc){
+        if(validateAbs(optimum,pillarCov) > validateAbs(candidate,pillarCov)){
+            return false;
+        }else if(validateAbs(optimum,pillarCov) == validateAbs(candidate,pillarCov)){
             if(validateScore(optimum,pillarSc) >= validateScore(candidate,pillarSc)){
                 return false;
             }

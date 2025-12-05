@@ -133,7 +133,7 @@ public class UFPreMainWindow extends JFrame {
         formatButton(startingButton);
         getContentPane().add(startingButton);
 
-        quickStartButton = new JButton("Schnell-Start", fastIcon);
+        quickStartButton = new JButton("Schnellstart", fastIcon);
         quickStartButton.setBounds(20, 140, 360, 40);
         formatButton(quickStartButton);
         getContentPane().add(quickStartButton);

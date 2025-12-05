@@ -28,7 +28,7 @@ public class RandomWalkAlgorithm implements Algorithm {
     public boolean timerActivated = false;
 
     public int maxTimer = 0;
-    public int maxTimerMAX = 5000;
+    public int maxTimerMAX = 1000;
 
 
     public BitSet optimumNode = null;
@@ -107,17 +107,17 @@ public class RandomWalkAlgorithm implements Algorithm {
         //
 
         boolean up_down = true;
-        //Valide?
         int currentScore = bsv.validateAbs(currentCenterNode, pillarCoverage);
         if (currentScore >= this.minCoverage) {
             up_down = false;
         }
-        if (currentLevelIndex >= maxLevel) {
+        if (currentLevelIndex == maxLevel) {
             up_down = false;
         }
-        if (currentLevelIndex <= minLevel) {
+        if (currentLevelIndex == minLevel) {
             up_down = true;
         }
+
         if (up_down) {
             currentLevelIndex++;
         } else{
@@ -133,61 +133,59 @@ public class RandomWalkAlgorithm implements Algorithm {
         ArrayList<BitSet> currentInvalid = new ArrayList<>();
         //TOP DOWN PRUNING
         if(!up_down){
-            currentLevel = bsb.buildGeneralisations(currentCenterNode);
-            //GENERIERE LEVEL--------------------
+            currentLevel = bsb.buildGeneralisations(currentCenterNode,pillarCount);
+            //GENERALISIERUNGEN--------------------
             debug = 3;
             //-----------------------------------
-            //invalide Generalisierungen Prunen
             ArrayList<BitSet> pruneDown = bsv.topDownPruning(currentLevel,convert(invalidNodesCache),pillarCount);
-            currentInvalid.addAll(pruneDown);
-            currentLevel.removeAll(pruneDown);
-
+            if(pruneDown!=null) {
+                currentInvalid.addAll(pruneDown);
+                currentLevel.removeAll(pruneDown);
+            }
             //TOPDOWN PRUNING---------------------------
             debug = 4;
             //------------------------------------------
-
-            //valide Wiederholungen prunen
             ArrayList<BitSet> eqPrune = bsv.equalityPruning(currentLevel,convert(validNodesCache));
-            currentValid.addAll(eqPrune);
-            currentLevel.removeAll(eqPrune);
-
+            if(eqPrune!=null) {
+                currentValid.addAll(eqPrune);
+                currentLevel.removeAll(eqPrune);
+            }
             //EQUALITY PRUNING---------------------------
             debug = 5;
             //------------------------------------------
 
         }else{
-            //BOTTOM UP
-            currentLevel = bsb.buildSpecialisations(currentCenterNode);
+            currentLevel = bsb.buildSpecialisations(currentCenterNode,pillarCount);
 
-            //GENERIERE LEVEL--------------------
+            //Spezialisierungen--------------------
             debug = 3;
             //-----------------------------------
 
-            //valide Spezialisierungen prunen
             ArrayList<BitSet> pruneUp = bsv.bottomUpPruning(currentLevel,convert(validNodesCache),pillarCount);
-            currentValid.addAll(pruneUp);
-            currentLevel.removeAll(pruneUp);
-
+            if(pruneUp!=null) {
+                currentValid.addAll(pruneUp);
+                currentLevel.removeAll(pruneUp);
+            }
             //BOTTOMUP PRUNING---------------------------
             debug = 4;
             //------------------------------------------
 
-            //invalide Wiederholungen prunen
             ArrayList<BitSet> eqPrune = bsv.equalityPruning(currentLevel,convert(invalidNodesCache));
-            currentInvalid.addAll(eqPrune);
-            currentLevel.removeAll(eqPrune);
-
+            if(eqPrune!=null) {
+                currentInvalid.addAll(eqPrune);
+                currentLevel.removeAll(eqPrune);
+            }
             //EQUALITY PRUNING---------------------------
             debug = 5;
             //------------------------------------------
         }
 
-        //alle currentLevel "weggeprunt"
+        /*
         if(currentLevel.isEmpty()){
-            //currentCenterNode = bsb.findRandomBitSet(currentLevelIndex,pillarCount);
             this.algoEnded = true;
             return;
         }
+         */
 
         //VALIDATION
         for(BitSet bs: currentLevel){
@@ -202,6 +200,7 @@ public class RandomWalkAlgorithm implements Algorithm {
 
         BitSet currentOptimum = new BitSet();
         int highScore = -999999;
+
         boolean validResult = currentValid.isEmpty();
 
         //Valider Knoten übrig?---------------------------
@@ -209,6 +208,9 @@ public class RandomWalkAlgorithm implements Algorithm {
         //------------------------------------------
 
         if(!validResult){
+            //Valide
+            debug =4;
+            //
             for(BitSet bs : currentValid){
                 int score = bsv.validateScore(bs,pillarScore);
                 if(score > highScore){
@@ -217,7 +219,7 @@ public class RandomWalkAlgorithm implements Algorithm {
                 }
             }
 
-            //Optimum des neuen Levels---------------------------
+            //Optimum des neuen validen Levels---------------------------
             debug = 7;
             //------------------------------------------
 
@@ -230,43 +232,56 @@ public class RandomWalkAlgorithm implements Algorithm {
             if(newOptimum){
                 this.optimumNode = currentOptimum;
                 this.foundValidNode = true;
-                if(timerActivated){
-                    this.timer = 0;
-                }
-            }else if(timerActivated){
-                this.timer++;
-                if(this.timer > noOptimumTimer){
-                    this.algoEnded = true;
-                    return;
-                }
+                //if(timerActivated){
+                //    this.timer = 0;
+                //}
             }
+            //else if(timerActivated){
+            //    this.timer++;
+            //    if(this.timer > noOptimumTimer){
+                    //this.algoEnded = true;
+                    //return;
+            //    }
+            //}
         }else{
-            for(BitSet bs : currentInvalid){
-                int score = bsv.validateScore(bs,pillarScore);
-                if(score > highScore){
+            //Invalide
+            debug =4;
+            //
+            for(BitSet bs : currentInvalid) {
+                int score = bsv.validateScore(bs, pillarScore);
+                if (score > highScore) {
                     currentOptimum = bs;
                     highScore = score;
                 }
-                boolean validOptimum = bsv.validateAbs(this.optimumNode,pillarCoverage) >= minCoverage;
-                if(!validOptimum){
-                    boolean newOptimum = bsv.newOptimumRel(this.optimumNode,currentOptimum,pillarCoverage,pillarScore);
-                    if(newOptimum){
-                        this.optimumNode = currentOptimum;
-                        this.foundValidNode = true;
-                    }
-                    if(timerActivated){
-                        this.timer++;
-                        if(this.timer > noOptimumTimer){
-                            this.algoEnded = true;
-                            return;
-                        }
-                    }
+            }
+            //Invalides Optimum
+            debug = 12;
+            //
+            boolean validOptimum = bsv.validateAbs(this.optimumNode,pillarCoverage) >= minCoverage;
+            //Existiert bereits ein valides globales Optimum?
+            debug = 13;
+            //
+            if(!validOptimum){
+                boolean newOptimum = bsv.newInvalidOptimum(this.optimumNode,currentOptimum,pillarCoverage,pillarScore);
+                //Neues invalides globales Optimum?
+                debug = 13;
+                //
+                if(newOptimum){
+                    this.optimumNode = currentOptimum;
                 }
+                    //if(timerActivated){
+                    //    this.timer++;
+                    //    if(this.timer > noOptimumTimer){
+                            //this.algoEnded = true;
+                            //return;
+                    //    }
+                    //}
             }
         }
         currentCenterNode = currentOptimum;
-
+        //Neue Startinstanz für nächste Iteration
         debug = 10;
+        //
     }
 
 

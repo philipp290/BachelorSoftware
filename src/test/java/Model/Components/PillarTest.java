@@ -38,6 +38,9 @@ class PillarTest {
         assertEquals(result,10000, 0.1);
     }
 
+    /**
+     * Test welche Säule die Säule am Riegerplatz ist
+     */
     @Test
     public void riegerPlatzPillar() {
         CsvReaderService crs = new CsvReaderService();

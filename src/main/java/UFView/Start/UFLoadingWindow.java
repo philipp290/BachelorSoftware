@@ -76,8 +76,13 @@ public class UFLoadingWindow extends JFrame {
 
     private static void longRunningMethod() {
         CsvReaderService crs = new CsvReaderService();
-        ArrayList<Person> per = crs.readPerson(Session.getInstance().getOriginalPeopleFile(), Session.getInstance().getPillars(), Session.getInstance().getReachingDistance());
-        Session.getInstance().setPeople(per);
+        if(Session.getInstance().getLighthouses().isEmpty()) {
+            ArrayList<Person> per = crs.readPerson(Session.getInstance().getOriginalPeopleFile(), Session.getInstance().getPillars(), Session.getInstance().getReachingDistance());
+            Session.getInstance().setPeople(per);
+        }else{
+            ArrayList<Person> per = crs.readPersonWithLighthouses(Session.getInstance().getOriginalPeopleFile());
+            Session.getInstance().setPeople(per);
+        }
     }
 }
 

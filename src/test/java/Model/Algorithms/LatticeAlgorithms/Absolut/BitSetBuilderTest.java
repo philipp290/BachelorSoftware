@@ -296,7 +296,13 @@ class BitSetBuilderTest {
         bs3.set(7);
         reference.add(bs3);
 
-        ArrayList<BitSet> testingInstance = bsb.buildGeneralisations(original);
+        BitSet bs4 = new BitSet();
+        bs4.set(0);
+        bs4.set(4);
+        bs4.set(5);
+        reference.add(bs4);
+
+        ArrayList<BitSet> testingInstance = bsb.buildGeneralisations(original,8);
 
         Assertions.assertEquals(reference,testingInstance);
 
@@ -345,7 +351,7 @@ class BitSetBuilderTest {
         bs4.set(7);
         reference.add(bs4);
 
-        ArrayList<BitSet> testingInstance = bsb.buildSpecialisations(original);
+        ArrayList<BitSet> testingInstance = bsb.buildSpecialisations(original,8);
 
         Assertions.assertEquals(reference,testingInstance);
 
