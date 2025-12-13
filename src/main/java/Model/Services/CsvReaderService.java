@@ -267,7 +267,7 @@ public class CsvReaderService {
                         Session.getInstance().getPillars().get(Integer.parseInt(components[1])).getPeopleReached().set(lookingAt.getInternalID());
                         lookingAt.getPillarsPassed().set(Integer.parseInt(components[1]));
                     } else {
-                        Session.getInstance().getLighthouses().get(Integer.parseInt(components[1])).getPeopleReached().set(lookingAt.getInternalID());
+                        Session.getInstance().getLighthouses().get(Integer.parseInt(components[1])*-1).getPeopleReached().set(lookingAt.getInternalID());
                         lookingAt.getLighthousesPassed().set(Integer.parseInt(components[1]) * -1);
                     }
                 }

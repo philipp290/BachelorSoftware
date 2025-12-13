@@ -214,10 +214,13 @@ public class UFQuickStartWindow extends JFrame {
 
         //-------------BUTTON-FUNCTION----------------
         next.addActionListener((ActionEvent) -> {
-            if (!peoplePath.getText().isEmpty() && !pillarPath.getText().isEmpty() && !peopleOGPath.getText().isEmpty()) {
+            if (!peoplePath.getText().isEmpty() && !pillarPath.getText().isEmpty() && !peopleOGPath.getText().isEmpty() && (!cLighthouse.isSelected()||!lighthousePath.getText().isEmpty())) {
                 CsvReaderService crs = new CsvReaderService();
                 Session.getInstance().setOriginalPeopleFile(peopleOGPath.getText());
                 crs.importPillars(pillarPath.getText());
+                if(cLighthouse.isSelected()){
+                    crs.importLighthouses(lighthousePath.getText());
+                }
                 crs.importPeople(peoplePath.getText());
                 SwingUtilities.invokeLater(() -> {
                     UFMainWindow viewer = new UFMainWindow();
@@ -256,14 +259,23 @@ public class UFQuickStartWindow extends JFrame {
         peopleOGSearch.addActionListener((ActionEvent) -> {
             File startDir = new File("Data");
             JFileChooser fileChooser = new JFileChooser(startDir);
-            fileChooser.setDialogTitle("Wähle die original Verkehrs-Simulation aus");
+            fileChooser.setDialogTitle("Wähle die original Verkehrssimulation aus");
             int result = fileChooser.showOpenDialog(this);
             if (result == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
                 this.peopleOGPath.setText(selectedFile.getAbsolutePath());
             }
         });
-
+        lighthouseSearchButton.addActionListener((ActionEvent) -> {
+            File startDir = new File("Data");
+            JFileChooser fileChooser = new JFileChooser(startDir);
+            fileChooser.setDialogTitle("Wähle deine Katastrophenschutz-Leuchttürme aus");
+            int result = fileChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                this.lighthousePath.setText(selectedFile.getAbsolutePath());
+            }
+        });
         cLighthouse.addActionListener((ActionEvent)->{
             if(cLighthouse.isSelected()){
                 lighthousePath.setBackground(Color.WHITE);

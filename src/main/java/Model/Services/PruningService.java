@@ -35,9 +35,7 @@ public class PruningService {
         ArrayList<Person> result = new ArrayList<>();
         for(Person p: input){
             if(p.getPillarsPassed().cardinality()!=0){
-                if(!lightHousesSet||p.getLighthousesPassed().cardinality()==0) {
-                    result.add(p);
-                }
+                result.add(p);
             }
         }
         return result;

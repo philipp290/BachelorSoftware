@@ -99,7 +99,7 @@ public class CsvWriterService {
                 if(lighthousesSet){
                     for(int i = 0; i<Session.getInstance().getLighthouses().size(); i++) {
                         if(p.getLighthousesPassed().get(i)) {
-                            String outputLine = String.join(",", String.valueOf(p.getInternalID()),String.valueOf(i*(-1)));
+                            String outputLine = String.join(",", String.valueOf(p.getPersonID()),String.valueOf(i*(-1)));
                             writer.write(outputLine);
                             writer.newLine();
                         }

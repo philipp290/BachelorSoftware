@@ -1,6 +1,7 @@
 package Model.Components;
 
 import Model.Services.CsvReaderService;
+import Model.Session;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -56,5 +57,26 @@ class PillarTest {
             }
         }
         System.out.println("Säule " + nearetPillar + " : " + minDistance + " meter");
+    }
+    /**
+     * Test wieviele Säulen durch die Katastrophenschutz-Leuchttürme
+     * geprunt werden
+     */
+    @Test
+    void pillarPrunePotential(){
+        CsvReaderService crs = new CsvReaderService();
+        ArrayList<Pillar> pil = crs.readPillarsFromFile("C:/Users/phili/OneDrive/Desktop/Bachelor Evaluation/Standorte_Litfaßsäule_Darmstadt.csv");
+        crs.importLighthouses("C:/Users/phili/OneDrive/Desktop/Bachelor Evaluation/Katastrophenschutz Leuchtturm/KSL-complete.csv");
+        ArrayList<Pillar> light = Session.getInstance().getLighthouses();
+        int pruneCount = 0;
+        for(Pillar p: pil){
+            for(Pillar l : light){
+                if(p.distanceTo(l.getLongitude(),l.getLatitude())<=20){
+                    pruneCount++;
+                    break;
+                }
+            }
+        }
+        System.out.println(pruneCount);
     }
 }

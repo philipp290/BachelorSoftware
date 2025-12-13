@@ -63,7 +63,7 @@ public class UFAlgorithmVisualisationController implements UFAlgorithmInput{
         SolutionValidationService svs = new SolutionValidationService();
 
         ArrayList<Pillar> pillars = Session.getInstance().getPillars();
-        ArrayList<Person> people = ps.prunePeople(Session.getInstance().getPeople());
+        ArrayList<Person> people = Session.getInstance().getPeople();
         boolean abs_rel = view.getAbsSelect();
 
         ArrayList<Double> perc = new ArrayList<>();

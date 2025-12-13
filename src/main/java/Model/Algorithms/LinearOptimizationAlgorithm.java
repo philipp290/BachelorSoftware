@@ -11,7 +11,6 @@ public class LinearOptimizationAlgorithm implements Algorithm {
     @Override
     public ArrayList<Pillar> execute(ArrayList<Pillar> pillars, ArrayList<Person> people, boolean ABS_REL, int goal) {
         String outputFile = "Data/Cache/LinearOptimizationCache/loExport.txt";
-
         if(ABS_REL){
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
                 writer.write("/* Objective function: to maximize */");
