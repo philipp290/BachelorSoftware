@@ -5,6 +5,7 @@ import Model.Algorithms.LatticeAlgorithms.General.BitSetBuilder;
 import Model.Algorithms.LatticeAlgorithms.General.BitSetValidator;
 import Model.Components.Person;
 import Model.Components.Pillar;
+import Model.Services.CsvAnalysisService;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -48,7 +49,9 @@ public class BottomUpAlgorithm implements Algorithm {
 
     public void initAlgo(ArrayList<Pillar> pillars, ArrayList<Person> people, int goal){
         this.pillarCount = pillars.size();
-        this.minCoverage = ((int)Math.ceil((people.size()/100.0)*goal));
+        CsvAnalysisService cas = new CsvAnalysisService();
+        double[] temp = cas.reachabilityAnalysis(people);
+        this.minCoverage = (int) Math.ceil((temp[0]/100)*goal);;
         this.pillarCoverage = new ArrayList<>();
         this.pillarScore = new ArrayList<>();
         for(Pillar p : pillars){

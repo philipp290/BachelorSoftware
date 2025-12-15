@@ -95,6 +95,8 @@ public class UFManualSolutionWindow extends JFrame {
         formatButton(next);
         getContentPane().add(next);
 
+
+        //----------------------Button-Functionality------------------------
         next.addActionListener((ActionEvent)->{
             TableModel model = table.getModel();
             int rowCount = model.getRowCount();

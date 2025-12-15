@@ -5,6 +5,7 @@ import Model.Algorithms.LatticeAlgorithms.General.BitSetBuilder;
 import Model.Algorithms.LatticeAlgorithms.General.BitSetValidator;
 import Model.Components.Person;
 import Model.Components.Pillar;
+import Model.Services.CsvAnalysisService;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -84,7 +85,10 @@ public class RandomWalkAlgorithm implements Algorithm {
         this.minCoverage = ((int)Math.ceil((reachablePeople/100.0)*goal));
 
          */
-        this.minCoverage = ((int)Math.ceil((people.size()/100.0)*goal));
+
+        CsvAnalysisService cas = new CsvAnalysisService();
+        double[] temp = cas.reachabilityAnalysis(people);
+        this.minCoverage = (int) Math.ceil((temp[0]/100)*goal);;
         this.pillarCoverage = new ArrayList<>();
         this.pillarScore = new ArrayList<>();
         for(Pillar p : pillars){

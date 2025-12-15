@@ -58,7 +58,7 @@ public class UFAlgorithmVisualisationController implements UFAlgorithmInput{
         });
     }
     public void executeAlgorithm (Algorithm algo){
-        PruningService ps = new PruningService();
+        //PruningService ps = new PruningService();
 
         SolutionValidationService svs = new SolutionValidationService();
 

@@ -2,6 +2,7 @@ package Model.Algorithms;
 
 import Model.Components.Person;
 import Model.Components.Pillar;
+import Model.Services.CsvAnalysisService;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -45,16 +46,21 @@ public class LinearOptimizationAlgorithm implements Algorithm {
                     StringBuilder constraint = new StringBuilder("y");
                     constraint.append(yIndex + " <= ");
 
+                    boolean reachable = false;
                     xIndex = 0;
                     while (xIndex < pillars.size()) {
                         if (people.get(yIndex).getPillarsPassed().get(xIndex)) {
                             constraint.append("x" + xIndex + " + ");
+                            reachable = true;
                         }
                         xIndex++;
                     }
                     constraint.delete(constraint.length() - 3, constraint.length());
-                    writer.write(constraint.toString());
-                    writer.newLine();
+                    if(reachable) {
+                        writer.write(constraint.toString());
+                        writer.newLine();
+                    }
+
                     constraint.setLength(0);
 
                     yIndex++;
@@ -119,6 +125,7 @@ public class LinearOptimizationAlgorithm implements Algorithm {
                     StringBuilder constraintOne = new StringBuilder("y"+yIndex+" >= ");
                     StringBuilder constraintTwo = new StringBuilder("y"+yIndex+" <= ");
 
+                    boolean reachable = false;
                     xIndex = 0;
                     while(xIndex < pillars.size()){
                         if(people.get(yIndex).getPillarsPassed().get(xIndex)){
@@ -128,21 +135,25 @@ public class LinearOptimizationAlgorithm implements Algorithm {
                             writer.newLine();
                             constraintOne.delete(constraintOne.length()-adder.length(),constraintOne.length());
                             constraintTwo.append("x"+xIndex+" + ");
+                            reachable = true;
                         }
                         xIndex++;
                     }
                     constraintTwo.delete(constraintTwo.length()-3,constraintTwo.length());
-                    writer.write(constraintTwo.toString());
-                    writer.newLine();
-                    writer.newLine();
+                    if(reachable) {
+                        writer.write(constraintTwo.toString());
+                        writer.newLine();
+                        writer.newLine();
+                    }
 
                     constraintOne.setLength(0);
                     constraintTwo.setLength(0);
 
                     yIndex++;
                 }
-                //double temp =
-                goal = (int) Math.ceil((people.size()/100.0)*goal);
+                CsvAnalysisService cas = new CsvAnalysisService();
+                double[] temp = cas.reachabilityAnalysis(people);
+                goal = (int) Math.ceil((temp[0]/100)*goal);
                 StringBuilder goalLine = new StringBuilder(goal+" <= ");
                 i = 0;
                 while(i < people.size()){

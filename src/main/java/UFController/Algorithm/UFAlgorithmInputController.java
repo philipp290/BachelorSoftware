@@ -50,7 +50,7 @@ public class UFAlgorithmInputController implements UFAlgorithmInput{
         });
     }
     public void executeAlgorithm (Algorithm algo){
-        PruningService ps = new PruningService();
+        //PruningService ps = new PruningService();
 
         ArrayList<Pillar> pillars = Session.getInstance().getPillars();
         ArrayList<Person> people = Session.getInstance().getPeople();
