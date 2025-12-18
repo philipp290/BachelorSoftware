@@ -101,7 +101,13 @@ public class BitSetValidator {
         return !(validation.cardinality() > 0);
     }
 
-
+    /**
+     * Methode zum downwards prunen
+     * @param nextLevel Level das geprunt werden soll
+     * @param invalidPrevLevel invalide Knoten aus vorherigem Level
+     * @param length Länge der BitSets
+     * @return alle Knoten aus nextLevel die geprunt werden können
+     */
     public ArrayList<BitSet> topDownPruning(ArrayList<BitSet> nextLevel, ArrayList<BitSet> invalidPrevLevel, int length){
         if(invalidPrevLevel.isEmpty()){
             return null;
@@ -118,6 +124,13 @@ public class BitSetValidator {
         return invalidNextLevel;
     }
 
+    /**
+     * Methode zum upwards prunen
+     * @param nextLevel Level das geprunt werden soll
+     * @param validPrevLevel valide Knoten aus vorherigem Level
+     * @param length Länge der BitSets
+     * @return alle Knoten aus nextLevel die geprunt werden können
+     */
     public ArrayList<BitSet> bottomUpPruning(ArrayList<BitSet> nextLevel, ArrayList<BitSet> validPrevLevel, int length){
         if(validPrevLevel.isEmpty()){
             return null;
@@ -134,6 +147,12 @@ public class BitSetValidator {
         return validNextLevel;
     }
 
+    /**
+     * Methode um zu erkennen, ob Knoten im nächsten Level bereits validiert wurde
+     * @param nextLevel zu prunendes Level
+     * @param prevLevel vorheriges Level
+     * @return alle Knoten aus nextLevel die geprunt werden können
+     */
     public ArrayList<BitSet> equalityPruning(ArrayList<BitSet> nextLevel, ArrayList<BitSet> prevLevel){
         if(prevLevel.isEmpty()){
             return null;
@@ -150,6 +169,14 @@ public class BitSetValidator {
         return toBePruned;
     }
 
+    /**
+     * Methode die erkennt, ob ein neues Optimum gefunden wurde
+     * @param optimum bisheriges Optimum
+     * @param candidate Kandidat
+     * @param pillarCov Abd Strings der Säulen
+     * @param pillarSc Beschattungs grade der Säule
+     * @return true = neues Optimum gefunden
+     */
     public boolean newOptimumRel(BitSet optimum, BitSet candidate, ArrayList<BitSet> pillarCov, ArrayList<Integer> pillarSc){
         if(optimum.cardinality() < candidate.cardinality()){
             return false;
@@ -160,6 +187,15 @@ public class BitSetValidator {
         }
         return true;
     }
+
+    /**
+     * Methode um unter invaliden Knoten ein Optimum zu finden
+     * @param optimum derzeitiges Optimum
+     * @param candidate neuer Optimums Kanidat
+     * @param pillarCov Abd BitSets der Säulen
+     * @param pillarSc Beschattungsgräde der Säulen
+     * @return true -> Neues invalides Optimum
+     */
     public boolean newInvalidOptimum(BitSet optimum, BitSet candidate, ArrayList<BitSet> pillarCov, ArrayList<Integer> pillarSc){
         if(validateAbs(optimum,pillarCov) > validateAbs(candidate,pillarCov)){
             return false;

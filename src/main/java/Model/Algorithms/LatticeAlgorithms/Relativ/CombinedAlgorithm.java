@@ -13,10 +13,16 @@ public class CombinedAlgorithm implements Algorithm {
     private TopDownAlgorithm tda;
     private RandomWalkAlgorithm rwa;
 
+    private int min;
+    private int max;
+
     public CombinedAlgorithm(int minLevel, int maxLevel, int timer){
     bua = new BottomUpAlgorithm(minLevel);
     tda = new TopDownAlgorithm(maxLevel);
     rwa = new RandomWalkAlgorithm(minLevel,maxLevel,timer);
+
+    min = minLevel;
+    max = maxLevel;
     }
 
 
@@ -28,49 +34,57 @@ public class CombinedAlgorithm implements Algorithm {
         tda.initAlgo(pillars, people, goal);
         rwa.initAlgo(pillars, people, goal);
 
+        if(min <= 1){
+            bua.algoEnded=true;
+        }
+        if(max >= pillars.size()){
+            tda.algoEnded = true;
+        }
+
+
         BitSet optimum = new BitSet();
         optimum.set(0, pillars.size()+1);
         while(true){
             if(!bua.algoEnded){
                 bua.nextStep();
-                if(bua.optimumNode!=null){
-                    optimum = bua.optimumNode;
-                    break;
+                if(bua.algoEnded){
+                    if(bua.optimumNode!=null) {
+                        optimum = bua.optimumNode;
+                        break;
+                    }
                 }
             }
+
             if(!tda.algoEnded){
                 tda.nextStep();
-                if(tda.optimumNode!=null) {
+                if(tda.algoEnded) {
                     if (bsv.newOptimumRel(optimum, tda.optimumNode, tda.pillarCoverage, tda.pillarScore)) {
                         optimum = tda.optimumNode;
                     }
                 }
             }
-            if(tda.algoEnded&& bua.algoEnded){
-                rwa.timerActivated = true;
-            }
+
+
+            //if(tda.algoEnded && bua.algoEnded){
+            //    rwa.timerActivated = true;
+            //}
             if(!rwa.algoEnded){
                 rwa.nextStep();
-                if(rwa.optimumNode!=null) {
-                    if (bsv.newOptimumRel(optimum, rwa.optimumNode, rwa.pillarCoverage, rwa.pillarScore)) {
-                        optimum = rwa.optimumNode;
-                        tda.algoEnded = true;
-                    }
+                if(rwa.algoEnded) {
+                    optimum = rwa.optimumNode;
+                    break;
                 }
             }else{
                 break;
             }
-            ArrayList<Pillar> result = new ArrayList<>();
-            for(int i = 0; i<pillars.size();i++){
-                if(optimum.get(i)){
-                    result.add(pillars.get(i));
-                }
-            }
-            return result;
-
         }
 
-
-        return null;
+        ArrayList<Pillar> result = new ArrayList<>();
+        for(int i = 0; i < pillars.size(); i++){
+            if(optimum.get(i)){
+                result.add(pillars.get(i));
+            }
+        }
+        return result;
     }
 }

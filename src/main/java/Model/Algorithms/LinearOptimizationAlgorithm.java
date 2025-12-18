@@ -8,6 +8,9 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
+/**
+ * Transformiert die Probleminstanz in die lineare Optimierung als TXT
+ */
 public class LinearOptimizationAlgorithm implements Algorithm {
     @Override
     public ArrayList<Pillar> execute(ArrayList<Pillar> pillars, ArrayList<Person> people, boolean ABS_REL, int goal) {

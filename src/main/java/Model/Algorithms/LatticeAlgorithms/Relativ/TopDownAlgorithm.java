@@ -51,6 +51,10 @@ public class TopDownAlgorithm implements Algorithm {
             this.pillarScore.add(p.getShadow().getValue());
             this.pillarCoverage.add(p.getPeopleReached());
         }
+
+        if (minLevel > pillars.size()){
+            this.algoEnded = true;
+        }
     }
 
     @Override

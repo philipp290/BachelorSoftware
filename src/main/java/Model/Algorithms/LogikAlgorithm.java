@@ -7,6 +7,9 @@ import Model.Services.CsvAnalysisService;
 import java.util.ArrayList;
 import java.util.BitSet;
 
+/**
+ * Klasse die den Logik Algorithmus umsetzt
+ */
 public class LogikAlgorithm implements Algorithm{
     private BitSet markedColumns = new BitSet();
     private BitSet markedRows = new BitSet();
