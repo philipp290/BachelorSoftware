@@ -11,8 +11,12 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RandomWalkAlgorithmTest {
-    //Referenz Werte wurden händisch berechnet
-    //Im Detail zu finden in der Powerpoint Präsentation "BachelorPräsentation5.11.pptx"
+    //Referenz Ergebnis wurde händisch berechnet
+    //-> Im Detail zu sehen in: Data/Powerpoint-Visualisierungen/RelativerFall-Visualisierung.pptx
+
+    //Test schlägt in derzeitiger Version fehl, da Startpunkt sich durch Zufallskomponente von
+    //dem Visualisierten Beispiel unterscheidet
+
     @Test
     public void executeTest(){
         RandomWalkAlgorithm rwa = new RandomWalkAlgorithm(0,8, 100);

@@ -155,6 +155,35 @@ public class UFAlgorithmLatticeSpecificationWindow extends JFrame {
                 });
             }
         });
+        field1V.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent e) {
+                char c = e.getKeyChar();
+                if (!Character.isDigit(c)) {
+                    e.consume();
+                }
+            }
+        });
+        if(type == 2 || type == 3) {
+            field2V.addKeyListener(new java.awt.event.KeyAdapter() {
+                @Override
+                public void keyTyped(java.awt.event.KeyEvent e) {
+                    char c = e.getKeyChar();
+                    if (!Character.isDigit(c)) {
+                        e.consume();
+                    }
+                }
+            });
+            field3V.addKeyListener(new java.awt.event.KeyAdapter() {
+                @Override
+                public void keyTyped(java.awt.event.KeyEvent e) {
+                    char c = e.getKeyChar();
+                    if (!Character.isDigit(c)) {
+                        e.consume();
+                    }
+                }
+            });
+        }
     }
 
     private void formatButton(JButton button){
@@ -187,7 +216,7 @@ public class UFAlgorithmLatticeSpecificationWindow extends JFrame {
     //--------------------Debugging---------------------------
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            UFAlgorithmLatticeSpecificationWindow viewer = new UFAlgorithmLatticeSpecificationWindow(1, new UFAlgorithmInputController(new UFAlgorithmInputWindow()));
+            UFAlgorithmLatticeSpecificationWindow viewer = new UFAlgorithmLatticeSpecificationWindow(3, new UFAlgorithmInputController(new UFAlgorithmInputWindow()));
             viewer.setVisible(true);
         });
     }

@@ -31,6 +31,8 @@ class PillarTest {
         System.out.print(result);
         assertEquals(result,19, 0.1);
     }
+    //distanceBigTest schlägt fehl, da Euklid auf diese Distanz
+    //nicht mehr das richtige Ergebnis liefert.
     @Test
     public void distanceBigTest(){
         Pillar p = new Pillar(1, 11.576124,48.137255,Shadow.HOCH);

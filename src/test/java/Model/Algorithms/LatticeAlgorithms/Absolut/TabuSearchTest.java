@@ -11,6 +11,8 @@ import java.util.BitSet;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TabuSearchTest {
+    //Referenz Ergebnis wurde händisch berechnet
+    //-> Im Detail zu sehen in: Data/Powerpoint-Visualisierungen/AbsoluterFall-Visualisierung.pptx
     @Test
     void executeTest(){
         ArrayList<Pillar> pillars = new ArrayList<>();

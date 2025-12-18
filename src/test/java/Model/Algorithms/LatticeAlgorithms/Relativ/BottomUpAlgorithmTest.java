@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BottomUpAlgorithmTest {
-    //Referenz Werte wurden händisch berechnet
-    //Im Detail zu finden in der Powerpoint Präsentation "BachelorPräsentation5.11.pptx"
+    //Referenz Ergebnis wurde händisch berechnet
+    //-> Im Detail zu sehen in: Data/Powerpoint-Visualisierungen/RelativerFall-Visualisierung.pptx
     @Test
     public void executeTest(){
         BottomUpAlgorithm bua = new BottomUpAlgorithm(8);
