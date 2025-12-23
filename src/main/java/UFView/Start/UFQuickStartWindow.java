@@ -289,9 +289,10 @@ public class UFQuickStartWindow extends JFrame {
         });
 
         //DEBUGGING
-        pillarPath.setText("C:/Users/phili/OneDrive/Desktop/Bachelor Evaluation/QuickStart-OhneAutos/pillarExport.csv");
-        peoplePath.setText("C:/Users/phili/OneDrive/Desktop/Bachelor Evaluation/QuickStart-OhneAutos/personExport.csv");
-        peopleOGPath.setText("C:/Users/phili/OneDrive/Desktop/Bachelor Evaluation/Verkehrs-Simulation-Ohne-Autos.csv");
+        pillarPath.setText("Data/BachelorPhilippNuhn-SchnellstartDaten/pillarExport.csv");
+        peoplePath.setText("Data/BachelorPhilippNuhn-SchnellstartDaten/personExport.csv");
+        peopleOGPath.setText("Data/BachelorPhilippNuhn-SchnellstartDaten/platzhalter.csv");
+        lighthousePath.setText("Data/BachelorPhilippNuhn-SchnellstartDaten/lighthouses.csv");
     }
     private void formatButton(JButton button){
         button.setHorizontalTextPosition(SwingConstants.LEFT);
